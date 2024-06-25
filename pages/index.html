@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Summer game</title>
+    <link rel="stylesheet" type="text/css" href="../public/css/style.css">
+    <script src="../lib/phaser.min.js"></script>
+    <script src="../public/js/game.js"></script>
+    <script src="../public/js/snake.js"></script>
+    <script src="../public/js/util.js"></script>
+
+</head>
+<body>
+<div id="game">
+    <!--
+    <canvas class="cnv" id="canvasSnake" height="400" width="800"></canvas>
+    <canvas class="cnv" id="canvasFood" height="400" width="800"></canvas>
+    <canvas class="cnv" id="canvasHex" height="400" width="800"></canvas>
+    -->
+</div>
+
+<script>
+    (function() {
+        let game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.CANVAS, null, {
+            preload: preload,
+            create: create,
+            update: update,
+        });
+        function preload() {}
+        function create() {}
+        function update() {}
+
+        window.addEventListener('resize', function() {
+            game.scale.setGameSize(window.innerWidth, window.innerHeight);
+        });
+
+        game.state.add('Game', Game);
+        game.state.start('Game');
+    })();
+</script>
+</body>
+</html>
