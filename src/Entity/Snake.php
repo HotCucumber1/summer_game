@@ -8,8 +8,10 @@ class Snake
         private int $headX,
         private int $headY,
         private array $bodyParts,
-        private int $radius  // массив объектов-кругов
+        private int $radius,
+        private Direction $speed
     )
+    
     {
     }
 
@@ -23,17 +25,19 @@ class Snake
         return $this->headY;
     }
 
-    /**
-     * @return int
-     */
+    public function getBodyParts(): array
+    {
+        return $this->bodyParts;
+    }
+
     public function getRadius(): int
     {
         return $this->radius;
     }
 
-    public function getBodyParts(): array
+    public function getSpeed(): Direction
     {
-        return $this->bodyParts;
+        return $this->speed;
     }
 
     public function setHeadX(int $headX): void
@@ -51,22 +55,13 @@ class Snake
         $this->bodyParts = $bodyParts;
     }
 
-    /**
-     * @param int $radius
-     */
     public function setRadius(int $radius): void
     {
         $this->radius = $radius;
     }
 
-    public function addBodyPart(int $x, int $y, string $color): void
+    public function setSpeed(Direction $speed): void
     {
-        $this->bodyParts[] = new BodyPart($x, $y, $this->getRadius(), $color);
-    }
-
-    public function removeBodyPart(): void
-    {
-        $body = $this->getBodyParts();
-        array_pop($body);
+        $this->speed = $speed;
     }
 }
