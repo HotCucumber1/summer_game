@@ -7,7 +7,8 @@ class Snake
     public function __construct(
         private int $headX,
         private int $headY,
-        private array $bodyParts  // массив объектов-кругов
+        private array $bodyParts,
+        private int $radius  // массив объектов-кругов
     )
     {
     }
@@ -20,6 +21,14 @@ class Snake
     public function getHeadY(): int
     {
         return $this->headY;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRadius(): int
+    {
+        return $this->radius;
     }
 
     public function getBodyParts(): array
@@ -42,7 +51,22 @@ class Snake
         $this->bodyParts = $bodyParts;
     }
 
-    public function addBodyPart()
+    /**
+     * @param int $radius
+     */
+    public function setRadius(int $radius): void
     {
+        $this->radius = $radius;
+    }
+
+    public function addBodyPart(int $x, int $y, string $color): void
+    {
+        $this->bodyParts[] = new BodyPart($x, $y, $this->getRadius(), $color);
+    }
+
+    public function removeBodyPart(): void
+    {
+        $body = $this->getBodyParts();
+        array_pop($body);
     }
 }

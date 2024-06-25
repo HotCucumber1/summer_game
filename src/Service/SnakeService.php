@@ -29,9 +29,7 @@ class SnakeService
 
     private function changeLength(Snake $snake): void
     {
-        $body = $snake->getBodyParts();
-        $body[] = new BodyPart(10, 10, 10, '#EEE');
-        $snake->setBodyParts($body);
+        $snake->addBodyPart(10, 10, '#EEE');
     }
 
     private function changeRadius(Snake $snake): void
