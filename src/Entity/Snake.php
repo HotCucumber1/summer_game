@@ -7,7 +7,9 @@ class Snake
     public function __construct(
         private int $headX,
         private int $headY,
-        private array $bodyParts
+        private array $bodyParts,
+        private int $radius,
+        private Direction $speed
     )
     
     {
@@ -28,6 +30,16 @@ class Snake
         return $this->bodyParts;
     }
 
+    public function getRadius(): int
+    {
+        return $this->radius;
+    }
+
+    public function getSpeed(): Direction
+    {
+        return $this->speed;
+    }
+
     public function setHeadX(int $headX): void
     {
         $this->headX = $headX;
@@ -41,5 +53,15 @@ class Snake
     public function setBodyParts(array $bodyParts): void
     {
         $this->bodyParts = $bodyParts;
+    }
+
+    public function setRadius(int $radius): void
+    {
+        $this->radius = $radius;
+    }
+
+    public function setSpeed(Direction $speed): void
+    {
+        $this->speed = $speed;
     }
 }
