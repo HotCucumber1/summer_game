@@ -13,6 +13,7 @@ class UserRepository implements UserRepositoryInterface
     public function findUserByName(string $name): User
     {
     }
+
     public function store(User $user): int
     {
     }
