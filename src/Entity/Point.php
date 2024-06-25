@@ -8,8 +8,7 @@ class Point
         private int $coordX,
         private int $coordY,
         private string $color
-    ) 
-    
+    )
     {
     }
 

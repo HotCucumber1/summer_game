@@ -8,7 +8,6 @@ class Direction
         private int $directX,
         private int $directY
     )
-    
     {
     }
 

@@ -5,14 +5,22 @@ namespace App\Entity;
 class Snake
 {
     public function __construct(
+        private int $id,
         private int $headX,
         private int $headY,
         private array $bodyParts,
         private int $radius,
         private Direction $speed
     )
-    
     {
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getHeadX(): int
@@ -63,5 +71,16 @@ class Snake
     public function setSpeed(Direction $speed): void
     {
         $this->speed = $speed;
+    }
+
+    public function addBodyPart(int $x, int $y, string $color): void
+    {
+        $this->bodyParts[] = new BodyPart($x, $y, $this->getRadius(), $color);
+    }
+
+    public function deleteLastBodyPart(): void
+    {
+        $body = $this->getBodyParts();
+        array_pop($body);
     }
 }
