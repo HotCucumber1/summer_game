@@ -2,3 +2,31 @@ body
 {
     margin: 0;
 }
+
+
+#game{
+    position: relative;
+    margin:0 auto;
+}
+
+.cnv{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-style: solid;
+}
+
+#canvasFood{
+    background-color: transparent;
+    z-index: 2;
+}
+
+#canvasHex{
+    background-color: black;
+    z-index: 1;
+}
+
+#canvasSnake{
+    background-color: transparent;
+    z-index: 3;
+}

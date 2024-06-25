@@ -1,38 +1,86 @@
-Game = function(game) {}
-
-Game.prototype = {
-    preload: function() {
-        //load assets
-        this.game.load.image('circle','../public/images/circle.png');
-        this.game.load.image('background', '../public/images/background3.png'); // временно
-    },
-    create: function() {
-        let width = this.game.width;
-        let height = this.game.height;
-
-        this.game.world.setBounds(-width, -height, width*2, height*2);
-        this.game.stage.backgroundColor = '#444';
-
-        //add tilesprite background
-        let background = this.game.add.tileSprite(-width, -height,
-            this.game.world.width, this.game.world.height, 'background');
-
-        //initialize physics and groups
-        this.game.physics.startSystem(Phaser.Physics.P2JS);
-
-        this.game.snakes = [];
-
-        //create player
-        let snake = new Snake(this.game, 'circle', 0, 0);
-        this.game.camera.follow(snake.head);
-    },
-    /**
-     * Main update loop
-     */
-    update: function() {
-        //update game components
-        for (let i = this.game.snakes.length - 1 ; i >= 0 ; i--) {
-            this.game.snakes[i].update();
-        }
+class Game{
+    constructor(ctxSnake, ctxHex){
+        this.ctxSnake = ctxSnake;
+        this.ctxHex = ctxHex;
+        this.WORLD_SIZE = new Point(4000, 2000);
+        this.SCREEN_SIZE = new Point(window.innerWidth, window.innerHeight);
+        this.world = new Point(-1200, -600);
+        this.snakes = [];
+        this.backgroundImage = new Image();
+        this.backgroundImage.src = '../public/images/background.png';
+        this.backgroundImage.onload = () => {
+            this.drawWorld();
+        };
     }
-};
+
+    init(){
+        this.snakes[0] = new Snake(this.ctxSnake, 0);
+    }
+
+    draw(){
+
+        //draw world
+        this.drawWorld();
+
+        // move yourself
+        if(this.snakes[0].state === 0)
+            this.snakes[0].move();
+
+        //move other snakes
+        for(var i=1; i<this.snakes.length; i++)
+            if(this.snakes[i].state === 0) this.snakes[i].move(this.snakes[0]);
+    }
+
+    drawWorld(){
+
+        this.ctxHex.fillStyle = "white";
+        this.ctxHex.fillRect(this.world.x - 2, this.world.y - 2, this.WORLD_SIZE.x+4, this.WORLD_SIZE.y+4);
+
+        this.ctxHex.fillStyle = "#17202A";
+        this.ctxHex.fillRect(this.world.x, this.world.y, this.WORLD_SIZE.x, this.WORLD_SIZE.y);
+
+        this.ctxHex.drawImage(this.backgroundImage, this.world.x, this.world.y, this.WORLD_SIZE.x, this.WORLD_SIZE.y);
+
+        this.world.x -= this.snakes[0].velocity.x;
+        this.world.y -= this.snakes[0].velocity.y;
+    }
+
+    // drawScore(){
+    //     var start = new Point(20, 20);
+    //     for (var i = 0; i < this.snakes.length; i++) {
+    //         this.ctxSnake.fillStyle = this.snakes[i].mainColor;
+    //         this.ctxSnake.font="bold 10px Arial";
+    //         this.ctxSnake.fillText(this.snakes[i].name + ":" + this.snakes[i].score,
+    //             start.x-5, start.y +i*15);
+    //     }
+    // }
+
+    // drawMap(){
+    //
+    //     this.ctxSnake.globalAlpha = 0.5;
+    //
+    //     var mapSize = new Point(100, 50);
+    //     var start = new Point(20, this.SCREEN_SIZE.y-mapSize.y-10);
+    //     this.ctxSnake.fillStyle = "white";
+    //     this.ctxSnake.fillRect(start.x, start.y, mapSize.x,  mapSize.y);
+    //     this.ctxSnake.fill();
+    //
+    //     this.ctxSnake.globalAlpha = 1;
+    //
+    //
+    //     //draw all player in map
+    //     for (var i = 0; i < this.snakes.length; i++) {
+    //         var playerInMap = new Point(start.x + (mapSize.x/this.WORLD_SIZE.x) * this.snakes[i].pos.x,
+    //             start.y + (mapSize.y/this.WORLD_SIZE.y) * this.snakes[i].pos.y);
+    //
+    //         // console.log(playerInMap);
+    //         this.ctxSnake.fillStyle = this.snakes[i].mainColor;
+    //         this.ctxSnake.beginPath();
+    //         this.ctxSnake.arc(start.x + playerInMap.x, playerInMap.y + 10, 2, 0, 2*Math.PI);
+    //         this.ctxSnake.fill();
+    //     }
+    //
+    //
+    // }
+
+}
