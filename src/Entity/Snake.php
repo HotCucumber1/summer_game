@@ -7,9 +7,8 @@ class Snake
     public function __construct(
         private int $headX,
         private int $headY,
-        private array $bodyParts
+        private array $bodyParts  // массив объектов-кругов
     )
-    
     {
     }
 
@@ -41,5 +40,9 @@ class Snake
     public function setBodyParts(array $bodyParts): void
     {
         $this->bodyParts = $bodyParts;
+    }
+
+    public function addBodyPart()
+    {
     }
 }
