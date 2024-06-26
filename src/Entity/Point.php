@@ -7,7 +7,8 @@ class Point
     public function __construct(
         private int $coordX,
         private int $coordY,
-        private string $color
+        private string $color,
+        private bool $status
     )
     {
     }
@@ -27,6 +28,11 @@ class Point
         return $this->color;
     }
 
+    public function getStatus(): bool
+    {
+        return $this->coordX;
+    }
+
     public function setCoordX(int $coordX): void
     {
         $this->coordX = $coordX;
@@ -40,5 +46,10 @@ class Point
     public function setColor(string $color): void
     {
         $this->color = $color;
+    }
+
+    public function setStatus(bool $status): void
+    {
+        $this->status = $status;
     }
 }
