@@ -17,14 +17,14 @@ class CollisionService
         $snakeY = $snake->getHeadY();
         $snakeR = $snake->getRadius();
 
-        $dist = sqrt(($snakeX - Wall::X) * ($snakeX - Wall::X) + ($snakeY - Wall::Y) * ($snakeY - Wall::Y));
+        $dist = sqrt(($snakeX - Wall::centreX) * ($snakeX - Wall::centreX) + ($snakeY - Wall::centreY) * ($snakeY - Wall::centreY));
         $sin = $snakeY / $dist;
         $cos = $snakeX / $dist;
 
         $bumpX = abs($snakeX) + $snakeR * abs($cos);
         $bumpY = abs($snakeY) + $snakeR * abs($sin);
 
-        if ($bumpX * $bumpX + $bumpY * $bumpY >= Wall::RADIUS ** Wall::RADIUS)
+        if ($bumpX * $bumpX + $bumpY * $bumpY >= Wall::RADIUS * Wall::RADIUS)
         {
             return true;
         }
