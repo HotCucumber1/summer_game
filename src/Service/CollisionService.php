@@ -11,12 +11,12 @@ class CollisionService
     {
     }
 
-    public function iSPointEaten(Snake $snake, Point $point)
+    public function iSPointEaten(Snake $snake, Point $point): bool
     {
         $headX = $snake->getHeadX();
         $headY = $snake->getHeadY();
         $radius = $snake->getRadius();
-        
+
         $pointX = $point->getCoordX();
         $pointY = $point->getCoordY();
 
