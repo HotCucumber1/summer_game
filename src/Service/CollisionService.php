@@ -11,13 +11,17 @@ class CollisionService
     {
     }
 
+    public function isSnakeBump(Snake $snake): bool
+    {
+    }
+
     public function isWallBump(Snake $snake): bool
     {
         $snakeX = $snake->getHeadX();
         $snakeY = $snake->getHeadY();
         $snakeR = $snake->getRadius();
 
-        $dist = sqrt(($snakeX - Wall::centreX) * ($snakeX - Wall::centreX) + ($snakeY - Wall::centreY) * ($snakeY - Wall::centreY));
+        $dist = sqrt(($snakeX - Wall::centreX) ** 2 + ($snakeY - Wall::centreY) * ($snakeY - Wall::centreY));
         $sin = $snakeY / $dist;
         $cos = $snakeX / $dist;
 
