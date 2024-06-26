@@ -1,0 +1,36 @@
+{
+  "snake": [
+    {
+      "x": 0,
+      "y": 0,
+      "body": [
+
+      ],
+      "radius": 10,
+      "speed": {
+        "x_direction": 5,
+        "y_direction": 5
+      },
+      "score": 100
+    },
+    {},
+    {}
+  ],
+  "points": [
+    {
+      "x": 10,
+      "y": 10,
+      "color": "#AAA"
+    },
+    {
+      "x": 15,
+      "y": 15,
+      "color": "#BBB"
+    },
+    {
+      "x": 10,
+      "y": -10,
+      "color": "#CCC"
+    }
+  ]
+}

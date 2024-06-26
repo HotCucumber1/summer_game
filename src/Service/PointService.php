@@ -16,22 +16,23 @@ class PointService
     {
     }
 
-    public function addPoint(Point $point)
+    public function addPoint(): void
     {
-        $point->setCoordX(rand(1, maxCanvasWidth));  // maxCanvasWidth - когда определим размер поля и форму
-        $point->setCoordY(rand(1, maxCanvasHeight));  // maxCanvasWidth - когда определим размер поля и форму
-        $point->setColor($this->getPointColor());
+        $x = rand(1, maxCanvasWidth);   // maxCanvasWidth - когда определим размер поля и форму
+        $y = rand(1, maxCanvasHeight);  // maxCanvasWidth - когда определим размер поля и форму
+        $color = $this->getPointColor();
+        $point = new Point($x, $y, $color);
+        // TODO: добавить точку к массиву точек в PointRepo->добавить точку
     }
 
     public function clearPoint(Point $point)
     {
-        // обращаемся к массиву с Точками PointRepo -> удаляем точку
+        // TODO: обращаемся к массиву с Точками в PointRepo -> удаляем точку
     }
 
     public function getPointColor(): string
     {
         $key = array_rand(self::COLORS);
-        $randomColor = self::COLORS[$key];
-        return $randomColor;
+        return self::COLORS[$key];
     }
 }
