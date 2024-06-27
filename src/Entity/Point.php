@@ -8,7 +8,7 @@ class Point
         private int $coordX,
         private int $coordY,
         private string $color,
-        private bool $status
+        private bool $status = true
     )
     {
     }
@@ -30,7 +30,7 @@ class Point
 
     public function getStatus(): bool
     {
-        return $this->coordX;
+        return $this->status;
     }
 
     public function setCoordX(int $coordX): void

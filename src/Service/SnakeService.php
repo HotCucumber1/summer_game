@@ -67,7 +67,13 @@ class SnakeService
 
     private function moveBody(array $body, int $x, int $y): void
     {
-        foreach ($body as $bodyPart)
+        // TODO: протестить передвижение
+        $last = end($body);
+
+        $last->setX($x);
+        $last->setY($y);
+
+        /* foreach ($body as $bodyPart)
         {
             $lastX = $bodyPart->getX();
             $lastY = $bodyPart->getY();
@@ -77,11 +83,12 @@ class SnakeService
 
             $x = $lastX;
             $y = $lastY;
-        }
+        } */
     }
 
     private function increaseLength(Snake $snake): void
     {
+        // TODO: изменить заглушку цвета
         $snake->addBodyPart(10, 10, '#EEE');
     }
 

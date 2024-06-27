@@ -18,8 +18,9 @@ class PointService
 
     public function addPoint(): void
     {
-        $x = rand(1, maxCanvasWidth);   // maxCanvasWidth - когда определим размер поля и форму
-        $y = rand(1, maxCanvasHeight);  // maxCanvasWidth - когда определим размер поля и форму
+        // TODO: заменить размеры, первоначально получить их при запуске приложения
+        $x = rand(1, maxCanvasWidth);       // maxCanvasWidth - когда определим размер поля и форму
+        $y = rand(1, maxCanvasHeight);      // maxCanvasWidth - когда определим размер поля и форму
         $color = $this->getPointColor();
         $point = new Point($x, $y, $color);
         // TODO: добавить точку к массиву точек в PointRepo->добавить точку

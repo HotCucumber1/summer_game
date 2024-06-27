@@ -51,10 +51,8 @@ class CollisionService
         {
             $point->setStatus(false);    // нужно дабавить поле Status в Point (false, если точку нужно удалить из массива)
             return true;
-        } else
-        {
-            return false;
-        };
+        }
+        return false;
 
         // for($i = count($points); $i >= 0; $i--)   // возможно нужно перенести в GameInfo
         // {
@@ -63,6 +61,5 @@ class CollisionService
         //         unset($points[$i]);
         //     }
         // };
-
     }
 }
