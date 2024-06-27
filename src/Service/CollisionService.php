@@ -15,7 +15,7 @@ class CollisionService
     {
     }
 
-    public function isWallBump(Snake $snake): bool
+    public function isWallBump(Snake $snake, Wall $wall): bool
     {
         $snakeX = $snake->getHeadX();
         $snakeY = $snake->getHeadY();
@@ -28,7 +28,7 @@ class CollisionService
         $bumpX = abs($snakeX) + $snakeR * abs($cos);
         $bumpY = abs($snakeY) + $snakeR * abs($sin);
 
-        if ($bumpX * $bumpX + $bumpY * $bumpY >= Wall::RADIUS * Wall::RADIUS)
+        if ($bumpX ** 2 + $bumpY ** 2 >= $wall->getRadius() ** 2)
         {
             return true;
         }

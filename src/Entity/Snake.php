@@ -10,7 +10,9 @@ class Snake
         private int $headY,
         private array $bodyParts,
         private int $radius,
-        private Direction $speed
+        private Direction $speed,
+        private int $score,
+        private bool $isAlive = true
     )
     {
     }
@@ -48,6 +50,16 @@ class Snake
         return $this->speed;
     }
 
+    public function getScore(): int
+    {
+        return $this->score;
+    }
+
+    public function getAliveStatus(): bool
+    {
+        return $this->isAlive;
+    }
+
     public function setHeadX(int $headX): void
     {
         $this->headX = $headX;
@@ -71,6 +83,16 @@ class Snake
     public function setSpeed(Direction $speed): void
     {
         $this->speed = $speed;
+    }
+
+    public function increaseScore(int $add): void
+    {
+        $this->score += $add;
+    }
+
+    public function setAliveStatus(bool $isAlive): bool
+    {
+        $this->isAlive = $isAlive;
     }
 
     public function addBodyPart(int $x, int $y, string $color): void

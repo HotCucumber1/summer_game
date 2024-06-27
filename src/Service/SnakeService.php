@@ -1,11 +1,37 @@
 <?php
 
 namespace App\Service;
+use App\Entity\Direction;
 use App\Entity\Snake;
 
 class SnakeService
 {
+    const START_X = 0;
+    const START_Y = 0;
+    const START_BODY = [];
+    const START_RADIUS = 5;
+    const START_X_DIR = 0;
+    const START_Y_DIR = -5;
+    const START_SCORE = 0;
+
     public function __construct()
+    {
+    }
+
+    public function createSnake(): Snake
+    {
+        $startSpeed = new Direction(self::START_X_DIR,
+                                    self::START_Y_DIR);
+        return new Snake(null,
+                         self::START_X,
+                         self::START_Y,
+                         self::START_BODY,
+                         self::START_RADIUS,
+                         $startSpeed,
+                         self::START_SCORE);
+    }
+
+    public function getSnake(): Snake
     {
     }
 
@@ -33,8 +59,9 @@ class SnakeService
         $this->decreaseRadius($snake);
     }
 
-    public function deleteSnake(Snake $snake)
+    public function deleteSnake(Snake $snake): void
     {
+        $snake->setAliveStatus(false);
         // TODO: обращение к репозиторию и удаление из него данного экземпдяра
     }
 
