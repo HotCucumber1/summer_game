@@ -5,7 +5,7 @@ namespace App\Entity;
 class Snake
 {
     public function __construct(
-        private int $id,
+        private ?int $id,
         private int $headX,
         private int $headY,
         private array $bodyParts,
