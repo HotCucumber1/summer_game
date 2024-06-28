@@ -1,18 +1,20 @@
 <?php
 
 namespace App\Service;
+use App\Entity\BodyPart;
 use App\Entity\Direction;
 use App\Entity\Snake;
+use config\Config;
 
 class SnakeService
 {
     const START_X = 0;
     const START_Y = 0;
-    const START_BODY = [];
-    const START_RADIUS = 5;
+    const START_RADIUS = 15;
     const START_X_DIR = 0;
     const START_Y_DIR = -5;
     const START_SCORE = 0;
+    const START_LENGTH = 10;
 
     public function __construct()
     {
@@ -22,17 +24,17 @@ class SnakeService
     {
         $startSpeed = new Direction(self::START_X_DIR,
                                     self::START_Y_DIR);
+        $color = Config::COLORS[array_rand(Config::COLORS)];
+
+        $startBody = $this->createBody($color);
         return new Snake(null,
                          self::START_X,
                          self::START_Y,
-                         self::START_BODY,
+                         $startBody,
                          self::START_RADIUS,
                          $startSpeed,
-                         self::START_SCORE);
-    }
-
-    public function getSnake(): Snake
-    {
+                         self::START_SCORE,
+                         $color);
     }
 
     public function move(int $x, int $y, Snake $snake): void
@@ -62,7 +64,20 @@ class SnakeService
     public function die(Snake $snake): void
     {
         $snake->setAliveStatus(false);
-        // TODO: обращение к репозиторию и удаление из него данного экземпдяра
+    }
+
+    private function createBody(string $color): array
+    {
+        // TODO: протестить создание
+        $body = [];
+        for ($i = 0; $i < self::START_LENGTH; $i++)
+        {
+            $body[] = new BodyPart(self::START_X,
+                                  self::START_Y,
+                                  self::START_RADIUS,
+                                  $color);
+        }
+        return $body;
     }
 
     private function moveBody(array $body, int $x, int $y): void
@@ -88,12 +103,18 @@ class SnakeService
 
     private function increaseLength(Snake $snake): void
     {
-        // TODO: изменить заглушку цвета
-        $snake->addBodyPart(10, 10, '#EEE');
+        $body = $snake->getBodyParts();
+        $lastBodyPart = end($body);
+
+        $snake->addBodyPart($lastBodyPart->getX(),
+                            $lastBodyPart->getY(),
+                            $snake->getColor());
     }
 
     private function increaseRadius(Snake $snake): void
     {
+        $snake->setRadius($snake->getRadius() + 1);
+
         $body = $snake->getBodyParts();
         foreach ($body as $bodyPart)
         {

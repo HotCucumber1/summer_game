@@ -8,21 +8,17 @@ use Ds\Set;
 
 class PointRepository
 {
-    const COLORS = array(
-        "#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#16a085", "#27ae60", "#2980b9", "#8e44ad",
-        "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#f39c12", "#d35400", "#c0392b", "#bdc3c7"
-    );
-
     public static array $points = [];
 
     public function __construct()
     {
     }
 
-    public function addPoint(): void
+    public function addPoint(int $minX, int $minY,
+                             int $maxX, int $maxY): void
     {
-        $x = rand(1, Config::$windowWidth);
-        $y = rand(1, Config::$windowHeight);
+        $x = rand($minX, $maxX);
+        $y = rand($minY, $maxY);
         $color = $this->getPointColor();
 
         self::$points[] = new Point($x, $y, $color);
@@ -31,12 +27,24 @@ class PointRepository
     public function findPoints(): ?array
     {
         return self::$points;
-        // TODO: вернуть все точки
+    }
+
+    public function eatPoint(Point $point): void
+    {
+        $point->setStatus(false);
+    }
+
+    public function deleteEatenPoints(): void
+    {
+        self::$points = array_filter(self::$points, function ($point)
+        {
+            return $point->getStatus();
+        });
     }
 
     public function getPointColor(): string
     {
-        $key = array_rand(self::COLORS);
-        return self::COLORS[$key];
+        $key = array_rand(Config::COLORS);
+        return Config::COLORS[$key];
     }
 }

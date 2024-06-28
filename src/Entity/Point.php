@@ -4,6 +4,7 @@ namespace App\Entity;
 
 class Point
 {
+    const PRICE = 1;
     public function __construct(
         private int $coordX,
         private int $coordY,

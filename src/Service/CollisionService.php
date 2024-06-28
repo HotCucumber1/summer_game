@@ -8,7 +8,7 @@ use App\Entity\Wall;
 
 class CollisionService
 {
-    public function __construct(private PointService $pointService)
+    public function __construct()
     {
     }
 
@@ -16,7 +16,7 @@ class CollisionService
     {
     }
 
-    public function isWallBump(Snake $snake, Wall $wall): bool
+    public function isWallBump(Snake $snake): bool
     {
         $snakeX = $snake->getHeadX();
         $snakeY = $snake->getHeadY();
@@ -29,14 +29,11 @@ class CollisionService
         $bumpX = abs($snakeX) + $snakeR * abs($cos);
         $bumpY = abs($snakeY) + $snakeR * abs($sin);
 
-        if ($bumpX ** 2 + $bumpY ** 2 >= $wall->getRadius() ** 2)
-        {
-            return true;
-        }
-        return false;
+        return ($bumpX ** 2 + $bumpY ** 2 >= Wall::$radius ** 2);
+
     }    
     
-    public function iSPointEaten(Snake $snake, Point $point): bool
+    public function isPointEaten(Snake $snake, Point $point): bool
     {
         $headX = $snake->getHeadX();
         $headY = $snake->getHeadY();
@@ -47,19 +44,14 @@ class CollisionService
 
         // $points = $pointService->getPoints();   // получаем массив точек на поле
 
-        if (($pointX - $headX) ** 2 + ($pointY - $headY) ** 2 <= $radius ** 2) 
-        {
-            $point->setStatus(false);    // нужно дабавить поле Status в Point (false, если точку нужно удалить из массива)
-            return true;
-        }
-        return false;
+        return (($pointX - $headX) ** 2 + ($pointY - $headY) ** 2 <= $radius ** 2);
 
-        // for($i = count($points); $i >= 0; $i--)   // возможно нужно перенести в GameInfo
-        // {
-        //     if (!($points[$i]->getStatus()))
-        //     {
-        //         unset($points[$i]);
-        //     }
-        // };
+        /*for($i = count($points); $i >= 0; $i--)   // возможно нужно перенести в GameInfo
+        {
+            if (!($points[$i]->getStatus()))
+            {
+                unset($points[$i]);
+            }
+        };*/
     }
 }
