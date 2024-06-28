@@ -59,7 +59,7 @@ class SnakeService
         $this->decreaseRadius($snake);
     }
 
-    public function deleteSnake(Snake $snake): void
+    public function die(Snake $snake): void
     {
         $snake->setAliveStatus(false);
         // TODO: обращение к репозиторию и удаление из него данного экземпдяра

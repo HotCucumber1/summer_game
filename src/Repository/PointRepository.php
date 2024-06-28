@@ -31,6 +31,7 @@ class PointRepository
 
     public function findPoints(): ?array
     {
+        // TODO: вернуть все точки
     }
 
     public function getPointColor(): string
