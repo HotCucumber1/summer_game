@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Point;
+use config\Config;
 use Ds\Set;
 
 class PointRepository
@@ -20,17 +21,16 @@ class PointRepository
 
     public function addPoint(): void
     {
-        // TODO: получить рамеры окна
-        $x = rand(1, 1000);       // maxCanvasWidth - когда определим размер поля и форму
-        $y = rand(1, 1000);      // maxCanvasWidth - когда определим размер поля и форму
+        $x = rand(1, Config::$windowWidth);
+        $y = rand(1, Config::$windowHeight);
         $color = $this->getPointColor();
-        $point = new Point($x, $y, $color);
 
-        self::$points[] = $point;
+        self::$points[] = new Point($x, $y, $color);
     }
 
     public function findPoints(): ?array
     {
+        return self::$points;
         // TODO: вернуть все точки
     }
 
