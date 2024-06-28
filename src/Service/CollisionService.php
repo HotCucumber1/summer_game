@@ -14,6 +14,8 @@ class CollisionService
 
     public function isSnakeBump(Snake $snake): bool
     {
+        // TODO: столкновение змей (когда будет мультиплеер)
+        return false;
     }
 
     public function isWallBump(Snake $snake): bool
@@ -42,16 +44,6 @@ class CollisionService
         $pointX = $point->getCoordX();
         $pointY = $point->getCoordY();
 
-        // $points = $pointService->getPoints();   // получаем массив точек на поле
-
         return (($pointX - $headX) ** 2 + ($pointY - $headY) ** 2 <= $radius ** 2);
-
-        /*for($i = count($points); $i >= 0; $i--)   // возможно нужно перенести в GameInfo
-        {
-            if (!($points[$i]->getStatus()))
-            {
-                unset($points[$i]);
-            }
-        };*/
     }
 }
