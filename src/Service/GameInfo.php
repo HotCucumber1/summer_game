@@ -9,10 +9,12 @@ use App\Entity\Wall;
 class GameInfo
 {
     const START_POINTS_AMOUNT = 50;
+    private static int $x = 0;
+    private static int $y = 0;
 
-    public function __construct(private CollisionService $collisionService,
-                                private PointService $pointService,
-                                private SnakeService $snakeService)
+    public function __construct(private readonly CollisionService $collisionService,
+                                private readonly PointService $pointService,
+                                private readonly SnakeService $snakeService)
     {
     }
 
@@ -56,7 +58,7 @@ class GameInfo
         }
     }
 
-    public function mouseControl(Snake $snake, array $controlInfo)
+    public function mouseControl(Snake $snake, array $controlInfo): void
     {
         $mouseX = $controlInfo['mouseX'];
         $mouseY = $controlInfo['mouseY'];
@@ -71,13 +73,42 @@ class GameInfo
         // TODO: циклом проверять все точки
     }
 
-    public function getData(Snake $snake): array
+    public function checkSnake(Snake $snake): void
+    {
+    }
+
+    public function getData(Snake $snake): ?string
     {
         // TODO: получить и сформировать данные для отправки на фронт
+        self::$x += 5;
+        self::$y += 5;
+        $json = [
+            'snake' => [
+                'x' => self::$x,
+                'y' => self::$y,
+                'body' => [],
+                'radius' => 5,
+                'speed' =>  5,
+                'score' => 100
+            ],
+            'points' => [
+                [
+                    'x' => 15,
+                    'y' => 15,
+                    'color' => '#AAA'
+                ],
+                [
+                    'x' => 20,
+                    'y' => 40,
+                    'color' => '#AAA'
+                ]
+            ]
+        ];
+        return json_encode($json);
+
     }
 
     public function score(Snake $snake): void
     {
-
     }
 }
