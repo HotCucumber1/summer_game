@@ -107,8 +107,7 @@ class GameInfo
         $mouseX = $controlInfo['mouseX'];
         $mouseY = $controlInfo['mouseY'];
 
-        $snakeX = $snake->getHeadX();
-        $snakeY = $snake->getHeadY();
+        // $this->snakeService->move($mouseX, $mouseY, $snake);
         // TODO: спросить Ильсафа про управление
     }
 

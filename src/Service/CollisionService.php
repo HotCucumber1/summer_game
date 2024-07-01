@@ -32,7 +32,6 @@ class CollisionService
         $bumpY = abs($snakeY) + $snakeR * abs($sin);
 
         return ($bumpX ** 2 + $bumpY ** 2 >= Wall::$radius ** 2);
-
     }    
     
     public function isPointEaten(Snake $snake, Point $point): bool
