@@ -4,7 +4,7 @@ namespace App\Entity;
 
 class User
 {
-    public function __construct(private int     $userId,
+    public function __construct(private ?int    $userId,
                                 private string  $name, // unique
                                 private ?string $password,
                                 private int     $score)
