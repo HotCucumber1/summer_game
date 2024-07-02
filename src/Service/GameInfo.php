@@ -149,7 +149,7 @@ class GameInfo
         $speed = $this->snake->getSpeed();
         $score = $this->snake->getScore();
 
-        $json = [
+        return [
             'snake' => [
                 'x' => $x,
                 'y' => $y,
@@ -158,8 +158,8 @@ class GameInfo
                 'speed' =>  $speed, // или просто число?
                 'score' => $score
             ],
-            'points' => $pointsData
+            'points' => $pointsData,
+            'wall' => Wall::$radius,
         ];
-        return $json;
     }
 }

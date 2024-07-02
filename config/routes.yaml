@@ -1,3 +1,8 @@
-index:
-    path: /
+info:
+    path: /game/info
     controller: App\Controller\GameController::getGameInfo
+
+move:
+    path: /snake/move
+    methods: POST
+    controller: App\Controller\GameController::setSnakeDirection
