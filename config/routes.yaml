@@ -1,11 +1,3 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
-
-test:
-  path: /test
-  controller: App\Controller\GameController::index
-
-game:
-  path: screen
-  controller: App\Controller\GameController::getGameInfo
+index:
+    path: /
+    controller: App\Controller\GameController::getGameInfo

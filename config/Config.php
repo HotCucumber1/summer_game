@@ -13,8 +13,4 @@ class Config
     public static int $windowWidth = 1920;
     public static int $windowHeight = 1080;
     public static bool $withBots;
-
-    public function __construct()
-    {
-    }
 }
