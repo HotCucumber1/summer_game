@@ -1,0 +1,21 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Entity\User" table="user">
+        <id name="userId" type="integer" column="user_id">
+            <generator strategy="IDENTITY" />
+        </id>
+
+        <field name="name" column="name" type="string" length="255" nullable="false" unique="true"/>
+        <field name="password" column="password" type="string" length="255" nullable="false"/>
+        <field name="score" column="score" type="integer" nullable="true"/>
+
+        <indexes>
+            <index name="name_idx" columns="name"/>
+        </indexes>
+
+
+    </entity>
+</doctrine-mapping>

@@ -4,19 +4,19 @@ namespace App\Entity;
 
 class User
 {
-    public function __construct(private int $id,
-                                private string $name, // unique
+    public function __construct(private int     $userId,
+                                private string  $name, // unique
                                 private ?string $password,
-                                private int $score)
+                                private int     $score)
     {
     }
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getUserId(): int
     {
-        return $this->id;
+        return $this->userId;
     }
 
     /**
