@@ -9,7 +9,8 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class UserService
 {
-    public function __construct(private readonly UserRepositoryInterface $userRepository)
+    public function __construct(private readonly UserRepositoryInterface $userRepository,
+                                private PasswordHasher $hasher)
     {
     }
 
@@ -24,7 +25,7 @@ class UserService
         {
             throw new UnauthorizedHttpException('User with name "' . $name . '" has already been registered');
         }
-        $hashPassword = $this->hasher->hashPassword($password);
+        $hashPassword = $this->hasher->hash($password);
         $user = new User(
             null,
             $name,
