@@ -9,6 +9,20 @@ servers:
 
 
 paths:
+  /game/start:
+    post:
+      tags:
+        - game
+      summary: Set window settings
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settings'
+        '400':
+          description: Invalid operation
   /game/info:
     get:
       tags:
@@ -46,6 +60,14 @@ paths:
 
 components:
   schemas:
+    Settings:
+      type: object
+      properties:
+        width:
+          type: integer
+        height:
+          type: integer
+
     Game:
       type: object
       properties:

@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Point;
-use config\Config;
-use Ds\Set;
+use App\Entity\Wall;
+use Config\Config;
 
 class PointRepository
 {
@@ -17,8 +17,12 @@ class PointRepository
     public function addPoint(int $minX, int $minY,
                              int $maxX, int $maxY): void
     {
-        $x = rand($minX, $maxX);
-        $y = rand($minY, $maxY);
+        do
+        {
+            $x = rand($minX, $maxX);
+            $y = rand($minY, $maxY);
+        }
+        while ($x ** 2 + $y ** 2 >= Wall::$radius ** 2);
         $color = $this->getPointColor();
 
         self::$points[] = new Point($x, $y, $color);

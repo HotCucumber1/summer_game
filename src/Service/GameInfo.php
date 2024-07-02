@@ -9,7 +9,7 @@ use Config\Config;
 
 class GameInfo
 {
-    const START_POINTS_AMOUNT = 50;
+    const START_POINTS_AMOUNT = 100;
     private Snake $snake;
 
     public function __construct(private readonly CollisionService $collisionService,
@@ -19,7 +19,7 @@ class GameInfo
         $this->snake = $this->snakeService->createSnake();
         for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
         {
-            $this->pointService->addPoint(1, 1, Config::$windowWidth, Config::$windowHeight);
+            $this->pointService->addPoint(-Wall::$radius, -Wall::$radius, Wall::$radius, Wall::$radius);
         }
     }
 
@@ -115,6 +115,9 @@ class GameInfo
 
     public function getData(): ?array
     {
+        // Уменьшить радиус змеи
+        $this->compressWall();
+
         // Информация по змее
         $x = $this->snake->getHeadX();
         $y = $this->snake->getHeadY();
@@ -159,7 +162,7 @@ class GameInfo
                 'score' => $score
             ],
             'points' => $pointsData,
-            'wall' => Wall::$radius,
+            'wall' => Wall::$radius
         ];
     }
 }
