@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Repository;
+use App\Entity\User;
+
+interface UserRepositoryInterface
+{
+    public function findUserByName(string $name): User;
+    public function store(User $user): int;
+}
