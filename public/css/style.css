@@ -1,32 +1,32 @@
-body
-{
+body {
     margin: 0;
+    overflow: auto;
 }
 
 
-#game{
+#game {
     position: relative;
-    margin:0 auto;
+    margin: 0 auto;
 }
 
-.cnv{
+.cnv {
     position: absolute;
     top: 0px;
     left: 0px;
     border-style: solid;
 }
 
-#canvasFood{
+#canvasFood {
     background-color: transparent;
     z-index: 2;
 }
 
-#canvasHex{
+#canvasHex {
     background-color: black;
     z-index: 1;
 }
 
-#canvasSnake{
+#canvasSnake {
     background-color: transparent;
     z-index: 3;
 }

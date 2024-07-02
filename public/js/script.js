@@ -1,54 +1,74 @@
-var canvas = document.getElementById("canvasSnake");
-var ctxSnake = document.getElementById("canvasSnake").getContext("2d");
-var ctxHex = document.getElementById("canvasHex").getContext("2d");
-var ut = new Util();
-var cursor = new Point(0, 0);
-var game = new Game(ctxSnake, ctxHex);
+let canvas = document.getElementById("canvasSnake");
+let ctxSnake = document.getElementById("canvasSnake").getContext("2d");
+let ctxFood = document.getElementById("canvasFood").getContext("2d");
+let ctxHex = document.getElementById("canvasHex").getContext("2d");
+let ut = new Util();
+let cursor = new Point(0, 0);
+let game = new Game(ctxSnake, ctxFood, ctxHex);
 
-canvas.onmousemove = function(e){
+let d = -Math.PI / 2;
+canvas.onmousemove = function (e) {
     cursor = ut.getMousePos(canvas, e);
-    let ang = ut.getAngle(game.snakes[0].arr[0], cursor);
-    game.snakes[0].changeAngle(ang);
+    let a = ut.getAngle(game.snakes[0].arr[0], cursor);
+    let delta = a - d;
+
+    if (delta > Math.PI) {
+        delta -= 2 * Math.PI;
+    }
+    if (delta < -Math.PI) {
+        delta += 2 * Math.PI;
+    }
+
+    if (delta > 0) {
+        d += Math.PI / 32;
+    } else if (delta < 0) {
+        d -= Math.PI / 32;
+    }
+
+    game.snakes[0].changeAngle(d);
 }
 
-canvas.onmousedown = function(e){
+canvas.onmousedown = function () {
     game.snakes[0].boost = true;
 }
 
-canvas.onmouseup = function(e){
+canvas.onmouseup = function () {
     game.snakes[0].boost = false;
     game.snakes[0].intervalId = null;
 }
 
-window.addEventListener('keydown', function(event) {
+window.addEventListener('keydown', function (event) {
     if (event.key === ' ') {
         game.snakes[0].boost = true;
     }
 });
 
-window.addEventListener('keyup', function(event) {
+window.addEventListener('keyup', function (event) {
     if (event.key === ' ') {
         game.snakes[0].boost = false;
     }
 });
 
-function start(){
+function start() {
     game.init();
     update();
 }
 
 
-var updateId,
+let updateId,
     previousDelta = 0,
-    fpsLimit = 20;
-function update(currentDelta){
+    fpsLimit = 38;
+
+
+function update(currentDelta) {
     updateId = requestAnimationFrame(update);
-    var delta = currentDelta - previousDelta;
+    let delta = currentDelta - previousDelta;
     if (fpsLimit && delta < 1000 / fpsLimit) return;
     previousDelta = currentDelta;
 
     //clear all
     ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
+    ctxFood.clearRect(0, 0, canvas.width, canvas.height);
     ctxHex.clearRect(0, 0, canvas.width, canvas.height);
 
     //draw all
