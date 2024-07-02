@@ -39,51 +39,19 @@ class Util {
             new Point(x2, y2)) < (r1 + r2));
     }
 
-    drawHexagon(ctx, size, x, y) {
-
-        let angle = 60;
-
-        ctx.beginPath();
-        ctx.moveTo(x + size * Math.cos(0), y + size * Math.sin(0));
-        for (let i = 0; i < 7; i++) {
-            let p = x + size * Math.cos(i * 2 * Math.PI / 6);
-            let q = y + size * Math.sin(i * 2 * Math.PI / 6);
-            let point = new Point(p, q);
-            point = this.rotate(point, new Point(x, y), angle);
-            ctx.lineTo(point.x, point.y);
-        }
-        ctx.fillStyle = "black";
-        ctx.fill();
-
-        // size -= 1;
-        ctx.beginPath();
-        ctx.moveTo(x + size * Math.cos(0), y + size * Math.sin(0));
-        for (let i = 0; i < 7; i++) {
-            let p = x + size * Math.cos(i * 2 * Math.PI / 6);
-            let q = y + size * Math.sin(i * 2 * Math.PI / 6);
-            let point = new Point(p, q);
-            point = this.rotate(point, new Point(x, y), angle);
-            ctx.lineTo(point.x, point.y);
-        }
-        ctx.fillStyle = "#2C3E50";
-        ctx.fill();
-    }
-
     rotate(p, c, angle) {
         let si = Math.sin(angle);
         let co = Math.cos(angle);
 
-        // translate point back to origin:
         p.x -= c.x;
         p.y -= c.y;
 
-        // rotate point
         let xnew = p.x * co - p.y * si;
         let ynew = p.x * si + p.y * co;
 
-        // translate point back:
         p.x = xnew + c.x;
         p.y = ynew + c.y;
+
         return p;
     }
 

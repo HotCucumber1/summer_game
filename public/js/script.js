@@ -7,8 +7,12 @@ let cursor = new Point(0, 0);
 let game = new Game(ctxSnake, ctxFood, ctxHex);
 
 let d = -Math.PI / 2;
-canvas.onmousemove = function (e) {
+
+canvas.onmousemove = function(e){
     cursor = ut.getMousePos(canvas, e);
+}
+
+function movement () {
     let a = ut.getAngle(game.snakes[0].arr[0], cursor);
     let delta = a - d;
 
@@ -28,28 +32,28 @@ canvas.onmousemove = function (e) {
     game.snakes[0].changeAngle(d);
 }
 
-canvas.onmousedown = function () {
+canvas.onmousedown = function(){
     game.snakes[0].boost = true;
 }
 
-canvas.onmouseup = function () {
+canvas.onmouseup = function(){
     game.snakes[0].boost = false;
     game.snakes[0].intervalId = null;
 }
 
-window.addEventListener('keydown', function (event) {
+window.addEventListener('keydown', function(event) {
     if (event.key === ' ') {
         game.snakes[0].boost = true;
     }
 });
 
-window.addEventListener('keyup', function (event) {
+window.addEventListener('keyup', function(event) {
     if (event.key === ' ') {
         game.snakes[0].boost = false;
     }
 });
 
-function start() {
+function start(){
     game.init();
     update();
 }
@@ -60,8 +64,9 @@ let updateId,
     fpsLimit = 38;
 
 
-function update(currentDelta) {
+function update(currentDelta){
     updateId = requestAnimationFrame(update);
+    movement();
     let delta = currentDelta - previousDelta;
     if (fpsLimit && delta < 1000 / fpsLimit) return;
     previousDelta = currentDelta;

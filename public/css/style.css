@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    overflow: auto;
+    overflow: hidden;
 }
 
 
@@ -11,8 +11,6 @@ body {
 
 .cnv {
     position: absolute;
-    top: 0px;
-    left: 0px;
     border-style: solid;
 }
 

@@ -14,22 +14,19 @@ class Game {
 
     init() {
         this.snakes[0] = new Snake(this.ctxSnake, 0);
-        this.generateFoods(100);
+        this.generateFoods(800);
     }
 
     draw() {
-
-        //draw world
         this.drawWorld();
 
-        // move yourself
         if (this.snakes[0].state === 0)
             this.snakes[0].move();
 
         for (let i = 0; i < this.foods.length; i++) this.foods[i].draw(this.snakes[0]);
 
-        //draw Score
         this.drawScore();
+        this.drawLength();
     }
 
     drawWorld() {
@@ -37,10 +34,14 @@ class Game {
         this.ctxHex.fillStyle = "white";
         this.ctxHex.fillRect(this.world.x - 2, this.world.y - 2, this.WORLD_SIZE.x + 4, this.WORLD_SIZE.y + 4);
 
-        // this.ctxHex.fillStyle = "#17202A";
-        // this.ctxHex.fillRect(this.world.x, this.world.y, this.WORLD_SIZE.x, this.WORLD_SIZE.y);
-
         this.ctxHex.drawImage(this.backgroundImage, this.world.x, this.world.y, this.WORLD_SIZE.x, this.WORLD_SIZE.y);
+
+        // this.ctxHex.strokeStyle = 'white';
+        // this.ctxHex.globalAlpha = 0.5
+        // this.ctxHex.beginPath();
+        // this.ctxHex.arc(this.world.x, this.world.y, this.WORLD_SIZE.x ,0, 2*Math.PI);
+        // this.ctxHex.fill();
+        // this.ctxHex.stroke();
 
         this.world.x -= this.snakes[0].velocity.x;
         this.world.y -= this.snakes[0].velocity.y;
@@ -50,8 +51,18 @@ class Game {
         let start = new Point(20, 20);
         for (let i = 0; i < this.snakes.length; i++) {
             this.ctxSnake.fillStyle = this.snakes[i].mainColor;
-            this.ctxSnake.font = "bold 10px Arial";
-            this.ctxSnake.fillText(this.snakes[i].name + ":" + this.snakes[i].score,
+            this.ctxSnake.font = "bold 12px Arial";
+            this.ctxSnake.fillText("score: " + this.snakes[i].score,
+                start.x - 5, start.y + i * 15);
+        }
+    }
+
+    drawLength() {
+        let start = new Point(20, 40);
+        for (let i = 0; i < this.snakes.length; i++) {
+            this.ctxSnake.fillStyle = this.snakes[i].mainColor;
+            this.ctxSnake.font = "bold 12px Arial";
+            this.ctxSnake.fillText("Your length: " + this.snakes[i].length,
                 start.x - 5, start.y + i * 15);
         }
     }

@@ -9,15 +9,14 @@ class Snake {
 
 
         this.pos = new Point(game.SCREEN_SIZE.x / 2, game.SCREEN_SIZE.y / 2);
-        this.velocity = new Point(0, 0); //arbitary point
+        this.velocity = new Point(0, 0);
         this.angle = ut.random(0, Math.PI);
 
         this.length = 20;
-        this.MAXSIZE = 22;
+        this.MAXSIZE = 40;
         this.size = 15;
         this.radius = 10;
 
-        // color
         this.mainColor = ut.randomColor();
         this.midColor = ut.color(this.mainColor, 0.33);
         this.supportColor = ut.color(this.midColor, 0.33);
@@ -98,8 +97,12 @@ class Snake {
 
     }
 
-    move() {
+    boostMove() {
         if (this.boost && this.length > 10) {
+            this.ctx.shadowBlur = 20; // радиус размытия тени
+            this.ctx.shadowColor = this.supportColor; // цвет свечения
+            this.ctx.shadowOffsetX = 0; // смещение тени по X
+            this.ctx.shadowOffsetY = 0;
             this.speed = 16;
             if (this.intervalId === null) {
                 this.intervalId = setInterval(() => {
@@ -111,12 +114,19 @@ class Snake {
                 this.length--
             }
         } else
+        {
+            this.ctx.shadowBlur = 0;
+            this.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
             this.speed = 9;
+        }
+    }
+
+    move() {
+        this.boostMove();
 
         this.velocity.x = this.speed * Math.cos(this.angle);
         this.velocity.y = this.speed * Math.sin(this.angle);
 
-        //magic
         let d = this.size / 2;
 
         for (let i = this.length - 1; i >= 1; i--) {
@@ -129,36 +139,32 @@ class Snake {
         this.pos.y += this.velocity.y;
 
         this.drawHead();
-
         this.checkCollissionFood();
     }
 
     addScore() {
-        this.length++;
         this.score++;
         this.arr.push(new Point(-100, -100));
     }
 
+    // addLength(i) {
+    //     let foodSize = game.foods[i].size;
+    //     this.length += (foodSize - 4);
+    // }
+
     incSize() {
-        if (this.length % 20 == 0) this.size++;
+        this.length++;
+        if (this.length % 10 === 0) this.size++;
         if (this.size > this.MAXSIZE) this.size = this.MAXSIZE;
     }
 
     checkCollissionFood() {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
-
-        // for (let i = 0; i < game.foods.length; i++)
-        // {
-        //     console.log( game.foods[i].array[1])
-        // }
-
-
         for (let i = 0; i < game.foods.length; i++) {
-            if (ut.cirCollission(x, y, this.size + 3, game.foods[i].array.x,
-                game.foods[i].array.y, game.foods[i].size)) {
-                console.log("collission");
-                game.foods[i].die(i);
+            if (ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x,
+                game.foods[i].pos.y, game.foods[i].size)) {
+                game.foods[i].die();
                 this.addScore();
                 this.incSize();
             }
