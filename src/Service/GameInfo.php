@@ -9,7 +9,7 @@ use Config\Config;
 
 class GameInfo
 {
-    const START_POINTS_AMOUNT = 100;
+    const START_POINTS_AMOUNT = 5;
     private Snake $snake;
 
     public function __construct(private readonly CollisionService $collisionService,
@@ -72,7 +72,7 @@ class GameInfo
         }
     }
 
-    public function buttonControl(array $controlInfo): void
+    public function setSnakeDirection(array $controlInfo): void
     {
         if ($controlInfo['up'])
         {

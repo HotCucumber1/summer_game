@@ -38,13 +38,15 @@ class GameController extends AbstractController
         return $this->redirectToRoute('test');
     }
 
-
     public function setSnakeDirection(Request $request): Response
     {
         $jsonData = $request->getContent();
-        $data = json_decode($jsonData);
-        var_dump($data);
-
+        $data = json_decode($jsonData, true);
+        if (!isset($data['up']) || !isset($data['down']) || !isset($data['left']) || !isset($data['right']))
+        {
+            throw new BadRequestException('Not enough information abou direction');
+        }
+        $this->gameInfo->setSnakeDirection($data);
         return new Response('OK', 200);
     }
 

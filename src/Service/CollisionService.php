@@ -24,7 +24,7 @@ class CollisionService
         $snakeY = $snake->getHeadY();
         $snakeR = $snake->getRadius();
 
-        $dist = sqrt(($snakeX - Wall::centreX) ** 2 + ($snakeY - Wall::centreY) * ($snakeY - Wall::centreY));
+        $dist = sqrt(($snakeX - Wall::centreX) ** 2 + ($snakeY - Wall::centreY) ** 2);
         $sin = $snakeY / $dist;
         $cos = $snakeX / $dist;
 
