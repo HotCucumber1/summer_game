@@ -59,17 +59,12 @@ function start(){
 }
 
 
-let updateId,
-    previousDelta = 0,
-    fpsLimit = 38;
+let updateId
 
 
 function update(currentDelta){
     updateId = requestAnimationFrame(update);
     movement();
-    let delta = currentDelta - previousDelta;
-    if (fpsLimit && delta < 1000 / fpsLimit) return;
-    previousDelta = currentDelta;
 
     //clear all
     ctxSnake.clearRect(0, 0, canvas.width, canvas.height);

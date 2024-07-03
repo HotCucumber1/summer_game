@@ -3,7 +3,7 @@ class Snake {
         this.ctx = ctx;
         this.id = id;
         this.score = 0;
-        this.speed = 9;
+        this.speed = 4;
         this.boost = false;
         this.state = 0;
 
@@ -103,7 +103,7 @@ class Snake {
             this.ctx.shadowColor = this.supportColor; // цвет свечения
             this.ctx.shadowOffsetX = 0; // смещение тени по X
             this.ctx.shadowOffsetY = 0;
-            this.speed = 16;
+            this.speed = 8;
             if (this.intervalId === null) {
                 this.intervalId = setInterval(() => {
                     this.counter++;
@@ -117,7 +117,7 @@ class Snake {
         {
             this.ctx.shadowBlur = 0;
             this.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
-            this.speed = 9;
+            this.speed = 4;
         }
     }
 

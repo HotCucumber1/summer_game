@@ -3,9 +3,10 @@ class Game {
         this.ctxSnake = ctxSnake;
         this.ctxFood = ctxFood;
         this.ctxHex = ctxHex;
-        this.WORLD_SIZE = new Point(4000, 2000);
+        this.WORLD_SIZE = new Point(8000, 4000);
+        this.ARENA_SIZE = 2000
         this.SCREEN_SIZE = new Point(window.innerWidth, window.innerHeight);
-        this.world = new Point(-1200, -600);
+        this.world = new Point(-4000, -2000);
         this.snakes = [];
         this.backgroundImage = new Image();
         this.backgroundImage.src = '../public/images/background.png';
@@ -31,17 +32,18 @@ class Game {
 
     drawWorld() {
 
-        this.ctxHex.fillStyle = "white";
-        this.ctxHex.fillRect(this.world.x - 2, this.world.y - 2, this.WORLD_SIZE.x + 4, this.WORLD_SIZE.y + 4);
-
+        // this.ctxHex.fillStyle = "white";
+        // this.ctxHex.fillRect(this.world.x - 2, this.world.y - 2, this.WORLD_SIZE.x + 4, this.WORLD_SIZE.y + 4);
         this.ctxHex.drawImage(this.backgroundImage, this.world.x, this.world.y, this.WORLD_SIZE.x, this.WORLD_SIZE.y);
 
-        // this.ctxHex.strokeStyle = 'white';
-        // this.ctxHex.globalAlpha = 0.5
-        // this.ctxHex.beginPath();
-        // this.ctxHex.arc(this.world.x, this.world.y, this.WORLD_SIZE.x ,0, 2*Math.PI);
-        // this.ctxHex.fill();
-        // this.ctxHex.stroke();
+        this.ctxHex.strokeStyle = 'white';
+        this.ctxHex.lineWidth = 5
+        this.ctxHex.globalAlpha = 0.5
+
+        this.ctxHex.beginPath();
+        this.ctxHex.arc( this.world.x + this.WORLD_SIZE.x / 2, this.world.y + this.WORLD_SIZE.y / 2, this.ARENA_SIZE,0, 2*Math.PI);
+        this.ctxHex.fill();
+        this.ctxHex.stroke();
 
         this.world.x -= this.snakes[0].velocity.x;
         this.world.y -= this.snakes[0].velocity.y;
@@ -69,8 +71,8 @@ class Game {
 
     generateFoods(n) {
         for (let i = 0; i < n; i++) {
-            this.foods.push(new Food(this.ctxFood, ut.random(-1200 + 50, 2800 - 50),
-                ut.random(-600 + 50, 1400 - 50)));
+            this.foods.push(new Food(this.ctxFood, ut.random(this.world.x + this.WORLD_SIZE.x / 2 - this.ARENA_SIZE / 1.4, this.world.x + this.WORLD_SIZE.x / 2 + this.ARENA_SIZE / 1.4),
+                ut.random(this.world.y + this.WORLD_SIZE.y / 2 + this.ARENA_SIZE / 1.4, this.world.y + this.WORLD_SIZE.y / 2 - this.ARENA_SIZE / 1.4)));
         }
     }
 }
