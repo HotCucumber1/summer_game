@@ -60,18 +60,22 @@ function start(){
 
 
 let updateId
+let previousDelta = 0
+let fpsLimit = 120;
 
 
 function update(currentDelta){
     updateId = requestAnimationFrame(update);
     movement();
 
-    //clear all
+    let delta = currentDelta - previousDelta;
+    if (fpsLimit && delta < 1000 / fpsLimit) return;
+    previousDelta = currentDelta;
+
     ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
     ctxFood.clearRect(0, 0, canvas.width, canvas.height);
     ctxHex.clearRect(0, 0, canvas.width, canvas.height);
 
-    //draw all
     game.draw();
 }
 

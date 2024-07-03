@@ -8,14 +8,13 @@ class Snake {
         this.state = 0;
 
 
-        this.pos = new Point(game.SCREEN_SIZE.x / 2, game.SCREEN_SIZE.y / 2);
+        this.pos = new Point(game.world.x + game.WORLD_SIZE.x, game.world.y + game.WORLD_SIZE.y);
         this.velocity = new Point(0, 0);
         this.angle = ut.random(0, Math.PI);
 
         this.length = 20;
         this.MAXSIZE = 40;
         this.size = 15;
-        this.radius = 10;
 
         this.mainColor = ut.randomColor();
         this.midColor = ut.color(this.mainColor, 0.33);
@@ -109,12 +108,11 @@ class Snake {
                     this.counter++;
                 }, 1000);
             }
-            if (this.counter >= 2) {
+            if (this.counter >= 3) {
                 this.counter = 0;
                 this.length--
             }
-        } else
-        {
+        } else {
             this.ctx.shadowBlur = 0;
             this.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
             this.speed = 4;
@@ -140,6 +138,7 @@ class Snake {
 
         this.drawHead();
         this.checkCollissionFood();
+        this.checkCollissionBorder();
     }
 
     addScore() {
@@ -147,9 +146,8 @@ class Snake {
         this.arr.push(new Point(-100, -100));
     }
 
-    // addLength(i) {
-    //     let foodSize = game.foods[i].size;
-    //     this.length += (foodSize - 4);
+    // addLength(size) {
+    //     this.length += (size - 4);
     // }
 
     incSize() {
@@ -166,12 +164,34 @@ class Snake {
                 game.foods[i].pos.y, game.foods[i].size)) {
                 game.foods[i].die();
                 this.addScore();
+                // this.addLength(game.foods[i].size);
                 this.incSize();
             }
         }
     }
 
+    checkCollissionBorder() {
+        let center = new Point(game.world.x + game.WORLD_SIZE.x / 2, game.world.y + game.WORLD_SIZE.y / 2);
+
+        if (ut.getDistance(this.arr[0], center) + this.size > game.ARENA_RADIUS)
+            this.die();
+    }
+
     changeAngle(angle) {
         this.angle = angle;
     }
+
+    die() {
+        this.state = 1;
+        for (let i = 0; i < this.arr.length; i += 3)
+        {
+            game.foods.push(new Food(game.ctxFood,
+                this.arr[i].x, this.arr[i].y));
+            this.arr.splice(i, 1);
+        }
+
+        game.ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
+        cancelAnimationFrame(updateId);
+    }
+
 }

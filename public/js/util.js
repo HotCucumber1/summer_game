@@ -12,6 +12,16 @@ class Util {
         return new Point(x, y);
     }
 
+    arcRandom(min, max, radius) {
+        let x, y;
+        while (true) {
+            x = Math.floor(Math.random() * (max - min + 1)) + min;
+            y = Math.floor(Math.random() * (max - min + 1)) + min;
+            if (x ** 2 + y ** 2 < radius ** 2)
+                return {x, y};
+        }
+    }
+
     random(min, max) {
 
         return Math.floor(Math.random() * (max - min + 1)) + min;

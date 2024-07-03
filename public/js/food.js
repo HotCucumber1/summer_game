@@ -10,7 +10,6 @@ class Food {
         this.foodImage = new Image();
         this.foodImage.src = "../public/images/point1.png";
 
-        this.array = [];
         this.mainColor = ut.randomColor();
     }
 
