@@ -12,9 +12,9 @@ class GameInfo
     const START_POINTS_AMOUNT = 5;
     private Snake $snake;
 
-    public function __construct(private readonly CollisionService $collisionService,
-                                private readonly PointService $pointService,
-                                private readonly SnakeService $snakeService)
+    public function __construct(private readonly CollisionServiceInterface $collisionService,
+                                private readonly PointService              $pointService,
+                                private readonly SnakeService              $snakeService)
     {
         $this->snake = $this->snakeService->createSnake();
         for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
@@ -23,56 +23,16 @@ class GameInfo
         }
     }
 
-    public function checkBumps(): void
+    public function mouseMovement(Snake $snake, array $controlInfo): void
     {
-        if ($this->collisionService->isWallBump($this->snake) ||
-            $this->collisionService->isSnakeBump($this->snake))
-        {
-            $this->snake->setAliveStatus(false);
-        }
+        $mouseX = $controlInfo['mouseX'];
+        $mouseY = $controlInfo['mouseY'];
+
+        $this->snakeService->move($mouseX, $mouseY, $snake);
+        // TODO: спросить Ильсафа про управление
     }
 
-    public function checkPoints(): void
-    {
-        $points = $this->pointService->allPoints();
-        foreach ($points as $point)
-        {
-            if ($this->collisionService->isPointEaten($this->snake, $point))
-            {
-                $point->setStatus(false);
-                $this->snake->increaseScore(Point::PRICE);
-                $this->snakeService->grow($this->snake);
-            }
-        }
-    }
-
-    public function snakeInfo(): void
-    {
-        if (!$this->snake->getAliveStatus())
-        {
-            // TODO: этот счет записать юзеру
-
-            $score = $this->snake->getScore();
-            $body = $this->snake->getBodyParts();
-            $pointsPerPart = intdiv($score, count($body));
-
-            foreach ($body as $bodyPart)
-            {
-                $x1 = $bodyPart->getX() - $bodyPart->getRadius();
-                $y1 = $bodyPart->getY() - $bodyPart->getRadius();
-
-                $x2 = $bodyPart->getX() + $bodyPart->getRadius();
-                $y2 = $bodyPart->getY() + $bodyPart->getRadius();
-
-                for ($j = 0; $j < $pointsPerPart; $j++)
-                {
-                    $this->pointService->addPoint($x1, $y1, $x2, $y2);
-                }
-            }
-        }
-    }
-
-    public function setSnakeDirection(array $controlInfo): void
+    public function keyMovement(array $controlInfo): void
     {
         if ($controlInfo['up'])
         {
@@ -96,27 +56,23 @@ class GameInfo
         }
     }
 
-    public function mouseControl(Snake $snake, array $controlInfo): void
-    {
-        $mouseX = $controlInfo['mouseX'];
-        $mouseY = $controlInfo['mouseY'];
-
-        // $this->snakeService->move($mouseX, $mouseY, $snake);
-        // TODO: спросить Ильсафа про управление
-    }
-
-    public function compressWall(): void
-    {
-        if (Wall::$radius > 100)
-        {
-            Wall::$radius -= 1;
-        }
-    }
-
     public function getData(): ?array
     {
-        // Уменьшить радиус змеи
+        // обновить положение змеи на экране
+        // $this->mouseMovement();
+        // $this->keyMovement();
+
+        // Уменьшить радиус зоны
         $this->compressWall();
+
+        // проверить столкновение
+        // $this->checkBumps();
+
+        // проверить точки
+        $this->updatePoints();
+
+        // проверить, жива ли змея
+        $this->checkSnakeDeath();
 
         // Информация по змее
         $x = $this->snake->getHeadX();
@@ -164,5 +120,62 @@ class GameInfo
             'points' => $pointsData,
             'wall' => Wall::$radius
         ];
+    }
+
+    private function checkBumps(): void
+    {
+        if ($this->collisionService->isWallBump($this->snake) ||
+            $this->collisionService->isSnakeBump($this->snake))
+        {
+            $this->snake->setAliveStatus(false);
+        }
+    }
+
+    private function updatePoints(): void
+    {
+        $points = $this->pointService->allPoints();
+        foreach ($points as $point)
+        {
+            if ($this->collisionService->isPointEaten($this->snake, $point))
+            {
+                $point->setStatus(false);
+                $this->snake->increaseScore(Point::PRICE);
+                $this->snakeService->grow($this->snake);
+            }
+        }
+    }
+
+    private function checkSnakeDeath(): void
+    {
+        if (!$this->snake->getAliveStatus())
+        {
+            // TODO: этот счет записать юзеру
+
+            $score = $this->snake->getScore();
+            $body = $this->snake->getBodyParts();
+            $pointsPerPart = intdiv($score, count($body));
+
+            foreach ($body as $bodyPart)
+            {
+                $x1 = $bodyPart->getX() - $bodyPart->getRadius();
+                $y1 = $bodyPart->getY() - $bodyPart->getRadius();
+
+                $x2 = $bodyPart->getX() + $bodyPart->getRadius();
+                $y2 = $bodyPart->getY() + $bodyPart->getRadius();
+
+                for ($j = 0; $j < $pointsPerPart; $j++)
+                {
+                    $this->pointService->addPoint($x1, $y1, $x2, $y2);
+                }
+            }
+        }
+    }
+
+    private function compressWall(): void
+    {
+        if (Wall::$radius > 100)
+        {
+            Wall::$radius -= 1;
+        }
     }
 }

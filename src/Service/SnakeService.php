@@ -12,7 +12,7 @@ class SnakeService
     const START_Y = 0;
     const START_RADIUS = 15;
     const START_X_DIR = 0;
-    const START_Y_DIR = -5;
+    const START_Y_DIR = 5;
     const START_SCORE = 0;
     const START_LENGTH = 10;
 

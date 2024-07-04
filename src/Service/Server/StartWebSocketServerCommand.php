@@ -6,7 +6,6 @@ use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
 use React\EventLoop\Loop;
-use React\Socket\Server;
 use React\Socket\SocketServer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,6 +31,7 @@ class StartWebSocketServerCommand extends Command
         $loop = Loop::get();
         $ws = new WsServer($this->webSocketServer);
         $http = new HttpServer($ws);
+        // $socket = new SocketServer('10.10.29.61:8080', [], $loop);
         $socket = new SocketServer('10.250.104.40:8080', [], $loop);
         $server = new IoServer($http, $socket, $loop);
 

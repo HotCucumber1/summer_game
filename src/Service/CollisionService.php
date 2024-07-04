@@ -6,7 +6,7 @@ use App\Entity\Snake;
 use App\Entity\Point;
 use App\Entity\Wall;
 
-class CollisionService
+class CollisionService implements CollisionServiceInterface
 {
     public function __construct()
     {

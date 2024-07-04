@@ -42,11 +42,15 @@ class GameController extends AbstractController
     {
         $jsonData = $request->getContent();
         $data = json_decode($jsonData, true);
-        if (!isset($data['up']) || !isset($data['down']) || !isset($data['left']) || !isset($data['right']))
+        if (!isset($data['up']) ||
+            !isset($data['down']) ||
+            !isset($data['left']) ||
+            !isset($data['right']) ||
+            !isset($dta['boost']))
         {
-            throw new BadRequestException('Not enough information abou direction');
+            throw new BadRequestException('Not enough information about direction');
         }
-        $this->gameInfo->setSnakeDirection($data);
+        $this->gameInfo->keyMovement($data);
         return new Response('OK', 200);
     }
 
