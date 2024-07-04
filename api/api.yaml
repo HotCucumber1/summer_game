@@ -87,15 +87,6 @@ components:
             radius:
               type: integer
               format: int
-            speed:
-              type: object
-              properties:
-                x:
-                  type: integer
-                  format: int
-                y:
-                  type: integer
-                  format: int
             score:
               type: integer
               format: int

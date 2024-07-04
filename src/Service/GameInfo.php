@@ -80,7 +80,7 @@ class GameInfo
                 $direction->setAngle($angle + M_PI / 32);
             }
         }
-        if ($controlInfo['Shift'])
+        if ($controlInfo['boost'])
         {
             // TODO: boost
         }
@@ -91,8 +91,6 @@ class GameInfo
     public function getData(): ?array
     {
         // обновить положение змеи на экране
-        // $this->mouseMovement();
-        // $this->keyMovement();
 
         // Уменьшить радиус зоны
         $this->compressWall();
@@ -146,7 +144,6 @@ class GameInfo
                 'y' => $y,
                 'body' => $bodyData,
                 'radius' => $radius,
-                'speed' =>  $speed, // или просто число?
                 'score' => $score
             ],
             'points' => $pointsData,

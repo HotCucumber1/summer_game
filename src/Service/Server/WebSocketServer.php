@@ -29,8 +29,15 @@ class WebSocketServer implements MessageComponentInterface
         echo "New connection {$conn->resourceId}\n";
     }
 
-    public function onMessage(ConnectionInterface $from, $msg): void
+    public function onMessage(ConnectionInterface $from,  $msg): void
     {
+        // $data = json_decode($msg, true);
+
+        $request = Request::create('/snake/move', 'POST', [
+            'data' => $msg
+        ]);
+        $response = $this->kernel->handle($request);
+
         foreach ($this->clients as $client)
         {
             $client->send($msg);

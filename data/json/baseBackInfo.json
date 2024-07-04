@@ -7,10 +7,6 @@
 
       ],
       "radius": 10,
-      "speed": {
-        "x_direction": 5,
-        "y_direction": 5
-      },
       "score": 100
     },
     {},
