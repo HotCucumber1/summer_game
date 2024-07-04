@@ -28,32 +28,64 @@ class GameInfo
         $mouseX = $controlInfo['mouseX'];
         $mouseY = $controlInfo['mouseY'];
 
-        $this->snakeService->move($mouseX, $mouseY, $snake);
+        // $this->snakeService->move($mouseX, $mouseY, $snake);
         // TODO: спросить Ильсафа про управление
     }
 
     public function keyMovement(array $controlInfo): void
     {
+        $direction = $this->snake->getDirection();
+        $angle = $direction->getAngle();
         if ($controlInfo['up'])
         {
-            // TODO: go up
+            if (- M_PI / 2 < $angle && $angle < M_PI / 2)
+            {
+                $direction->setAngle($angle - M_PI / 32);
+            }
+            else
+            {
+                $direction->setAngle($angle + M_PI / 32);
+            }
         }
         if ($controlInfo['down'])
         {
-            // TODO: go down
+            if (- M_PI / 2 < $angle && $angle < M_PI / 2)
+            {
+                $direction->setAngle($angle + M_PI / 32);
+            }
+            else
+            {
+                $direction->setAngle($angle - M_PI / 32);
+            }
         }
         if ($controlInfo['left'])
         {
-            // TODO: go left
+            if ($angle > 0)
+            {
+                $direction->setAngle($angle + M_PI / 32);
+            }
+            else
+            {
+                $direction->setAngle($angle - M_PI / 32);
+            }
         }
         if ($controlInfo['right'])
         {
-            // TODO: go right
+            if ($angle > 0)
+            {
+                $direction->setAngle($angle - M_PI / 32);
+            }
+            else
+            {
+                $direction->setAngle($angle + M_PI / 32);
+            }
         }
         if ($controlInfo['Shift'])
         {
             // TODO: boost
         }
+        $this->snake->setDirection($direction);
+        $this->snakeService->move($this->snake);
     }
 
     public function getData(): ?array
@@ -105,7 +137,7 @@ class GameInfo
         }
 
         $radius = $this->snake->getRadius();
-        $speed = $this->snake->getSpeed();
+        $speed = $this->snake->getDirection();
         $score = $this->snake->getScore();
 
         return [

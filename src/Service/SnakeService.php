@@ -11,10 +11,10 @@ class SnakeService
     const START_X = 0;
     const START_Y = 0;
     const START_RADIUS = 15;
-    const START_X_DIR = 0;
-    const START_Y_DIR = 5;
     const START_SCORE = 0;
     const START_LENGTH = 10;
+    const START_SPEED = 4;
+    const START_ANGLE = - M_PI / 2;
 
     public function __construct()
     {
@@ -22,8 +22,8 @@ class SnakeService
 
     public function createSnake(): Snake
     {
-        $startSpeed = new Direction(self::START_X_DIR,
-                                    self::START_Y_DIR);
+        $startDirection = new Direction(self::START_SPEED ,
+                                        self::START_ANGLE);
         $color = Config::COLORS[array_rand(Config::COLORS)];
 
         $startBody = $this->createBody($color);
@@ -32,15 +32,22 @@ class SnakeService
                          self::START_Y,
                          $startBody,
                          self::START_RADIUS,
-                         $startSpeed,
+                         $startDirection,
+                         self::START_SPEED,
                          self::START_SCORE,
                          $color);
     }
 
-    public function move(int $x, int $y, Snake $snake): void
+    public function move(Snake $snake): void
     {
         $lastX = $snake->getHeadX();
         $lastY = $snake->getHeadY();
+
+        $speed = $snake->getDirection()->getSpeed();
+        $angle = $snake->getDirection()->getAngle();
+
+        $x = $lastX + $speed * $angle;
+        $y = $lastY + $speed * $angle;
 
         $snake->setHeadX($x);
         $snake->setHeadY($y);

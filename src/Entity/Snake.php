@@ -5,15 +5,15 @@ namespace App\Entity;
 class Snake
 {
     public function __construct(
-        private ?int $id,
-        private int $headX,
-        private int $headY,
-        private array $bodyParts,
-        private int $radius,
-        private Direction $speed,
-        private int $score,
-        private string $color,
-        private bool $isAlive = true
+        private ?int      $id,
+        private int       $headX,
+        private int       $headY,
+        private array     $bodyParts,
+        private int       $radius,
+        private Direction $direction,
+        private int       $score,
+        private string    $color,
+        private bool      $isAlive = true
     )
     {
     }
@@ -46,9 +46,9 @@ class Snake
         return $this->radius;
     }
 
-    public function getSpeed(): Direction
+    public function getDirection(): Direction
     {
-        return $this->speed;
+        return $this->direction;
     }
 
     public function getScore(): int
@@ -91,9 +91,9 @@ class Snake
         $this->radius = $radius;
     }
 
-    public function setSpeed(Direction $speed): void
+    public function setDirection(Direction $direction): void
     {
-        $this->speed = $speed;
+        $this->direction = $direction;
     }
 
     public function setColor(string $color): void

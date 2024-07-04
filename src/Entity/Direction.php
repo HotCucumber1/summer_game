@@ -5,30 +5,29 @@ namespace App\Entity;
 class Direction
 {
     public function __construct(
-        private int $directX,
-        private int $directY
+        private int $speed,
+        private float $angle
     )
     {
     }
 
-    public function getDirectX(): int
+    public function getSpeed(): int
     {
-        return $this->directX;
+        return $this->speed;
     }
 
-    public function getDirectY(): int
+    public function getAngle(): float
     {
-        return $this->directY;
+        return $this->angle;
     }
 
-    public function setDirectX(int $directX): void
+    public function setSpeed(int $speed): void
     {
-        $this->directX = $directX;
+        $this->speed = $speed;
     }
 
-    public function setDirectY(int $directY): void
+    public function setAngle(float $angle): void
     {
-        $this->directY = $directY;
+        $this->angle = $angle;
     }
-
 }
