@@ -18,7 +18,7 @@ class WebSocketServer implements MessageComponentInterface
     {
         $this->clients = new \SplObjectStorage;
 
-        $this->loop->addPeriodicTimer(2, function() {
+        $this->loop->addPeriodicTimer(0.1, function() {
             $this->sendData();
         });
     }
@@ -31,17 +31,10 @@ class WebSocketServer implements MessageComponentInterface
 
     public function onMessage(ConnectionInterface $from,  $msg): void
     {
-        // $data = json_decode($msg, true);
-
         $request = Request::create('/snake/move', 'POST', [
             'data' => $msg
         ]);
         $response = $this->kernel->handle($request);
-
-        foreach ($this->clients as $client)
-        {
-            $client->send($msg);
-        }
     }
 
     public function sendData(): void

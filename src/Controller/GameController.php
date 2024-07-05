@@ -27,11 +27,11 @@ class GameController extends AbstractController
         $data = json_decode($request->getContent(), true);
         if (!isset($data['width']))
         {
-            throw new BadRequestException('Screen is not defined');
+            throw new BadRequestException('Screen was not defined');
         }
         if (!isset($data['height']))
         {
-            throw new BadRequestException('Screen is not defined');
+            throw new BadRequestException('Screen was not defined');
         }
         $this->settingsService->setWindowSize($data['width'], $data['height']);
 

@@ -28,6 +28,14 @@ class Direction
 
     public function setAngle(float $angle): void
     {
-        $this->angle = $angle;
+        if ($angle < 0 )
+        {
+            $newAngle = - (abs($angle) % (2 * M_PI));
+        }
+        else
+        {
+            $newAngle = $angle % (2 * M_PI);
+        }
+        $this->angle = $newAngle;
     }
 }

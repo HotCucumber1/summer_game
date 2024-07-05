@@ -13,7 +13,7 @@ class SnakeService
     const START_RADIUS = 15;
     const START_SCORE = 0;
     const START_LENGTH = 10;
-    const START_SPEED = 4;
+    const START_SPEED = 1;
     const START_ANGLE = - M_PI / 2;
 
     public function __construct()
@@ -46,8 +46,8 @@ class SnakeService
         $speed = $snake->getDirection()->getSpeed();
         $angle = $snake->getDirection()->getAngle();
 
-        $x = $lastX + $speed * $angle;
-        $y = $lastY + $speed * $angle;
+        $x = $lastX + $speed * cos($angle);
+        $y = $lastY + $speed * sin($angle);
 
         $snake->setHeadX($x);
         $snake->setHeadY($y);
