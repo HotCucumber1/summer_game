@@ -12,8 +12,9 @@ class Snake {
         this.velocity = new Point(0, 0);
         this.angle = ut.random(0, Math.PI);
 
-        this.length = 20;
-        this.MAXSIZE = 40;
+        this.length = 10;
+        this.MAXSIZE = 80;
+        this.MINSIZE = 15;
         this.size = 15;
 
         this.mainColor = ut.randomColor();
@@ -31,7 +32,6 @@ class Snake {
     }
 
     drawHead() {
-
         let x = this.arr[0].x;
         let y = this.arr[0].y;
 
@@ -109,8 +109,8 @@ class Snake {
                 }, 1000);
             }
             if (this.counter >= 3) {
+                this.length--;
                 this.counter = 0;
-                this.length--
             }
         } else {
             this.ctx.shadowBlur = 0;
@@ -137,8 +137,15 @@ class Snake {
         this.pos.y += this.velocity.y;
 
         this.drawHead();
+        this.setSize();
         this.checkCollissionFood();
+        this.checkCollissionSnake()
         this.checkCollissionBorder();
+    }
+
+    setSize() {
+        if (this.length % 5 === 0) this.size = this.size = this.length / 5 + 13;
+        if (this.size < this.MINSIZE) this.size = this.MINSIZE;
     }
 
     addScore() {
@@ -150,12 +157,6 @@ class Snake {
     //     this.length += (size - 4);
     // }
 
-    incSize() {
-        this.length++;
-        if (this.length % 10 === 0) this.size++;
-        if (this.size > this.MAXSIZE) this.size = this.MAXSIZE;
-    }
-
     checkCollissionFood() {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
@@ -163,11 +164,68 @@ class Snake {
             if (ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x,
                 game.foods[i].pos.y, game.foods[i].size)) {
                 game.foods[i].die();
+                this.length++;
                 this.addScore();
                 // this.addLength(game.foods[i].size);
-                this.incSize();
             }
         }
+    }
+
+    checkCollissionSnake() {
+        let x = this.arr[0].x;
+        let y = this.arr[0].y;
+        for (let i = 1; i < game.snakes.length; i++) {
+            for (let j = 0; j < game.snakes[i].arr.length; j++)
+            if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
+                game.snakes[i].arr[j].y, game.snakes[i].size)) {
+                this.die();
+            }
+        }
+    }
+
+    drawEffect(arr) {
+
+        this.ctx.globalAlpha = 1;
+        this.ctx.shadowBlur = 0; // радиус размытия тени
+        this.ctx.shadowColor = this.supportColor; // цвет свечения
+        this.ctx.shadowOffsetX = 0; // смещение тени по X
+        this.ctx.shadowOffsetY = 0;
+
+        let alpha = 1;
+        const fadeStep = 0.01;
+        const fadeDuration = 1000;
+        const fadeInterval = fadeDuration / (1 / fadeStep);
+
+        const fadeEffect = () => {
+            if (alpha > 0) {
+                alpha -= fadeStep;
+                this.ctx.shadowBlur++;
+                this.ctx.globalAlpha = alpha;
+
+                // Очищаем канвас перед перерисовкой (если нужно)
+                game.ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Рисуем эффект
+                for (let i = arr.length - 1; i >= 0; i--) {
+
+                    let d = this.size / 2;
+
+                    this.ctx.beginPath();
+                    this.ctx.fillStyle = this.mainColor;
+                    this.ctx.arc(arr[i].x, arr[i].y - d, this.size, 0, 2 * Math.PI);
+                    this.ctx.fill();
+                }
+
+                // Вызываем следующий кадр
+                setTimeout(() => {
+                    requestAnimationFrame(fadeEffect);
+                }, fadeInterval);
+            } else {
+                this.ctx.globalAlpha = 0; // Устанавливаем окончательно, если alpha стал отрицательным
+            }
+        };
+
+        fadeEffect();
     }
 
     checkCollissionBorder() {
@@ -182,16 +240,25 @@ class Snake {
     }
 
     die() {
-        this.state = 1;
-        for (let i = 0; i < this.arr.length; i += 3)
-        {
-            game.foods.push(new Food(game.ctxFood,
-                this.arr[i].x, this.arr[i].y));
+        let last = this.length - 1;
+        let arrayBody = [];
+
+        for (let i = last; i >= 1; i--) {
+            game.foods.push(new Food(game.ctxFood, this.arr[i].x, this.arr[i].y));
+            arrayBody.push({
+                x: this.arr[i].x,
+                y: this.arr[i].y,
+                angle: this.angle
+            })
             this.arr.splice(i, 1);
         }
 
-        game.ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
         cancelAnimationFrame(updateId);
+
+        this.drawEffect(arrayBody);
+
+        let index = game.snakes.indexOf(this);
+        game.snakes.splice(index, 1);
     }
 
 }

@@ -3,10 +3,10 @@ class Game {
         this.ctxSnake = ctxSnake;
         this.ctxFood = ctxFood;
         this.ctxHex = ctxHex;
-        this.WORLD_SIZE = new Point(20000, 10000);
+        this.WORLD_SIZE = new Point(40000, 20000);
         this.ARENA_RADIUS = 5000
         this.SCREEN_SIZE = new Point(window.innerWidth, window.innerHeight);
-        this.world = new Point(-10000, -5000);
+        this.world = new Point(-20000, -10000);
         this.snakes = [];
         this.backgroundImage = new Image();
         this.backgroundImage.src = '../public/images/background.png';
@@ -15,7 +15,8 @@ class Game {
 
     init() {
         this.snakes[0] = new Snake(this.ctxSnake, 0);
-        this.generateFoods(1000);
+        for(let i=1; i<11; i++) this.addSnake(i);
+        this.generateFoods(3000);
     }
 
     draw() {
@@ -24,9 +25,11 @@ class Game {
         if (this.snakes[0].state === 0)
             this.snakes[0].move();
 
+        for(let i=1; i < this.snakes.length; i++)
+            if(this.snakes[i].state === 0) this.snakes[i].move(this.snakes[0]);
+
         for (let i = 0; i < this.foods.length; i++) this.foods[i].draw(this.snakes[0]);
 
-        this.drawScore();
         this.drawLength();
     }
 
@@ -65,24 +68,19 @@ class Game {
         this.world.y -= this.snakes[0].velocity.y;
     }
 
-    drawScore() {
-        let start = new Point(20, 20);
-        for (let i = 0; i < this.snakes.length; i++) {
-            this.ctxSnake.fillStyle = this.snakes[i].mainColor;
-            this.ctxSnake.font = "bold 12px Arial";
-            this.ctxSnake.fillText("score: " + this.snakes[i].score,
-                start.x - 5, start.y + i * 15);
-        }
-    }
-
     drawLength() {
-        let start = new Point(20, 40);
+        let start = new Point(20, 20);
         for (let i = 0; i < this.snakes.length; i++) {
             this.ctxSnake.fillStyle = this.snakes[i].mainColor;
             this.ctxSnake.font = "bold 12px Arial";
             this.ctxSnake.fillText("Your length: " + this.snakes[i].length,
                 start.x - 5, start.y + i * 15);
         }
+    }
+
+    addSnake(id){
+
+        this.snakes.push(new SnakeBot(this.ctxSnake, id))
     }
 
     generateFoods(n) {

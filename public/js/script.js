@@ -14,13 +14,13 @@ let game = new Game(ctxSnake, ctxFood, ctxHex);
 let d = -Math.PI / 2;
 
 // события WebSocket
-wsConnect.onopen = function () {
-    console.log('подключился к серверу');   // для отладки, потом можно убрать
-}
-
-wsConnect.onerror = function (e) {          // ошибка
-    console.log('Websocket error:', e);
-}
+// wsConnect.onopen = function () {
+//     console.log('подключился к серверу');   // для отладки, потом можно убрать
+// }
+//
+// wsConnect.onerror = function (e) {          // ошибка
+//     console.log('Websocket error:', e);
+// }
 
 canvas.onmousemove = function (e) {
     cursor = ut.getMousePos(canvas, e);
@@ -227,14 +227,14 @@ function update(currentDelta) {
     game.draw();
 }
 
-wsConnect.addEventListener("message", function (event) {
-    console.log('message from server:');            // для отладки, нужно будет удалить
-    console.log(JSON.parse(event.data));            // для отладки, нужно будет удалить
-    let dataFromServer = JSON.parse(event.data);
-    // здесь нужно будет присваивать значения полученные с сервера
-
-    update();
-});
+// wsConnect.addEventListener("message", function (event) {
+//     console.log('message from server:');            // для отладки, нужно будет удалить
+//     console.log(JSON.parse(event.data));            // для отладки, нужно будет удалить
+//     let dataFromServer = JSON.parse(event.data);
+//     // здесь нужно будет присваивать значения полученные с сервера
+//
+//     update();
+// });
 
 
 start();
