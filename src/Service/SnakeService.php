@@ -8,13 +8,13 @@ use Config\Config;
 
 class SnakeService
 {
-    const START_X = 0;
-    const START_Y = 0;
+    const START_X = 10;
+    const START_Y = 10;
     const START_RADIUS = 15;
     const START_SCORE = 0;
     const START_LENGTH = 10;
-    const START_SPEED = 1;
-    const START_ANGLE = - M_PI / 2;
+    const START_SPEED = 5;
+    const START_ANGLE = M_PI / 2;
 
     public function __construct()
     {
@@ -52,8 +52,8 @@ class SnakeService
         $snake->setHeadX($x);
         $snake->setHeadY($y);
 
-        $body = $snake->getBodyParts();
-        $this->moveBody($body, $lastX, $lastY);
+        // $body = $snake->getBodyParts();
+        // $this->moveBody($body, $lastX, $lastY);
     }
 
     public function grow(Snake $snake): void

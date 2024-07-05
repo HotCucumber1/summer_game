@@ -9,7 +9,7 @@ use App\Entity\Wall;
 class GameInfo
 {
     const START_POINTS_AMOUNT = 5;
-    const DEFAULT_ROTATION_ANGLE = M_PI / 64;
+    const DEFAULT_ROTATION_ANGLE = M_PI / 32;
     private Snake $snake;
 
     public function __construct(private readonly CollisionServiceInterface $collisionService,
@@ -28,7 +28,6 @@ class GameInfo
         $mouseX = $controlInfo['mouseX'];
         $mouseY = $controlInfo['mouseY'];
 
-        // $this->snakeService->move($mouseX, $mouseY, $snake);
         // TODO: спросить Ильсафа про управление
     }
 
@@ -39,29 +38,29 @@ class GameInfo
 
         if ($controlInfo['up'])
         {
-            if (- M_PI / 2 < $angle && $angle < M_PI / 2)
+            if (3 * M_PI / 2 < $angle || $angle < M_PI / 2)
             {
-                $direction->setAngle($angle - self::DEFAULT_ROTATION_ANGLE);
+                $direction->setAngle($angle + self::DEFAULT_ROTATION_ANGLE);
             }
             else
             {
-                $direction->setAngle($angle + self::DEFAULT_ROTATION_ANGLE);
+                $direction->setAngle($angle - self::DEFAULT_ROTATION_ANGLE);
             }
         }
         if ($controlInfo['down'])
         {
-            if (- M_PI / 2 < $angle && $angle < M_PI / 2)
+            if (3 * M_PI / 2 < $angle || $angle < M_PI / 2)
             {
-                $direction->setAngle($angle + self::DEFAULT_ROTATION_ANGLE);
+                $direction->setAngle($angle - self::DEFAULT_ROTATION_ANGLE);
             }
             else
             {
-                $direction->setAngle($angle - self::DEFAULT_ROTATION_ANGLE);
+                $direction->setAngle($angle + self::DEFAULT_ROTATION_ANGLE);
             }
         }
         if ($controlInfo['left'])
         {
-            if ($angle > 0)
+            if ($angle < M_PI)
             {
                 $direction->setAngle($angle + self::DEFAULT_ROTATION_ANGLE);
             }
@@ -72,7 +71,7 @@ class GameInfo
         }
         if ($controlInfo['right'])
         {
-            if ($angle > 0)
+            if ($angle < M_PI)
             {
                 $direction->setAngle($angle - self::DEFAULT_ROTATION_ANGLE);
             }
@@ -86,6 +85,7 @@ class GameInfo
             $newSpeed = $direction->getSpeed() * 2;
             $direction->setSpeed($newSpeed);
         }
+
         $this->snake->setDirection($direction);
         // $this->snakeService->move($this->snake);
     }
@@ -143,13 +143,14 @@ class GameInfo
             'snake' => [
                 'x' => $x,
                 'y' => $y,
-                'body' => $bodyData,
-                'radius' => $radius,
-                'score' => $score,
-                'angle' => rad2deg($this->snake->getDirection()->getAngle()),
+                //'body' => $bodyData,
+                //'radius' => $radius,
+                //'score' => $score,
+                'angleRad' => $this->snake->getDirection()->getAngle(),
+                'angleDeg' => rad2deg($this->snake->getDirection()->getAngle()),
                 'speed' => $this->snake->getDirection()->getSpeed(),
             ],
-            'points' => $pointsData,
+            //'points' => $pointsData,
             'wall' => Wall::$radius
         ];
     }

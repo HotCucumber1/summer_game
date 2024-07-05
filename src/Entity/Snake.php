@@ -68,7 +68,7 @@ class Snake
 
     public function getLength(): int
     {
-        return count($this->bodyParts) + 1;
+        return count($this->bodyParts) + 1; // + head
     }
 
     public function setHeadX(int $headX): void

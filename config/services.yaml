@@ -23,6 +23,7 @@ services:
         arguments:
             $loop: '@React\EventLoop\LoopInterface'
             $kernel: '@kernel'
+            $gameController: '@App\Controller\GameController'
     App\Service\Server\StartWebSocketServerCommand:
         arguments:
             $webSocketServer: '@App\Service\Server\WebSocketServer'

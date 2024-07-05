@@ -3,6 +3,7 @@
 namespace App\Service\Server;
 
 
+use App\Controller\GameController;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use React\EventLoop\LoopInterface;
@@ -14,11 +15,12 @@ class WebSocketServer implements MessageComponentInterface
     protected \SplObjectStorage $clients;
 
     public function __construct(private readonly LoopInterface $loop,
-                                private readonly HttpKernelInterface $kernel)
+                                private readonly HttpKernelInterface $kernel,
+                                private readonly GameController $gameController)
     {
         $this->clients = new \SplObjectStorage;
 
-        $this->loop->addPeriodicTimer(0.1, function() {
+        $this->loop->addPeriodicTimer(0.02, function() {
             $this->sendData();
         });
     }
@@ -39,9 +41,10 @@ class WebSocketServer implements MessageComponentInterface
 
     public function sendData(): void
     {
-        $request = Request::create('/game/info');
-        $response = $this->kernel->handle($request)->getContent();
+        // $request = Request::create('/game/info');
+        // $response = $this->kernel->handle($request)->getContent();
 
+        $response = $this->gameController->getGameInfo();
         foreach ($this->clients as $client)
         {
             $client->send($response);
