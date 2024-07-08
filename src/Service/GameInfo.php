@@ -14,8 +14,8 @@ class GameInfo
 
     public function __construct(private readonly CollisionServiceInterface $collisionService,
                                 private readonly PointService              $pointService,
-                                private readonly SnakeService              $snakeService,
-                                private readonly UserService               $userService)
+                                private readonly SnakeService              $snakeService)
+                                //private readonly UserService               $userService)
     {
         $this->snake = $this->snakeService->createSnake();
         for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
@@ -185,8 +185,8 @@ class GameInfo
         {
             $score = $this->snake->getScore();
 
-            $id = SessionService::takeUserIdFromSession();
-            $this->userService->setUserScore($id, $score);
+            /*$id = SessionService::takeUserIdFromSession();
+            $this->userService->setUserScore($id, $score);*/
 
             $body = $this->snake->getBodyParts();
             $pointsPerPart = intdiv($score, count($body));
