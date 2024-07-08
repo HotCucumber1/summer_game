@@ -20,7 +20,7 @@ class WebSocketServer implements MessageComponentInterface
     {
         $this->clients = new \SplObjectStorage;
 
-        $this->loop->addPeriodicTimer(0.2, function() {
+        $this->loop->addPeriodicTimer(0.02, function() {
             $this->sendData();
         });
     }

@@ -34,6 +34,16 @@ class UserService
         );
         return $this->userRepository->store($user);
     }
+
+    public function getUserById(string $id): User
+    {
+        $user = $this->userRepository->findUserById($id);
+        if ($user === null)
+        {
+            throw new BadRequestException("User not found");
+        }
+        return $user;
+    }
     
     public function getUserByName(string $name): User
     {
@@ -43,6 +53,16 @@ class UserService
             throw new BadRequestException("User not found");
         }
         return $user;
+    }
+
+    public function setUserScore(int $userId, int $score): void
+    {
+        $user = $this->userRepository->findUserById($userId);
+        if ($score > $user->getScore())
+        {
+            $user->setScore($score);
+            $this->userRepository->store($user);
+        }
     }
 
     private function isValid(string $name, string $password): bool

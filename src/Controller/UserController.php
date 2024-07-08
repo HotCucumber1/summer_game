@@ -9,6 +9,11 @@ class UserController extends AbstractController
 {
     public function index(): Response
     {
-        return $this->redirectToRoute('');
+        return $this->redirectToRoute('login');
+    }
+
+    public function login(): Response
+    {
+       // return $this->redirectToPage('/pages/index.html');
     }
 }
