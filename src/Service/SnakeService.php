@@ -8,13 +8,16 @@ use Config\Config;
 
 class SnakeService
 {
-    const START_X = 10;
-    const START_Y = 10;
+    //const START_X = 10;
+    //const START_Y = 10;
     const START_RADIUS = 15;
     const START_SCORE = 0;
     const START_LENGTH = 10;
     const START_SPEED = 5;
     const START_ANGLE = M_PI / 2;
+
+    const START_X = 1152;  // в идеале нужно рандом( для одной можно центр канваса) // canvas.width / 2
+    const START_Y = 535;   // в идеале нужно рандом( для одной можно центр канваса) // canvas.height / 2
 
     public function __construct()
     {
@@ -53,7 +56,7 @@ class SnakeService
         $snake->setHeadY($y);
 
         // $body = $snake->getBodyParts();
-        // $this->moveBody($body, $lastX, $lastY);
+        $this->moveBody($snake, $lastX, $lastY);
     }
 
     public function grow(Snake $snake): void
@@ -87,15 +90,15 @@ class SnakeService
         return $body;
     }
 
-    private function moveBody(array $body, int $x, int $y): void
+    private function moveBody(Snake $snake, int $x, int $y): void
     {
         // TODO: протестить передвижение
-        $last = end($body);
+        /*$last = end($body);
 
         $last->setX($x);
         $last->setY($y);
 
-        /* foreach ($body as $bodyPart)
+         foreach ($body as $bodyPart)
         {
             $lastX = $bodyPart->getX();
             $lastY = $bodyPart->getY();
@@ -106,7 +109,24 @@ class SnakeService
             $x = $lastX;
             $y = $lastY;
         } */
+        $body = $snake->getBodyParts();
+        $angle = $snake->getDirection()->getAngle();
+        $halfRadius = self::START_RADIUS / 2;
+
+        foreach ($body as $bodyPart)
+        {
+            $lastX = $bodyPart->getX() - $halfRadius * cos($angle);
+            $lastY = $bodyPart->getY() - $halfRadius * sin($angle);
+
+            $bodyPart->setX($x);
+            $bodyPart->setY($y);
+
+            $x = $lastX;
+            $y = $lastY;
+        }
     }
+
+
 
     private function increaseLength(Snake $snake): void
     {

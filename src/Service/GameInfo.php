@@ -143,14 +143,14 @@ class GameInfo
             'snake' => [
                 'x' => $x,
                 'y' => $y,
-                //'body' => $bodyData,
-                //'radius' => $radius,
-                //'score' => $score,
+                'body' => $bodyData,
+                'radius' => $radius,
+                'score' => $score,
                 'angleRad' => $this->snake->getDirection()->getAngle(),
                 'angleDeg' => rad2deg($this->snake->getDirection()->getAngle()),
                 'speed' => $this->snake->getDirection()->getSpeed(),
             ],
-            //'points' => $pointsData,
+            'points' => $pointsData,
             'wall' => Wall::$radius
         ];
     }
