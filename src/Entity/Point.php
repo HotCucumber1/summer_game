@@ -6,22 +6,22 @@ class Point
 {
     const PRICE = 1;
     public function __construct(
-        private int $coordX,
-        private int $coordY,
+        private int    $x,
+        private int    $y,
         private string $color,
-        private bool $status = true
+        private bool   $status = true
     )
     {
     }
 
-    public function getCoordX(): int
+    public function getX(): int
     {
-        return $this->coordX;
+        return $this->x;
     }
 
-    public function getCoordY(): int
+    public function getY(): int
     {
-        return $this->coordY;
+        return $this->y;
     }
 
     public function getColor(): string
@@ -34,14 +34,14 @@ class Point
         return $this->status;
     }
 
-    public function setCoordX(int $coordX): void
+    public function setX(int $x): void
     {
-        $this->coordX = $coordX;
+        $this->x = $x;
     }
 
-    public function setCoordY(int $coordY): void
+    public function setY(int $y): void
     {
-        $this->coordY = $coordY;
+        $this->y = $y;
     }
 
     public function setColor(string $color): void

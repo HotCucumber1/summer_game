@@ -13,6 +13,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class WebSocketServer implements MessageComponentInterface
 {
     protected \SplObjectStorage $clients;
+    protected const INTERVAL = 0.02;
 
     public function __construct(private readonly LoopInterface $loop,
                                 private readonly HttpKernelInterface $kernel,
@@ -20,7 +21,7 @@ class WebSocketServer implements MessageComponentInterface
     {
         $this->clients = new \SplObjectStorage;
 
-        $this->loop->addPeriodicTimer(0.02, function() {
+        $this->loop->addPeriodicTimer(self::INTERVAL, function() {
             $this->sendData();
         });
     }
@@ -41,9 +42,6 @@ class WebSocketServer implements MessageComponentInterface
 
     public function sendData(): void
     {
-        // $request = Request::create('/game/info');
-        // $response = $this->kernel->handle($request)->getContent();
-
         $response = $this->gameController->getGameInfo()->getContent();
         foreach ($this->clients as $client)
         {

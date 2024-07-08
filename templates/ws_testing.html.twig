@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat</title>
+</head>
+<body>
+    <h1>WebSocket Chat</h1>
+    <input type="text" id="message" placeholder="Type your message here...">
+    <button onclick="sendMessage()">Send</button>
+    <ul id="messages"></ul>
+    <textarea id="response" style="width: 1000px;
+                                   height: 500px">
+    </textarea>
+
+<script>
+    let conn = new WebSocket('ws://10.10.29.61:8080');
+    // let conn = new WebSocket('ws://10.250.104.40:8080');
+
+    conn.onopen = function (e) {
+        alert("Connection established!");
+    };
+
+    conn.onmessage = function (e) {
+        let response = document.getElementById('response');
+        response.textContent = '';
+        response.textContent = e.data;
+    };
+
+    function sendMessage() {
+        let input = document.getElementById('message');
+        conn.send(input.value);
+        input.value = '';
+    }
+
+    let data = {
+        up: false,
+        down: false,
+        left: false,
+        right: false,
+        boost: false
+    };
+    
+    window.addEventListener('keydown', function (event) {
+        if (event.key === 'w')
+        {
+            data.up = true;
+            let jsonData = JSON.stringify(data, null, 4);
+            conn.send(jsonData);
+        }
+        if (event.key === 'a')
+        {
+            data.left = true;
+            let jsonData = JSON.stringify(data, null, 4);
+            conn.send(jsonData);
+        }
+        if (event.key === 's')
+        {
+            data.down = true;
+            let jsonData = JSON.stringify(data, null, 4);
+            conn.send(jsonData);
+        }
+        if (event.key === 'd')
+        {
+            data.right = true;
+            let jsonData = JSON.stringify(data, null, 4);
+            conn.send(jsonData);
+        }
+    });
+
+    
+    window.addEventListener('keyup', function (event) {
+        if (event.key === 'w')
+        {
+            data.up = false;
+            let jsonData = JSON.stringify(data, null, 4);
+            conn.send(jsonData);
+        }
+        if (event.key === 'a')
+        {
+            data.left = false;
+            let jsonData = JSON.stringify(data, null, 4);
+            conn.send(jsonData);
+        }
+        if (event.key === 's')
+        {
+            data.down = false;
+            let jsonData = JSON.stringify(data, null, 4);
+            conn.send(jsonData);
+        }
+        if (event.key === 'd')
+        {
+            data.right = false;
+            let jsonData = JSON.stringify(data, null, 4);
+            conn.send(jsonData);
+        }
+    });
+</script>
+</body>
+</html>

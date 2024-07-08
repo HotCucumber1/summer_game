@@ -32,6 +32,7 @@ class UserController extends AbstractController
 
         $userId = $this->userService->addUser($name, $password);
         SessionService::putUserIdInSession($userId);
+
         return $this->redirectToRoute('game');
     }
 
@@ -46,6 +47,7 @@ class UserController extends AbstractController
             throw new BadRequestException("Password is incorrect");
         }
         SessionService::putUserIdInSession($user->getUserId());
-        return new Response(); // TODO: заменить на редирект на страницу игры
+
+        return $this->redirectToRoute('game');
     }
 }

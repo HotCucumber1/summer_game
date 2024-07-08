@@ -10,7 +10,6 @@ class Config
         "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1",
         "#f39c12", "#d35400", "#c0392b", "#bdc3c7"
     );
-    /*public static int $windowWidth = 1920;
-    public static int $windowHeight = 1080;*/
+
     public static bool $withBots;
 }

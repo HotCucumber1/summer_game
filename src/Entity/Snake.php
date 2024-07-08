@@ -5,7 +5,7 @@ namespace App\Entity;
 class Snake
 {
     public function __construct(
-        private ?int      $id,
+        private int       $id,
         private int       $headX,
         private int       $headY,
         private array     $bodyParts,
@@ -13,14 +13,11 @@ class Snake
         private Direction $direction,
         private int       $score,
         private string    $color,
-        private bool      $isAlive = true
+        private bool      $isAlive=true
     )
     {
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;

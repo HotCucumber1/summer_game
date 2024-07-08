@@ -12,8 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class GameController extends AbstractController
 {
-    public function __construct(private readonly GameInfo $gameInfo/*,
-                                private readonly GameSettingsService $settingsService*/)
+    public function __construct(private readonly GameInfo $gameInfo)
     {
     }
 
@@ -21,7 +20,7 @@ class GameController extends AbstractController
     {
         return new Response('hello');
     }
-    public function start(Request $request): Response
+    public function start(): Response
     {
         return $this->render('ws_testing.html.twig');
     }
@@ -30,7 +29,6 @@ class GameController extends AbstractController
     {
         $jsonData = $request->request->get('data');
         $data = json_decode($jsonData, true);
-
 
         if (!isset($data['up']) ||
             !isset($data['down']) ||

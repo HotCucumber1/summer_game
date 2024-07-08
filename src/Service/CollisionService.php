@@ -8,7 +8,7 @@ use App\Entity\Wall;
 
 class CollisionService implements CollisionServiceInterface
 {
-    public function __construct(private SnakeService $snakeService)
+    public function __construct(private readonly SnakeService $snakeService)
     {
     }
 
@@ -66,8 +66,8 @@ class CollisionService implements CollisionServiceInterface
         $headY = $snake->getHeadY();
         $radius = $snake->getRadius();
 
-        $pointX = $point->getCoordX();
-        $pointY = $point->getCoordY();
+        $pointX = $point->getX();
+        $pointY = $point->getY();
 
         return (($pointX - $headX) ** 2 + ($pointY - $headY) ** 2 <= $radius ** 2);
     }

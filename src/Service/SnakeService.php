@@ -10,14 +10,12 @@ use Config\Config;
 
 class SnakeService
 {
-    //const START_X = 10;
-    //const START_Y = 10;
-    const START_RADIUS = 15;
-    const START_SCORE = 0;
-    const START_LENGTH = 10;
-    const START_SPEED = 5;
-    const START_ANGLE = M_PI / 2;
-    const SPAWN_ZONE = 0.6;
+    private const START_RADIUS = 15;
+    private const START_SCORE = 0;
+    private const START_LENGTH = 10;
+    private const START_SPEED = 5;
+    private const START_ANGLE = M_PI / 2;
+    private const SPAWN_ZONE = 0.6;
 
     public function __construct(private readonly SnakeRepositoryInterface $snakeRepository)
     {
@@ -29,8 +27,7 @@ class SnakeService
                                         self::START_ANGLE);
         $color = Config::COLORS[array_rand(Config::COLORS)];
 
-        // $id = SessionService::takeUserIdFromSession();
-        $id = 0;
+        $id = SessionService::takeUserIdFromSession();
         do
         {
             $headX = rand(-self::SPAWN_ZONE * Wall::$radius, self::SPAWN_ZONE * Wall::$radius);
@@ -72,7 +69,6 @@ class SnakeService
         $snake->setHeadX($x);
         $snake->setHeadY($y);
 
-        // $body = $snake->getBodyParts();
         $this->moveBody($snake, $lastX, $lastY);
     }
 
@@ -95,7 +91,6 @@ class SnakeService
 
     private function createBody(string $color, int $x, int $y): array
     {
-        // TODO: протестить создание
         $body = [];
         for ($i = 0; $i < self::START_LENGTH; $i++)
         {
@@ -144,13 +139,13 @@ class SnakeService
 
     private function increaseRadius(Snake $snake): void
     {
-        $snake->setRadius($snake->getRadius() + 1);
+        $newRadius = $snake->getRadius() + 1;
+        $snake->setRadius($newRadius);
 
         $body = $snake->getBodyParts();
         foreach ($body as $bodyPart)
         {
-            $radius = $bodyPart->getRadius();
-            $bodyPart->setRadius($radius + 1);
+            $bodyPart->setRadius($newRadius);
         }
     }
 
@@ -161,11 +156,11 @@ class SnakeService
 
     private function decreaseRadius(Snake $snake): void
     {
+        $newRadius = $snake->getRadius() - 1;
         $body = $snake->getBodyParts();
         foreach ($body as $bodyPart)
         {
-            $radius = $bodyPart->getRadius();
-            $bodyPart->setRadius($radius - 1);
+            $bodyPart->setRadius($newRadius);
         }
     }
 }
