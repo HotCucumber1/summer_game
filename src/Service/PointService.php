@@ -28,7 +28,10 @@ class PointService
         $this->pointRepository->deleteEatenPoints();
     }
 
-    public function allPoints(): ?array
+    /**
+     * @return Point[]
+     */
+    public function allPoints(): array
     {
         return $this->pointRepository->findPoints();
     }

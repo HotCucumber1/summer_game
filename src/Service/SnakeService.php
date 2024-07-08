@@ -15,9 +15,8 @@ class SnakeService
     const START_LENGTH = 10;
     const START_SPEED = 5;
     const START_ANGLE = M_PI / 2;
-
-    const START_X = 1152;  // в идеале нужно рандом( для одной можно центр канваса) // canvas.width / 2
-    const START_Y = 535;   // в идеале нужно рандом( для одной можно центр канваса) // canvas.height / 2
+    const START_X = 1152;  // в идеале нужно рандом (для одной можно центр канваса) // canvas.width / 2
+    const START_Y = 535;   // в идеале нужно рандом (для одной можно центр канваса) // canvas.height / 2
 
     public function __construct()
     {
@@ -97,18 +96,8 @@ class SnakeService
 
         $last->setX($x);
         $last->setY($y);
+        */
 
-         foreach ($body as $bodyPart)
-        {
-            $lastX = $bodyPart->getX();
-            $lastY = $bodyPart->getY();
-
-            $bodyPart->setX($x);
-            $bodyPart->setY($y);
-
-            $x = $lastX;
-            $y = $lastY;
-        } */
         $body = $snake->getBodyParts();
         $angle = $snake->getDirection()->getAngle();
         $halfRadius = self::START_RADIUS / 2;
@@ -125,8 +114,6 @@ class SnakeService
             $y = $lastY;
         }
     }
-
-
 
     private function increaseLength(Snake $snake): void
     {

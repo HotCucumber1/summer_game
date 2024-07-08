@@ -8,8 +8,9 @@ use App\Entity\Wall;
 
 class GameInfo
 {
-    const START_POINTS_AMOUNT = 5;
+    const START_POINTS_AMOUNT = 10;
     const DEFAULT_ROTATION_ANGLE = M_PI / 32;
+    private int $counter = 0;
     private Snake $snake;
 
     public function __construct(private readonly CollisionServiceInterface $collisionService,
@@ -19,8 +20,8 @@ class GameInfo
     {
         $this->snake = $this->snakeService->createSnake();
         for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
-        {
-            $this->pointService->addPoint(-Wall::$radius, -Wall::$radius, Wall::$radius, Wall::$radius);
+        {$this->pointService->addPoint(-Wall::$radius, -Wall::$radius,
+                                        Wall::$radius, Wall::$radius );
         }
     }
 
@@ -94,21 +95,56 @@ class GameInfo
     public function getData(): ?array
     {
         // Уменьшить радиус зоны
-        $this->compressWall();
-        $this->snakeService->move($this->snake);
+        // $this->compressWall();
+        if ($this->counter % 5 === 0)
+        {
+            $this->snakeService->move($this->snake);
+            $this->counter = 0;
+        }
+        $this->counter += 1;
 
         // проверить столкновение
-        // $this->checkBumps();
+        $this->checkBumps();
 
         // проверить точки
         $this->updatePoints();
 
         // проверить, жива ли змея
         $this->checkSnakeDeath();
+        $snakeData = [];
+        if ($this->snake->getAliveStatus())
+        {
+            $snakeData = $this->getSnakeData();
+        }
 
-        // Информация по змее
+        // Информация по точкам
+        $points = $this->pointService->allPoints();
+        $pointsData = [];
+        foreach ($points as $point)
+        {
+            if ($point->getStatus())
+            {
+                $pointsData[] = [
+                    'x' => $point->getCoordX(), //- $speed->getSpeed() * cos($speed->getAngle()),
+                    'y' => $point->getCoordY(), //- $speed->getSpeed() * sin($speed->getAngle()),
+                    'color' => $point->getColor()
+                ];
+            }
+        }
+
+        return [
+            'snake' => $snakeData,
+            'points' => $pointsData,
+            'wall' => Wall::$radius
+        ];
+    }
+
+    private function getSnakeData(): array
+    {
         $x = $this->snake->getHeadX();
         $y = $this->snake->getHeadY();
+        $radius = $this->snake->getRadius();
+        $score = $this->snake->getScore();
 
         $body = $this->snake->getBodyParts();
         $bodyData = [];
@@ -120,39 +156,16 @@ class GameInfo
                 'color' => $bodyPart->getColor()
             ];
         }
-
-        // Информация по точкам
-        $points = $this->pointService->allPoints();
-        $pointsData = [];
-        foreach ($points as $point)
-        {
-            if ($point->getStatus())
-            {
-                $pointsData[] = [
-                    'x' => $point->getCoordX(),
-                    'y' => $point->getCoordY(),
-                    'color' => $point->getColor()
-                ];
-            }
-        }
-
-        $radius = $this->snake->getRadius();
-        $speed = $this->snake->getDirection();
-        $score = $this->snake->getScore();
-
         return [
-            'snake' => [
-                'x' => $x,
-                'y' => $y,
-                'body' => $bodyData,
-                'radius' => $radius,
-                'score' => $score,
-                'angleRad' => $this->snake->getDirection()->getAngle(),
-                'angleDeg' => rad2deg($this->snake->getDirection()->getAngle()),
-                'speed' => $this->snake->getDirection()->getSpeed(),
-            ],
-            'points' => $pointsData,
-            'wall' => Wall::$radius
+            'x' => $x,
+            'y' => $y,
+            'body' => $bodyData,
+            'radius' => $radius,
+            'score' => $score,
+            // TODO: убрать угол и скорость, нужны только для отладки
+            'angleRad' => $this->snake->getDirection()->getAngle(),
+            'angleDeg' => rad2deg($this->snake->getDirection()->getAngle()),
+            'speed' => $this->snake->getDirection()->getSpeed(),
         ];
     }
 
@@ -161,7 +174,8 @@ class GameInfo
         if ($this->collisionService->isWallBump($this->snake) ||
             $this->collisionService->isSnakeBump($this->snake))
         {
-            $this->snake->setAliveStatus(false);
+            // TODO: закоментирвоанно для отладки
+            // $this->snakeService->die($this->snake);
         }
     }
 
@@ -172,16 +186,17 @@ class GameInfo
         {
             if ($this->collisionService->isPointEaten($this->snake, $point))
             {
-                $point->setStatus(false);
+                $this->pointService->clearPoint($point);
                 $this->snake->increaseScore(Point::PRICE);
                 $this->snakeService->grow($this->snake);
             }
 
-            if ($point->getCoordX() ** 2 + $point->getCoordY() ** 2 >= Wall::$radius)
+            if ($point->getCoordX() ** 2 + $point->getCoordY() ** 2 >= Wall::$radius ** 2)
             {
-                $point->setStatus(false);
+                $this->pointService->clearPoint($point);
             }
         }
+        $this->pointService->clearEatenPoints();
     }
 
     private function checkSnakeDeath(): void

@@ -24,14 +24,18 @@ class CollisionService implements CollisionServiceInterface
         $snakeY = $snake->getHeadY();
         $snakeR = $snake->getRadius();
 
-        $dist = sqrt(($snakeX - Wall::centreX) ** 2 + ($snakeY - Wall::centreY) ** 2);
-        $sin = $snakeY / $dist;
-        $cos = $snakeX / $dist;
+        if ($snakeX !== 0 && $snakeY !== 0)
+        {
+            $dist = sqrt(($snakeX - Wall::centreX) ** 2 + ($snakeY - Wall::centreY) ** 2);
+            $sin = $snakeY / $dist;
+            $cos = $snakeX / $dist;
 
-        $bumpX = abs($snakeX) + $snakeR * abs($cos);
-        $bumpY = abs($snakeY) + $snakeR * abs($sin);
+            $bumpX = abs($snakeX) + $snakeR * abs($cos);
+            $bumpY = abs($snakeY) + $snakeR * abs($sin);
 
-        return ($bumpX ** 2 + $bumpY ** 2 >= Wall::$radius ** 2);
+            return ($bumpX ** 2 + $bumpY ** 2 >= Wall::$radius ** 2);
+        }
+        return false;
     }    
     
     public function isPointEaten(Snake $snake, Point $point): bool

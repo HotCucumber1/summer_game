@@ -36,6 +36,9 @@ class Snake
         return $this->headY;
     }
 
+    /**
+     * @return BodyPart[]
+     */
     public function getBodyParts(): array
     {
         return $this->bodyParts;
@@ -101,19 +104,21 @@ class Snake
         $this->color = $color;
     }
 
-    public function increaseScore(int $add): void
-    {
-        $this->score += $add;
-    }
-
     public function setAliveStatus(bool $isAlive): void
     {
         $this->isAlive = $isAlive;
     }
 
+    public function increaseScore(int $add): void
+    {
+        $this->score += $add;
+    }
+
     public function addBodyPart(int $x, int $y, string $color): void
     {
-        $this->bodyParts[] = new BodyPart($x, $y, $this->getRadius(), $color);
+        $this->bodyParts[] = new BodyPart($x, $y,
+                                          $this->getRadius(),
+                                          $color);
     }
 
     public function deleteLastBodyPart(): void

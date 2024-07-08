@@ -28,7 +28,10 @@ class PointRepository
         self::$points[] = new Point($x, $y, $color);
     }
 
-    public function findPoints(): ?array
+    /**
+     * @return Point[]
+     */
+    public function findPoints(): array
     {
         return self::$points;
     }
