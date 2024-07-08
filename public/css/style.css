@@ -1,0 +1,40 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 2s;
+}
+
+body.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+body.fade-in {
+    opacity: 1;
+}
+
+#game {
+    position: relative;
+    margin: 0 auto;
+}
+
+.cnv {
+    position: absolute;
+    border-style: solid;
+}
+
+#canvasFood {
+    background-color: transparent;
+    z-index: 2;
+}
+
+#canvasHex {
+    background-color: black;
+    z-index: 1;
+}
+
+#canvasSnake {
+    background-color: transparent;
+    z-index: 3;
+}

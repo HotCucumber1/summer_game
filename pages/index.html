@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="eu">
+<head>
+    <meta charset="utf-8"/>
+    <title>Summer game</title>
+    <link rel="stylesheet" type="text/css" href="../public/css/style.css">
+</head>
+<body>
+<div id="game">
+    <canvas class="cnv" id="canvasSnake"></canvas>
+    <canvas class="cnv" id="canvasFood"></canvas>
+    <canvas class="cnv" id="canvasHex"></canvas>
+</div>
+
+<script>
+    function resizeCanvas() {
+        const canvases = document.querySelectorAll('canvas.cnv');
+        canvases.forEach(canvas => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('load', resizeCanvas);
+</script>
+
+
+<script src="../public/js/util.js"></script>
+<script src="../public/js/point.js"></script>
+<script src="../public/js/snake.js"></script>
+<script src="../public/js/food.js"></script>
+<script src="../public/js/game.js"></script>
+<script src="../public/js/script.js"></script>
+
+</body>
+</html>
