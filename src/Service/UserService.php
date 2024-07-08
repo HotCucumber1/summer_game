@@ -65,6 +65,12 @@ class UserService
         }
     }
 
+    public function isPasswordRight(User $user, string $password): bool
+    {
+        $userPassword = $user->getPassword();
+        return $this->hasher->hash($password) === $userPassword;
+    }
+
     private function isValid(string $name, string $password): bool
     {
         return !(strlen($name) < 3 || strlen($password) < 6);

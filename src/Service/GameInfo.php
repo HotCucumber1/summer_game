@@ -176,6 +176,11 @@ class GameInfo
                 $this->snake->increaseScore(Point::PRICE);
                 $this->snakeService->grow($this->snake);
             }
+
+            if ($point->getCoordX() ** 2 + $point->getCoordY() ** 2 >= Wall::$radius)
+            {
+                $point->setStatus(false);
+            }
         }
     }
 

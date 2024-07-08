@@ -3,9 +3,14 @@ index:
     methods: GET
     controller: App\Controller\UserController::index
 
+user/login:
+    path: /user/login
+    methods: GET
+    controller: App\Controller\UserController::signUp
+
 login:
     path: login
-    methods: GET
+    methods: POST
     controller: App\Controller\UserController::login
 
 settings:
