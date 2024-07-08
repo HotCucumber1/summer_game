@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+/**
+ * @ORM\Entity
+ */
 class User
 {
     public function __construct(private ?int    $userId,

@@ -15,8 +15,8 @@ class GameInfo
 
     public function __construct(private readonly CollisionServiceInterface $collisionService,
                                 private readonly PointService              $pointService,
-                                private readonly SnakeService              $snakeService)
-                                //private readonly UserService               $userService)
+                                private readonly SnakeService              $snakeService,
+                                private readonly UserService               $userService)
     {
         $this->snake = $this->snakeService->createSnake();
         for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
@@ -92,7 +92,7 @@ class GameInfo
         // $this->snakeService->move($this->snake);
     }
 
-    public function getData(): ?array
+    public function getData(): array
     {
         // Уменьшить радиус зоны
         // $this->compressWall();
@@ -175,7 +175,11 @@ class GameInfo
             $this->collisionService->isSnakeBump($this->snake))
         {
             // TODO: закоментирвоанно для отладки
-            // $this->snakeService->die($this->snake);
+            /* $this->snakeService->die($this->snake);
+            $id = SessionService::takeUserIdFromSession();
+            $score = $this->snake->getScore();
+
+            $this->userService->setUserScore($id, $score);*/
         }
     }
 

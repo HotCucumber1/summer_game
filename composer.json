@@ -8,6 +8,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "cboden/ratchet": "^0.4.4",
+        "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/migrations": "^3.8",
