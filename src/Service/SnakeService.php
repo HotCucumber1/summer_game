@@ -4,6 +4,7 @@ namespace App\Service;
 use App\Entity\BodyPart;
 use App\Entity\Direction;
 use App\Entity\Snake;
+use App\Entity\Wall;
 use App\Repository\SnakeRepositoryInterface;
 use Config\Config;
 
@@ -16,10 +17,9 @@ class SnakeService
     const START_LENGTH = 10;
     const START_SPEED = 5;
     const START_ANGLE = M_PI / 2;
-    const START_X = 1152;  // в идеале нужно рандом (для одной можно центр канваса) // canvas.width / 2
-    const START_Y = 535;   // в идеале нужно рандом (для одной можно центр канваса) // canvas.height / 2
+    const SPAWN_ZONE = 0.6;
 
-    public function __construct(private SnakeRepositoryInterface $snakeRepository)
+    public function __construct(private readonly SnakeRepositoryInterface $snakeRepository)
     {
     }
 
@@ -29,12 +29,19 @@ class SnakeService
                                         self::START_ANGLE);
         $color = Config::COLORS[array_rand(Config::COLORS)];
 
-        $startBody = $this->createBody($color);
         // $id = SessionService::takeUserIdFromSession();
         $id = 0;
+        do
+        {
+            $headX = rand(-self::SPAWN_ZONE * Wall::$radius, self::SPAWN_ZONE * Wall::$radius);
+            $headY = rand(-self::SPAWN_ZONE * Wall::$radius, self::SPAWN_ZONE * Wall::$radius);
+        }
+        while ($headX ** 2 + $headY ** 2 >= (self::SPAWN_ZONE * Wall::$radius) ** 2);
+
+        $startBody = $this->createBody($color, $headX, $headY);
         return new Snake($id,
-                         self::START_X,
-                         self::START_Y,
+                         $headX,
+                         $headY,
                          $startBody,
                          self::START_RADIUS,
                          $startDirection,
@@ -86,14 +93,13 @@ class SnakeService
         $snake->setAliveStatus(false);
     }
 
-    private function createBody(string $color): array
+    private function createBody(string $color, int $x, int $y): array
     {
         // TODO: протестить создание
         $body = [];
         for ($i = 0; $i < self::START_LENGTH; $i++)
         {
-            $body[] = new BodyPart(self::START_X,
-                                  self::START_Y,
+            $body[] = new BodyPart($x, $y,
                                   self::START_RADIUS,
                                   $color);
         }
