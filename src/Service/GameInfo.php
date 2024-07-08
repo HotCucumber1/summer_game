@@ -96,11 +96,11 @@ class GameInfo
     {
         // Уменьшить радиус зоны
         // $this->compressWall();
-        if ($this->counter % 5 === 0)
-        {
+        //if ($this->counter % 5 === 0)
+        //{
             $this->snakeService->move($this->snake);
-            $this->counter = 0;
-        }
+        //    $this->counter = 0;
+        //}
         $this->counter += 1;
 
         // проверить столкновение
@@ -173,6 +173,7 @@ class GameInfo
     private function checkBumps(): void
     {
         if ($this->collisionService->isWallBump($this->snake) ||
+            $this->collisionService->isSnakeBump($this->snake) ||
             $this->collisionService->isSnakeBump($this->snake))
         {
             // TODO: закоментирвоанно для отладки

@@ -10,7 +10,7 @@ interface SnakeRepositoryInterface
     public function getSnakeById(int $id): Snake;
 
     /**
-     * @return Snake[]
+     * @return array<int, Snake>
      */
     public function getSnakes(): array;
 }

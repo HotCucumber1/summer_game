@@ -8,13 +8,35 @@ use App\Entity\Wall;
 
 class CollisionService implements CollisionServiceInterface
 {
-    public function __construct()
+    public function __construct(private SnakeService $snakeService)
     {
     }
 
     public function isSnakeBump(Snake $snake): bool
     {
-        // TODO: столкновение змей (когда будет мультиплеер)
+        $snakeX = $snake->getHeadX();
+        $snakeY = $snake->getHeadY();
+        $snakeRadius = $snake->getRadius();
+
+        $currentId = $snake->getId();
+
+        $snakes = $this->snakeService->getSnakes();
+        foreach ($snakes as $id => $snake)
+        {
+            if ($id !== $currentId)
+            {
+                foreach ($snake->getBodyParts() as $bodyPart)
+                {
+                    $bodyX = $bodyPart->getX();
+                    $bodyY = $bodyPart->getY();
+                    $sqrDistance = ($snakeX - $bodyX) ** 2 + ($snakeY - $bodyY) ** 2;
+                    if ($sqrDistance <= ($snakeRadius + $bodyPart->getRadius()) ** 2)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 

@@ -4,6 +4,7 @@ namespace App\Service;
 use App\Entity\BodyPart;
 use App\Entity\Direction;
 use App\Entity\Snake;
+use App\Repository\SnakeRepositoryInterface;
 use Config\Config;
 
 class SnakeService
@@ -18,7 +19,7 @@ class SnakeService
     const START_X = 1152;  // в идеале нужно рандом (для одной можно центр канваса) // canvas.width / 2
     const START_Y = 535;   // в идеале нужно рандом (для одной можно центр канваса) // canvas.height / 2
 
-    public function __construct()
+    public function __construct(private SnakeRepositoryInterface $snakeRepository)
     {
     }
 
@@ -29,7 +30,9 @@ class SnakeService
         $color = Config::COLORS[array_rand(Config::COLORS)];
 
         $startBody = $this->createBody($color);
-        return new Snake(null,
+        // $id = SessionService::takeUserIdFromSession();
+        $id = 0;
+        return new Snake($id,
                          self::START_X,
                          self::START_Y,
                          $startBody,
@@ -38,6 +41,14 @@ class SnakeService
                          self::START_SPEED,
                          self::START_SCORE,
                          $color);
+    }
+
+    /**
+     * @return array<int, Snake>
+     */
+    public function getSnakes(): array
+    {
+        return $this->snakeRepository->getSnakes();
     }
 
     public function move(Snake $snake): void
