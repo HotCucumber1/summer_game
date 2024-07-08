@@ -22,8 +22,7 @@ class UserController extends AbstractController
 
     public function signUp(): Response
     {
-        // TODO: заменить на рендер формы логинации
-        return $this->render();
+        return $this->render('login_form.html.twig');
     }
 
     public function login(Request $request): Response
@@ -33,7 +32,7 @@ class UserController extends AbstractController
 
         $userId = $this->userService->addUser($name, $password);
         SessionService::putUserIdInSession($userId);
-        return new Response(); // TODO: заменить на редирект на страницу игры
+        return $this->redirectToRoute('game');
     }
 
     public function signIn(Request $request): Response

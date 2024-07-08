@@ -9,13 +9,13 @@ user/login:
     controller: App\Controller\UserController::signUp
 
 login:
-    path: login
+    path: /login
     methods: POST
     controller: App\Controller\UserController::login
 
-settings:
-    path: /game/start
-    methods: POST
+game:
+    path: /game
+    methods: GET
     controller: App\Controller\GameController::start
 
 info:

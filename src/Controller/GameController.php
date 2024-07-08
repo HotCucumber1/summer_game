@@ -12,8 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class GameController extends AbstractController
 {
-    public function __construct(private readonly GameInfo $gameInfo,
-                                private readonly GameSettingsService $settingsService)
+    public function __construct(private readonly GameInfo $gameInfo/*,
+                                private readonly GameSettingsService $settingsService*/)
     {
     }
 
@@ -21,21 +21,9 @@ class GameController extends AbstractController
     {
         return new Response('hello');
     }
-
     public function start(Request $request): Response
     {
-        $data = json_decode($request->getContent(), true);
-        if (!isset($data['width']))
-        {
-            throw new BadRequestException('Screen was not defined');
-        }
-        if (!isset($data['height']))
-        {
-            throw new BadRequestException('Screen was not defined');
-        }
-        $this->settingsService->setWindowSize($data['width'], $data['height']);
-
-        return $this->redirectToRoute('test');
+        return $this->render('ws_testing.html.twig');
     }
 
     public function setSnakeDirection(Request $request): Response

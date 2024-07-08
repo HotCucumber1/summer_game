@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Point;
 use App\Entity\Snake;
 use App\Entity\Wall;
+use Config\Config;
 
 class GameInfo
 {
@@ -20,7 +21,8 @@ class GameInfo
     {
         $this->snake = $this->snakeService->createSnake();
         for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
-        {$this->pointService->addPoint(-Wall::$radius, -Wall::$radius,
+        {
+            $this->pointService->addPoint(-Wall::$radius, -Wall::$radius,
                                         Wall::$radius, Wall::$radius );
         }
     }
