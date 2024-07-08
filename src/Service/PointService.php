@@ -3,12 +3,12 @@
 namespace App\Service;
 
 use App\Entity\Point;
-use App\Repository\PointRepository;
+use App\Repository\PointRepositoryInterface;
 
 
 class PointService
 {
-    public function __construct(private readonly PointRepository $pointRepository)
+    public function __construct(private readonly PointRepositoryInterface $pointRepository)
     {
     }
 

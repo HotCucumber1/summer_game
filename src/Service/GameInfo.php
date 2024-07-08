@@ -162,6 +162,7 @@ class GameInfo
             'body' => $bodyData,
             'radius' => $radius,
             'score' => $score,
+
             // TODO: убрать угол и скорость, нужны только для отладки
             'angleRad' => $this->snake->getDirection()->getAngle(),
             'angleDeg' => rad2deg($this->snake->getDirection()->getAngle()),

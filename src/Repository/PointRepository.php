@@ -6,13 +6,9 @@ use App\Entity\Point;
 use App\Entity\Wall;
 use Config\Config;
 
-class PointRepository
+class PointRepository implements PointRepositoryInterface
 {
-    public static array $points = [];
-
-    public function __construct()
-    {
-    }
+    private array $points = [];
 
     public function addPoint(int $minX, int $minY,
                              int $maxX, int $maxY): void
@@ -25,7 +21,7 @@ class PointRepository
         while ($x ** 2 + $y ** 2 >= Wall::$radius ** 2);
         $color = $this->getPointColor();
 
-        self::$points[] = new Point($x, $y, $color);
+        $this->points[] = new Point($x, $y, $color);
     }
 
     /**
@@ -33,7 +29,7 @@ class PointRepository
      */
     public function findPoints(): array
     {
-        return self::$points;
+        return $this->points;
     }
 
     public function eatPoint(Point $point): void
