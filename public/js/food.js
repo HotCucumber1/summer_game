@@ -7,9 +7,6 @@ class Food {
 
         this.size = ut.random(this.sizeMin, this.sizeMax);
 
-        this.foodImage = new Image();
-        this.foodImage.src = "../public/images/point1.png";
-
         this.mainColor = ut.randomColor();
     }
 

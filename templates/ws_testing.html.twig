@@ -20,13 +20,13 @@
 
     conn.onopen = function (e) {
         alert("Connection established!");
-    };
+    }
 
     conn.onmessage = function (e) {
         let response = document.getElementById('response');
         response.textContent = '';
         response.textContent = e.data;
-    };
+    }
 
     function sendMessage() {
         let input = document.getElementById('message');
@@ -41,57 +41,32 @@
         right: false,
         boost: false
     };
-    
+    const actions = {
+        'KeyW': 'up',
+        'KeyS': 'down',
+        'KeyA': 'left',
+        'KeyD': 'right',
+        'Space': 'boost',
+    };
+
     window.addEventListener('keydown', function (event) {
-        if (event.key === 'w')
+        let key = event.code;
+        let action = actions[key];
+        if (action)
         {
-            data.up = true;
+            data[action] = true;
             let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
-        }
-        if (event.key === 'a')
-        {
-            data.left = true;
-            let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
-        }
-        if (event.key === 's')
-        {
-            data.down = true;
-            let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
-        }
-        if (event.key === 'd')
-        {
-            data.right = true;
-            let jsonData = JSON.stringify(data, null, 4);
+            console.log(jsonData);
             conn.send(jsonData);
         }
     });
 
-    
+
     window.addEventListener('keyup', function (event) {
-        if (event.key === 'w')
-        {
-            data.up = false;
-            let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
-        }
-        if (event.key === 'a')
-        {
-            data.left = false;
-            let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
-        }
-        if (event.key === 's')
-        {
-            data.down = false;
-            let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
-        }
-        if (event.key === 'd')
-        {
-            data.right = false;
+        let key = event.code;
+        let action = actions[key];
+        if (action) {
+            data[action] = false;
             let jsonData = JSON.stringify(data, null, 4);
             conn.send(jsonData);
         }

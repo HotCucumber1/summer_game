@@ -14,7 +14,6 @@ class SnakeBot extends Snake {
         for(let i=1; i<this.length; i++) this.arr.push(new Point(this.arr[i-1].x, this.arr[i-1].y));
 
         //this.initBot();
-
     }
 
     initBot() {

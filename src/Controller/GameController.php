@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Service\GameInfo;
-use App\Service\GameSettingsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,7 +21,7 @@ class GameController extends AbstractController
     }
     public function start(): Response
     {
-        return $this->render('ws_testing.html.twig');
+        return $this->render('game.html.twig');
     }
 
     public function setSnakeDirection(Request $request): Response
