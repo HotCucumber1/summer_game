@@ -79,6 +79,12 @@ class Game {
     addSnake(id){
 
         this.snakes.push(new SnakeBot(this.ctxSnake, id))
+    drawName() {
+        let start = new Point(game.SCREEN_SIZE.x / 2 + 20, game.SCREEN_SIZE.y / 2);
+        this.ctxSnake.fillStyle = this.snakes[0].mainColor;
+        this.ctxSnake.font = "bold 24px Arial";
+        let nickname = sessionStorage.getItem("Nickname");
+        this.ctxSnake.fillText(nickname, start.x, start.y);
     }
 
     generateFoods(n) {

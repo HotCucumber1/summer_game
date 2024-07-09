@@ -34,6 +34,11 @@ class Snake {
         this.intervalId = null;
 
         this.camera = new Camera(0, 0, game.SCREEN_SIZE.x, game.SCREEN_SIZE.y);
+        this.death = new Audio("../public/audio/minecraft-death-sound.mp3");
+        this.death.volume = 1.0;
+        this.death.muted = false;
+        this.death.load();
+
     }
 
     drawHead() {
@@ -41,6 +46,7 @@ class Snake {
         let y = this.arr[0].y;
 
         //head
+        this.ctx.fillStyle = this.color;
         this.ctx.beginPath();
         this.ctx.arc(x, y, this.size, 0, 2 * Math.PI);
         this.ctx.fill();
@@ -178,6 +184,12 @@ class Snake {
                 game.foods[i].die();
                 this.length++;
                 this.addScore();
+
+                let pop = new Audio("../public/audio/pop.mp3");
+                pop.volume = 1.0;
+                pop.muted = false;
+                pop.play();
+
                 // this.addLength(game.foods[i].size);
             }
         }
@@ -236,6 +248,13 @@ class Snake {
                 this.ctx.globalAlpha = 0; // Устанавливаем окончательно, если alpha стал отрицательным
                 let index = game.snakes.indexOf(this);
                 game.snakes.splice(index, 1);
+
+                document.body.classList.remove("fade-in");
+                document.body.classList.add("fade-out");
+
+                setTimeout(function () {
+                    window.location.href = "menu.html";
+                }, 500);
             }
         };
 
@@ -267,9 +286,13 @@ class Snake {
             this.arr.splice(i, 1);
         }
 
+        this.death.play();
         cancelAnimationFrame(updateId);
 
         this.drawEffect(arrayBody);
+
+        let index = game.snakes.indexOf(this);
+        game.snakes.splice(index, 1);
     }
 
 }
