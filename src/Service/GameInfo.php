@@ -75,7 +75,7 @@ class GameInfo
     public function getData(): array
     {
         // Уменьшить радиус зоны
-        $this->compressWall();
+        // $this->compressWall();
         $this->snakeService->move($this->snake);
 
         // проверить столкновение
@@ -186,8 +186,8 @@ class GameInfo
         {
             $score = $this->snake->getScore();
 
-            $id = SessionService::takeUserIdFromSession();
-            $this->userService->setUserScore($id, $score);
+            // $id = SessionService::takeUserIdFromSession();
+            // $this->userService->setUserScore($id, $score);
 
             $body = $this->snake->getBodyParts();
             $pointsPerPart = intdiv($score, count($body));

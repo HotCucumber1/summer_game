@@ -27,7 +27,8 @@ class SnakeService
                                         self::START_ANGLE);
         $color = Config::COLORS[array_rand(Config::COLORS)];
 
-        $id = SessionService::takeUserIdFromSession();
+        // $id = SessionService::takeUserIdFromSession();
+        $id = 0;
         do
         {
             $headX = rand(-self::SPAWN_ZONE * Wall::$radius, self::SPAWN_ZONE * Wall::$radius);
