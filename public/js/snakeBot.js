@@ -2,24 +2,34 @@ class SnakeBot extends Snake {
     constructor(ctx, id) {
         super(ctx, id);
         this.changeDirectionInterval = 1000;
-        this.pos =  ut.arcRandom(game.world.x + game.WORLD_SIZE.x / 2 - game.ARENA_RADIUS, game.world.x + game.WORLD_SIZE.x / 2 + game.ARENA_RADIUS, game.ARENA_RADIUS - 100);
+        this.pos = ut.arcRandom(
+            game.world.x + game.WORLD_SIZE.x / 2 - game.ARENA_RADIUS,
+            game.world.x + game.WORLD_SIZE.x / 2 + game.ARENA_RADIUS,
+            game.ARENA_RADIUS - 100);
 
+        this.angle = 0;
         this.length = 10;
 
         this.speed = 4;
         this.boost = false;
+        this.d = -Math.PI;
 
         this.arr = [];
         this.arr.push(this.pos);
-        for(let i=1; i<this.length; i++) this.arr.push(new Point(this.arr[i-1].x, this.arr[i-1].y));
+        for (let i = 1; i < this.length; i++) this.arr.push(new Point(this.arr[i - 1].x, this.arr[i - 1].y));
 
-        //this.initBot();
+        this.initBot();
+
     }
 
     initBot() {
+        // setInterval(() => {
+        //     this.randomizeDirection();
+        // }, this.changeDirectionInterval);
+
         setInterval(() => {
-            this.randomizeDirection();
-        }, this.changeDirectionInterval);
+            this.findFood();
+        }, 100)
     }
 
     randomizeDirection() {
@@ -50,13 +60,51 @@ class SnakeBot extends Snake {
         }
     }
 
+    findFood() {
+        let min = Infinity;
+        let minFood = null;
+
+        for (let i = 0; i < game.foods.length; i++) {
+            let distance = ut.getDistance(game.foods[i].pos, this.arr[0]);
+            if (distance < min) {
+                min = distance;
+                minFood = game.foods[i].pos;
+            }
+        }
+
+        if (minFood) {
+            let angle = ut.getAngle(this.arr[0], minFood);
+            let delta = angle - this.d;
+
+            if (delta > Math.PI) {
+                delta -= 2 * Math.PI;
+            }
+            if (delta < -Math.PI) {
+                delta += 2 * Math.PI;
+            }
+
+            if (delta > 0) {
+                this.d += Math.PI / 16;
+            } else if (delta < 0) {
+                this.d -= Math.PI / 16;
+            }
+
+            this.changeAngle(this.d);
+        }
+
+    }
+
+    changeAngle(angle) {
+        this.angle = angle;
+    }
+
     move(player) {
         this.boostMove();
-        this.velocity.x = this.speed*Math.cos(this.angle);
-        this.velocity.y = this.speed*Math.sin(this.angle);
-        for(let i=this.length-1; i>=1; i--){
-            this.arr[i].x = this.arr[i-1].x;
-            this.arr[i].y = this.arr[i-1].y;
+        this.velocity.x = this.speed * Math.cos(this.angle);
+        this.velocity.y = this.speed * Math.sin(this.angle);
+        for (let i = this.length - 1; i >= 1; i--) {
+            this.arr[i].x = this.arr[i - 1].x;
+            this.arr[i].y = this.arr[i - 1].y;
 
             //relative motion with player
             this.arr[i].x -= player.velocity.x;
@@ -69,8 +117,8 @@ class SnakeBot extends Snake {
         this.arr[0].x += this.velocity.x;
         this.arr[0].y += this.velocity.y;
 
-        this.pos.x += this.velocity.x;
-        this.pos.y += this.velocity.y;
+        // this.pos.x += this.velocity.x;
+        // this.pos.y += this.velocity.y;
 
         //relative motion with player
         this.arr[0].x -= player.velocity.x;
@@ -79,17 +127,20 @@ class SnakeBot extends Snake {
         this.drawHead();
 
 
-        this.ctx.beginPath();
-        this.ctx.globalAlpha = 0.5;
-        this.ctx.fillStyle = "white";
-        if(this.inDanger) this.ctx.fillStyle = "red";
-        this.ctx.arc(this.pos.x, this.pos.y, this.shield, 0, 2*Math.PI);
-        this.ctx.fill();
-        this.ctx.globalAlpha = 1;
+        // this.ctx.beginPath();
+        // this.ctx.globalAlpha = 0.5;
+        // this.ctx.fillStyle = "white";
+        // if (this.inDanger) this.ctx.fillStyle = "red";
+        // this.ctx.arc(this.pos.x, this.pos.y, this.shield, 0, 2 * Math.PI);
+        // this.ctx.fill();
+        // this.ctx.globalAlpha = 1;
 
 
+        super.setSize();
         super.checkCollissionFood();
+        this.checkCollissionBot();
         this.checkCollissionBorder();
+
     }
 
     drawEffect(arr) {
@@ -144,6 +195,19 @@ class SnakeBot extends Snake {
             this.die();
     }
 
+    checkCollissionBot() {
+        let x = this.arr[0].x;
+        let y = this.arr[0].y;
+        for (let i = 0; i < game.snakes.length; i++) {
+            if (game.snakes[i].id != this.id)
+                for (let j = 0; j < game.snakes[i].arr.length; j++)
+                    if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
+                        game.snakes[i].arr[j].y, game.snakes[i].size)) {
+                        this.die();
+                    }
+        }
+    }
+
     die() {
         let last = this.length - 1;
         let arrayBody = [];
@@ -155,10 +219,12 @@ class SnakeBot extends Snake {
                 y: this.arr[i].y,
                 angle: this.angle
             })
-           this.arr.splice(i, 1);
+            this.arr.splice(i, 1);
         }
+
         // super.drawEffect(arrayBody);
         let index = game.snakes.indexOf(this);
         game.snakes.splice(index, 1);
     }
 }
+
