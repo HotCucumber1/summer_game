@@ -141,7 +141,8 @@ class Snake {
             this.headPath.shift();
         }
 
-        for (let i = this.length - 1; i > 0; i--) {
+        for (let i = this.length - 1; i > 0; i--)
+        {
             this.arr[i].x = this.headPath[this.headPath.length - 1 - i].x - this.camera.x;
             this.arr[i].y = this.headPath[this.headPath.length - 1 - i].y - this.camera.y;
             this.drawBody(this.arr[i].x, this.arr[i].y);
@@ -188,6 +189,7 @@ class Snake {
                 let pop = new Audio("../public/audio/pop.mp3");
                 pop.volume = 1.0;
                 pop.muted = false;
+                pop.load();
                 pop.play();
 
                 // this.addLength(game.foods[i].size);

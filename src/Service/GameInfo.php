@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class GameInfo
 {
-    const START_POINTS_AMOUNT = 10;
+    const START_POINTS_AMOUNT = 1000;
     const DEFAULT_ROTATION_ANGLE = M_PI / 32;
     private int $counter = 0;
     private Snake $snake;
@@ -57,11 +57,14 @@ class GameInfo
 
     public function getPointData(): array
     {
+        $this->updatePoints();
         // Информация по точкам
         $points = $this->pointService->allPoints();
         $pointsData = [];
-        foreach ($points as $point) {
-            if ($point->getStatus()) {
+        foreach ($points as $point)
+        {
+            if ($point->getStatus())
+            {
                 $pointsData[] = [
                     'x' => $point->getX(), //- $speed->getSpeed() * cos($speed->getAngle()),
                     'y' => $point->getY(), //- $speed->getSpeed() * sin($speed->getAngle()),

@@ -22,7 +22,8 @@ class WebSocketServer implements MessageComponentInterface
         $this->clients = new \SplObjectStorage;
 
         $this->loop->addPeriodicTimer(self::INTERVAL, function() {
-            $this->sendData();
+            // TODO: изменить на обычные данные!!!
+            $this->sendPointData();
         });
     }
 
@@ -30,7 +31,7 @@ class WebSocketServer implements MessageComponentInterface
     {
         $this->clients->attach($conn);
         echo "New connection {$conn->resourceId}\n";
-        $this->sendPointData();
+        // $this->sendPointData();
     }
 
     public function onMessage(ConnectionInterface $from,  $msg): void
