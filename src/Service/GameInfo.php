@@ -65,10 +65,12 @@ class GameInfo
         }
         if ($controlInfo['boost'])
         {
-            $newSpeed = $direction->getSpeed() * 2;
-            $direction->setSpeed($newSpeed);
+            $direction->setSpeed(SnakeService::BOOST_SPEED);
         }
-
+        else
+        {
+            $direction->setSpeed(SnakeService::START_SPEED);
+        }
         $this->snake->setDirection($direction);
     }
 
@@ -142,6 +144,7 @@ class GameInfo
             // TODO: убрать угол, нужны только для отладки
             'angleRad' => $this->snake->getDirection()->getAngle(),
             'angleDeg' => rad2deg($this->snake->getDirection()->getAngle()),
+            'speed' => $this->snake->getDirection()->getSpeed(),
         ];
     }
 

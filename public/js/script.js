@@ -1,8 +1,3 @@
-// создаем подключение к ws серверу
-const serverAdress = '10.250.104.40'; // нужно изменить на катуальный
-const socketPort = 8080;  // при необходимости заменить
-const wsConnect = new WebSocket('ws:/' + serverAdress + ':' + socketPort);
-
 let canvas = document.getElementById("canvasSnake");
 let ctxSnake = document.getElementById("canvasSnake").getContext("2d");
 let ctxFood = document.getElementById("canvasFood").getContext("2d");
@@ -12,6 +7,14 @@ let cursor = new Point(0, 0);
 let game = new Game(ctxSnake, ctxFood, ctxHex);
 
 let d = -Math.PI / 2;
+
+
+conn.onmessage = function (event) {
+    let data = JSON.parse(event.data);
+    let snake = data['snake'];
+    let points = data['points'];
+    console.log(snake);
+}
 
 canvas.onmousemove = function (e) {
     cursor = ut.getMousePos(canvas, e);
