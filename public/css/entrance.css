@@ -4,6 +4,10 @@
     text-decoration: none;
 }
 
+html {
+    background: black;
+}
+
 body {
     opacity: 0;
     transition: opacity 2s;
@@ -11,13 +15,12 @@ body {
 
 body.fade-out {
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 2s ease-in-out;
 }
 
 body.fade-in {
     opacity: 1;
 }
-
 
 .entrance {
     width: 100vw;
@@ -26,7 +29,7 @@ body.fade-in {
     align-items: center;
     flex-direction: column;
     background-image: radial-gradient(circle, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8), rgb(0, 0, 0)),
-        url("../back.jpg");
+        url("../images/back.jpg");
 }
 
 .entrance__logo {
@@ -36,33 +39,23 @@ body.fade-in {
     color: rgb(129, 188, 61);
 }
 
-.entrance__nickname {
+.entrance__input {
     border: none;
+    outline: none;
     border-radius: 25px;
     padding: 4px;
     width: 300px;
     height: 50px;
     margin-top: 30px;
     font-size: 32px;
-    background-color: rgb(134, 66, 93)
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    background-color: rgb(134, 66, 93);
+    padding-inline: 20px;
 }
 
-.entrance__password {
-    border: none;
-    border-radius: 25px;
-    padding: 4px;
-    width: 300px;
-    height: 50px;
-    margin-top: 30px;
-    font-size: 32px;
-    background-color: rgb(134, 66, 93)
-}
-
-.entrance__nickname::placeholder {
-    color: black;
-}
-
-.entrance__password::placeholder {
+.entrance__input::placeholder {
+    opacity: 40%;
     color: black;
 }
 

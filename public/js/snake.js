@@ -7,13 +7,13 @@ class Snake {
         this.boost = false;
         this.state = 0;
 
-
         this.pos = new Point(game.world.x + game.WORLD_SIZE.x, game.world.y + game.WORLD_SIZE.y);
-        this.velocity = new Point(game.x, game.y);
+        this.velocity = new Point(0, 0);
         this.angle = ut.random(0, Math.PI);
 
-        this.length = 20;
-        this.MAXSIZE = 40;
+        this.length = 10;
+        this.MAXSIZE = 80;
+        this.MINSIZE = 15;
         this.size = 15;
 
         this.mainColor = ut.randomColor();
@@ -28,10 +28,15 @@ class Snake {
 
         this.counter = 0;
         this.intervalId = null;
+
+        this.death = new Audio("../public/audio/minecraft-death-sound.mp3");
+        this.death.volume = 1.0;
+        this.death.muted = false;
+        this.death.load();
+
     }
 
     drawHead() {
-
         let x = this.arr[0].x;
         let y = this.arr[0].y;
 
@@ -106,12 +111,11 @@ class Snake {
             if (this.intervalId === null) {
                 this.intervalId = setInterval(() => {
                     this.counter++;
-                }, 300);
+                }, 1000);
             }
-            if (this.counter >= 2) {
+            if (this.counter >= 3) {
+                this.length--;
                 this.counter = 0;
-                //game.foods.push(new Food(game.ctxFood, this.arr[this.length - 1].x, this.arr[this.length - ].y));
-                this.length--
             }
         } else {
             this.ctx.shadowBlur = 0;
@@ -138,25 +142,25 @@ class Snake {
         this.pos.y += this.velocity.y;
 
         this.drawHead();
+        this.setSize();
         this.checkCollissionFood();
+        this.checkCollissionSnake()
         this.checkCollissionBorder();
     }
 
-    // addLength(i) {
-    //     let foodSize = game.foods[i].size;
-    //     this.length += (foodSize - 4);
-    // }
+    setSize() {
+        if (this.length % 5 === 0) this.size = this.size = this.length / 5 + 13;
+        if (this.size < this.MINSIZE) this.size = this.MINSIZE;
+    }
 
     addScore() {
         this.score++;
         this.arr.push(new Point(-100, -100));
     }
 
-    incSize() {
-        this.length++;
-        if (this.length % 10 === 0) this.size++;
-        if (this.size > this.MAXSIZE) this.size = this.MAXSIZE;
-    }
+    // addLength(size) {
+    //     this.length += (size - 4);
+    // }
 
     checkCollissionFood() {
         let x = this.arr[0].x;
@@ -165,9 +169,28 @@ class Snake {
             if (ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x,
                 game.foods[i].pos.y, game.foods[i].size)) {
                 game.foods[i].die();
+                this.length++;
                 this.addScore();
-                this.incSize();
+
+                let pop = new Audio("../public/audio/pop.mp3");
+                pop.volume = 1.0;
+                pop.muted = false;
+                pop.play();
+                
+                // this.addLength(game.foods[i].size);
             }
+        }
+    }
+
+    checkCollissionSnake() {
+        let x = this.arr[0].x;
+        let y = this.arr[0].y;
+        for (let i = 1; i < game.snakes.length; i++) {
+            for (let j = 0; j < game.snakes[i].arr.length; j++)
+                if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
+                    game.snakes[i].arr[j].y, game.snakes[i].size)) {
+                    this.die();
+                }
         }
     }
 
@@ -214,7 +237,7 @@ class Snake {
                 document.body.classList.add("fade-out");
 
                 setTimeout(function () {
-                    window.location.href = "../menu/menu.html";
+                    window.location.href = "menu.html";
                 }, 500);
             }
         };
@@ -223,15 +246,17 @@ class Snake {
     }
 
     checkCollissionBorder() {
-
         let center = new Point(game.world.x + game.WORLD_SIZE.x / 2, game.world.y + game.WORLD_SIZE.y / 2);
 
         if (ut.getDistance(this.arr[0], center) + this.size > game.ARENA_RADIUS)
             this.die();
     }
 
-    die() {
+    changeAngle(angle) {
+        this.angle = angle;
+    }
 
+    die() {
         let last = this.length - 1;
         let arrayBody = [];
 
@@ -245,12 +270,13 @@ class Snake {
             this.arr.splice(i, 1);
         }
 
+        this.death.play();
         cancelAnimationFrame(updateId);
 
         this.drawEffect(arrayBody);
+
+        let index = game.snakes.indexOf(this);
+        game.snakes.splice(index, 1);
     }
 
-    changeAngle(angle) {
-        this.angle = angle;
-    }
 }

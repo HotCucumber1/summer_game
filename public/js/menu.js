@@ -1,11 +1,11 @@
 const single = document.getElementById("single");
 const multi = document.getElementById("multi");
+const form = document.querySelector("menu");
 
-
-window.addEventListener("load", function () {
+window.addEventListener("DOMContentLoaded", function () {
     document.body.classList.add("fade-in");
 
-    function hangleButtonClick(e, targetURL) {
+    function handleButtonClick(targetURL) {
         document.body.classList.remove("fade-in");
         document.body.classList.add("fade-out"); 
 
@@ -14,13 +14,17 @@ window.addEventListener("load", function () {
         }, 500);
     }
 
-    single.addEventListener("click", function (e) {
-        hangleButtonClick(e, "../pages/index.html");
+    single.addEventListener("click", function () {
+        handleButtonClick("../pages/index.html");
+    });
+
+    multi.addEventListener("click", function () {
+        handleButtonClick("../pages/index.html");
     });
     
 });
 
-function hangleOnButton(e) {
+function handleOnButton(e) {
     const button = e.target;
     button.style.boxShadow = "0 0 20px rgb(161, 161, 161)"; 
 };
@@ -30,10 +34,10 @@ function pullOfWithButton(e) {
     button.style.boxShadow = "";
 }
 
-single.addEventListener('mouseover', hangleOnButton);
+single.addEventListener('mouseover', handleOnButton);
 single.addEventListener('mouseout', pullOfWithButton);
 
-multi.addEventListener('mouseover', hangleOnButton);
+multi.addEventListener('mouseover', handleOnButton);
 multi.addEventListener('mouseout', pullOfWithButton);
 
 
