@@ -19,7 +19,7 @@ class GameController extends AbstractController
     {
         return new Response('hello');
     }
-    public function start(): Response
+    public function start(Request $request): Response
     {
         return $this->render('game.html.twig');
     }

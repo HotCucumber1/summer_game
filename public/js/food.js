@@ -6,7 +6,6 @@ class Food {
         this.sizeMax = 9;
 
         this.size = ut.random(this.sizeMin, this.sizeMax);
-
         this.mainColor = ut.randomColor();
     }
 

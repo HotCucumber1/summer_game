@@ -13,7 +13,7 @@ class SnakeService
     private const START_RADIUS = 15;
     private const START_SCORE = 0;
     private const START_LENGTH = 10;
-    public const START_SPEED = 5;
+    public const START_SPEED = 3;
     public const BOOST_SPEED = 10;
     private const START_ANGLE = M_PI / 2;
     private const SPAWN_ZONE = 0.6;

@@ -1,7 +1,4 @@
 class Util {
-    constructor() {
-    }
-
     getMousePos(canvas, evt) {
         let rect = canvas.getBoundingClientRect();
 
@@ -65,7 +62,6 @@ class Util {
 
 
     color(hex, lum) {
-
         // validate hex string
         hex = String(hex).replace(/[^0-9a-f]/gi, '');
         if (hex.length < 6) {

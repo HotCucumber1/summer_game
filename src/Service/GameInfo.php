@@ -42,14 +42,14 @@ class GameInfo
         if ($controlInfo['up'])
         {
             $direction->setAngle($angle + ((3 * M_PI / 2 < $angle || $angle < M_PI / 2) ?
-                                                self::DEFAULT_ROTATION_ANGLE :
-                                                -self::DEFAULT_ROTATION_ANGLE));
+                                                -self::DEFAULT_ROTATION_ANGLE :
+                                                self::DEFAULT_ROTATION_ANGLE));
         }
         if ($controlInfo['down'])
         {
             $direction->setAngle($angle + ((3 * M_PI / 2 < $angle || $angle < M_PI / 2) ?
-                                                -self::DEFAULT_ROTATION_ANGLE :
-                                                self::DEFAULT_ROTATION_ANGLE));
+                                                self::DEFAULT_ROTATION_ANGLE :
+                                                -self::DEFAULT_ROTATION_ANGLE));
         }
         if ($controlInfo['left'])
         {
@@ -145,6 +145,8 @@ class GameInfo
             'angleRad' => $this->snake->getDirection()->getAngle(),
             'angleDeg' => rad2deg($this->snake->getDirection()->getAngle()),
             'speed' => $this->snake->getDirection()->getSpeed(),
+            'velocityX' => $this->snake->getDirection()->getSpeed() * cos($this->snake->getDirection()->getAngle()),
+            'velocityY' => $this->snake->getDirection()->getSpeed() * sin($this->snake->getDirection()->getAngle()),
         ];
     }
 

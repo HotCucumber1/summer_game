@@ -15,28 +15,30 @@ class Game {
 
     init() {
         this.snakes[0] = new Snake(this.ctxSnake, 0);
-        for(let i=1; i<11; i++) this.addSnake(i);
+        // for(let i=1; i<11; i++)
+        //    this.addSnake(i);
         // this.generateFoods(3000);
     }
 
     draw() {
         this.drawWorld();
 
-        if (this.snakes[0].state === 0)
-            this.snakes[0].move();
+        /*if (this.snakes[0].state === 0)
+            this.snakes[0].move();*/
+        this.snakes[0].drawHead();
 
-        for(let i=1; i < this.snakes.length; i++)
-            if(this.snakes[i].state === 0) this.snakes[i].move(this.snakes[0]);
+        /*for(let i=1; i < this.snakes.length; i++)
+            if(this.snakes[i].state === 0)
+                this.snakes[i].move(this.snakes[0]);*/
 
-        for (let i = 0; i < this.foods.length; i++) this.foods[i].draw(this.snakes[0]);
-
+        for (let i = 0; i < this.foods.length; i++)
+            this.foods[i].draw(this.snakes[0]);
         this.drawLength();
     }
 
     drawWorld() {
         // this.ctxHex.fillStyle = "white";
         // this.ctxHex.fillRect(this.world.x - 2, this.world.y - 2, this.WORLD_SIZE.x + 4, this.WORLD_SIZE.y + 4);
-
         this.ctxHex.save();
 
         // Заполнение области за пределами круга красным цветом
@@ -79,15 +81,6 @@ class Game {
     }
 
     addSnake(id){
-
         this.snakes.push(new SnakeBot(this.ctxSnake, id))
     }
-
-    // generateFoods(n) {
-    //     for (let i = 0; i < n; i++) {
-    //         let pos = ut.arcRandom(this.world.x + this.WORLD_SIZE.x / 2 - this.ARENA_RADIUS, this.world.x + this.WORLD_SIZE.x / 2 + this.ARENA_RADIUS, this.ARENA_RADIUS - 100);
-    //         this.foods.push(new Food(this.ctxFood, pos.x, pos.y));
-    //     }
-
-    // }
 }

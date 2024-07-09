@@ -119,7 +119,7 @@ class Snake {
         }
     }
 
-    move() {
+    move(){
         this.boostMove();
 
         this.velocity.x = this.speed * Math.cos(this.angle);
@@ -127,7 +127,8 @@ class Snake {
 
         let d = this.size / 2;
 
-        for (let i = this.length - 1; i >= 1; i--) {
+        for (let i = this.length - 1; i >= 1; i--)
+        {
             this.arr[i].x = this.arr[i - 1].x - d * Math.cos(this.angle);
             this.arr[i].y = this.arr[i - 1].y - d * Math.sin(this.angle);
             this.drawBody(this.arr[i].x, this.arr[i].y);

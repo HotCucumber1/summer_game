@@ -4,9 +4,6 @@ conn.onopen = function (e) {
     alert("Connection established!");
 };
 
-conn.onmessage = function (e) {
-    console.log(e.data);
-};
 
 let data = {
     up: false,
@@ -45,8 +42,3 @@ window.addEventListener('keyup', function (event) {
         conn.send(jsonData);
     }
 });
-
-
-conn.onmessage = function (e) {
-    console.log(e.data);
-}
