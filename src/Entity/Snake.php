@@ -6,11 +6,10 @@ class Snake
 {
     public function __construct(
         private int       $id,
-        private float       $headX,
-        private float       $headY,
+        private float     $headX,
+        private float     $headY,
         private array     $bodyParts,
         private int       $radius,
-        private Direction $direction,
         private int       $score,
         private string    $color,
         private bool      $isAlive=true
@@ -46,10 +45,10 @@ class Snake
         return $this->radius;
     }
 
-    public function getDirection(): Direction
-    {
-        return $this->direction;
-    }
+//    public function getDirection(): Direction
+//    {
+//        return $this->direction;
+//    }
 
     public function getScore(): int
     {
@@ -91,10 +90,10 @@ class Snake
         $this->radius = $radius;
     }
 
-    public function setDirection(Direction $direction): void
-    {
-        $this->direction = $direction;
-    }
+//    public function setDirection(Direction $direction): void
+//    {
+//        $this->direction = $direction;
+//    }
 
     public function setColor(string $color): void
     {

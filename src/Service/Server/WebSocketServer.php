@@ -17,9 +17,7 @@ class WebSocketServer implements MessageComponentInterface
     protected const INTERVAL = 0.02;
 
     public function __construct(private readonly LoopInterface $loop,
-                                private readonly GameInfo $gameInfo,
-                                /*private readonly HttpKernelInterface $kernel,
-                                private readonly GameController $gameController*/)
+                                private readonly GameInfo $gameInfo)
     {
         $this->clients = new \SplObjectStorage;
 
@@ -32,6 +30,7 @@ class WebSocketServer implements MessageComponentInterface
     {
         $this->clients->attach($conn);
         echo "New connection {$conn->resourceId}\n";
+        $this->sendPointData();
     }
 
     public function onMessage(ConnectionInterface $from,  $msg): void
@@ -42,6 +41,15 @@ class WebSocketServer implements MessageComponentInterface
     public function sendData(): void
     {
         $response = json_encode($this->gameInfo->getData());
+        foreach ($this->clients as $client)
+        {
+            $client->send($response);
+        }
+    }
+
+    public function sendPointData(): void
+    {
+        $response = json_encode($this->gameInfo->getPointData());
         foreach ($this->clients as $client)
         {
             $client->send($response);

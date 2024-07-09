@@ -2,9 +2,11 @@
 
 namespace App\Service;
 
+use App\Entity\BodyPart;
 use App\Entity\Point;
 use App\Entity\Snake;
 use App\Entity\Wall;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class GameInfo
 {
@@ -12,6 +14,7 @@ class GameInfo
     const DEFAULT_ROTATION_ANGLE = M_PI / 32;
     private int $counter = 0;
     private Snake $snake;
+    private array $users_data = [];
 
     public function __construct(private readonly CollisionServiceInterface $collisionService,
                                 private readonly PointService              $pointService,
@@ -26,72 +29,55 @@ class GameInfo
         }
     }
 
-    public function setGameStatus($data): void
+    public function setGameStatus(string $jsonData): void
     {
+        $data = json_decode($jsonData, associative: true);
+        if (!isset($data['snake']) ||
+            !isset($data['snake']['id']) ||
+            !isset($data['snake']['x']) ||
+            !isset($data['snake']['y']) ||
+            !isset($data['snake']['radius']) ||
+            !isset($data['snake']['score']) ||
+            !isset($data['snake']['body']))
+        {
+            throw new BadRequestException('Not enough information about snake');
+        }
+
+        $this->snakeService->setSnakeData($this->snake,
+                                          $data['snake']['x'],
+                                          $data['snake']['y'],
+                                          $data['snake']['radius'],
+                                          $this->snake->getColor(),
+                                          $data['snake']['body']);
+        $this->checkBumps();
+        $this->updatePoints();
+        $this->checkSnakeDeath();
+        $this->compressWall();
     }
 
-    public function mouseMovement(Snake $snake, array $controlInfo): void
+    public function getPointData(): array
     {
-        $mouseX = $controlInfo['mouseX'];
-        $mouseY = $controlInfo['mouseY'];
+        // Информация по точкам
+        $points = $this->pointService->allPoints();
+        $pointsData = [];
+        foreach ($points as $point) {
+            if ($point->getStatus()) {
+                $pointsData[] = [
+                    'x' => $point->getX(), //- $speed->getSpeed() * cos($speed->getAngle()),
+                    'y' => $point->getY(), //- $speed->getSpeed() * sin($speed->getAngle()),
+                    'color' => $point->getColor()
+                ];
+            }
+        };
 
-        // TODO: спросить Ильсафа про управление
-    }
-
-    public function keyMovement(array $controlInfo): void
-    {
-        $direction = $this->snake->getDirection();
-        $angle = $direction->getAngle();
-
-        if ($controlInfo['up'])
-        {
-            $direction->setAngle($angle + ((3 * M_PI / 2 < $angle || $angle < M_PI / 2) ?
-                                                -self::DEFAULT_ROTATION_ANGLE :
-                                                self::DEFAULT_ROTATION_ANGLE));
-        }
-        if ($controlInfo['down'])
-        {
-            $direction->setAngle($angle + ((3 * M_PI / 2 < $angle || $angle < M_PI / 2) ?
-                                                self::DEFAULT_ROTATION_ANGLE :
-                                                -self::DEFAULT_ROTATION_ANGLE));
-        }
-        if ($controlInfo['left'])
-        {
-            $direction->setAngle($angle + (($angle < M_PI) ?
-                                                self::DEFAULT_ROTATION_ANGLE :
-                                                -self::DEFAULT_ROTATION_ANGLE));
-        }
-        if ($controlInfo['right'])
-        {
-            $direction->setAngle($angle + (($angle < M_PI) ?
-                                                -self::DEFAULT_ROTATION_ANGLE :
-                                                self::DEFAULT_ROTATION_ANGLE));
-        }
-        if ($controlInfo['boost'])
-        {
-            $direction->setSpeed(SnakeService::BOOST_SPEED);
-        }
-        else
-        {
-            $direction->setSpeed(SnakeService::START_SPEED);
-        }
-        $this->snake->setDirection($direction);
+        return [
+            'points' => $pointsData
+        ];
     }
 
     public function getData(): array
     {
-        // Уменьшить радиус зоны
-        // $this->compressWall();
-        $this->snakeService->move($this->snake);
-
-        // проверить столкновение
-        $this->checkBumps();
-
-        // проверить точки
-        $this->updatePoints();
-
-        // проверить, жива ли змея
-        $this->checkSnakeDeath();
+        // пока текущая змея
         $snakeData = [];
         if ($this->snake->getAliveStatus())
         {
@@ -144,13 +130,6 @@ class GameInfo
             'body' => $bodyData,
             'radius' => $radius,
             'score' => $score,
-
-            // TODO: убрать угол, нужны только для отладки
-            'angleRad' => $this->snake->getDirection()->getAngle(),
-            'angleDeg' => rad2deg($this->snake->getDirection()->getAngle()),
-            'speed' => $this->snake->getDirection()->getSpeed(),
-            'velocityX' => $this->snake->getDirection()->getSpeed() * cos($this->snake->getDirection()->getAngle()),
-            'velocityY' => $this->snake->getDirection()->getSpeed() * sin($this->snake->getDirection()->getAngle()),
         ];
     }
 
@@ -178,7 +157,6 @@ class GameInfo
             {
                 $this->pointService->clearPoint($point);
                 $this->snake->increaseScore(Point::PRICE);
-                $this->snakeService->grow($this->snake);
             }
 
             if ($point->getX() ** 2 + $point->getY() ** 2 >= Wall::$radius ** 2)
