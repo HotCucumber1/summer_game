@@ -16,7 +16,7 @@ class Game {
     init() {
         this.snakes[0] = new Snake(this.ctxSnake, 0);
         for(let i=1; i<11; i++) this.addSnake(i);
-        this.generateFoods(3000);
+        // this.generateFoods(3000);
     }
 
     draw() {
@@ -83,11 +83,11 @@ class Game {
         this.snakes.push(new SnakeBot(this.ctxSnake, id))
     }
 
-    generateFoods(n) {
-        for (let i = 0; i < n; i++) {
-            let pos = ut.arcRandom(this.world.x + this.WORLD_SIZE.x / 2 - this.ARENA_RADIUS, this.world.x + this.WORLD_SIZE.x / 2 + this.ARENA_RADIUS, this.ARENA_RADIUS - 100);
-            this.foods.push(new Food(this.ctxFood, pos.x, pos.y));
-        }
+    // generateFoods(n) {
+    //     for (let i = 0; i < n; i++) {
+    //         let pos = ut.arcRandom(this.world.x + this.WORLD_SIZE.x / 2 - this.ARENA_RADIUS, this.world.x + this.WORLD_SIZE.x / 2 + this.ARENA_RADIUS, this.ARENA_RADIUS - 100);
+    //         this.foods.push(new Food(this.ctxFood, pos.x, pos.y));
+    //     }
 
-    }
+    // }
 }

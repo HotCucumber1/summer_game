@@ -257,8 +257,8 @@ class Snake {
 
         this.drawEffect(arrayBody);
 
-        let index = game.snakes.indexOf(this);
-        game.snakes.splice(index, 1);
+        // let index = game.snakes.indexOf(this);
+        // game.snakes.splice(index, 1);
     }
 
 }
