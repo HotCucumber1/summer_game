@@ -95,8 +95,8 @@ class GameInfo
             if ($point->getStatus())
             {
                 $pointsData[] = [
-                    'x' => $point->getX(), //- $speed->getSpeed() * cos($speed->getAngle()),
-                    'y' => $point->getY(), //- $speed->getSpeed() * sin($speed->getAngle()),
+                    'x' => $point->getX(),
+                    'y' => $point->getY(),
                     'color' => $point->getColor()
                 ];
             }
@@ -139,12 +139,11 @@ class GameInfo
     private function checkBumps(): void
     {
         if ($this->collisionService->isWallBump($this->snake) ||
-            $this->collisionService->isSnakeBump($this->snake) ||
             $this->collisionService->isSnakeBump($this->snake))
         {
             // TODO: закоментировонно для отладки
-            /* $this->snakeService->die($this->snake);
-            $id = SessionService::takeUserIdFromSession();
+            $this->snakeService->die($this->snake);
+            /*$id = SessionService::takeUserIdFromSession();
             $score = $this->snake->getScore();
 
             $this->userService->setUserScore($id, $score);*/
@@ -156,10 +155,14 @@ class GameInfo
         $points = $this->pointService->allPoints();
         foreach ($points as $point)
         {
-            if ($this->collisionService->isPointEaten($this->snake, $point))
+            if (abs($this->snake->getHeadX() - $point->getX()) < 20 &&
+                abs($this->snake->getHeadY() - $point->getY()) < 20)
             {
-                $this->pointService->clearPoint($point);
-                $this->snake->increaseScore(Point::PRICE);
+                if ($this->collisionService->isPointEaten($this->snake, $point))
+                {
+                    $this->pointService->clearPoint($point);
+                    $this->snake->increaseScore(Point::PRICE);
+                }
             }
 
             if ($point->getX() ** 2 + $point->getY() ** 2 >= Wall::$radius ** 2)
@@ -200,7 +203,7 @@ class GameInfo
 
     private function compressWall(): void
     {
-        if (Wall::$radius > 100)
+        if (Wall::$radius > 500)
         {
             Wall::$radius -= 1;
         }

@@ -23,7 +23,7 @@ class WebSocketServer implements MessageComponentInterface
 
         $this->loop->addPeriodicTimer(self::INTERVAL, function() {
             // TODO: изменить на обычные данные!!!
-            $this->sendPointData();
+            $this->sendData();
         });
     }
 

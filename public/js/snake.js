@@ -11,7 +11,7 @@ class Snake {
         this.velocity = new Point(0, 0);
         this.angle = ut.random(0, Math.PI);
 
-        this.length = 10;
+        this.length = 20;
         this.MAXSIZE = 80;
         this.MINSIZE = 15;
         this.size = 15;
@@ -24,7 +24,8 @@ class Snake {
         this.headPath = [];
 
         this.arr.push(new Point(this.pos.x,  this.pos.y));
-        this.headPath.push(new Point(this.pos.x,  this.pos.y)) ;
+        this.headPath.push(new Point(this.pos.x,  this.pos.y));
+
         for (let i = 1; i < this.length; i++) {
             this.arr.push(new Point(this.arr[i - 1].x, this.arr[i - 1].y));
             this.headPath.push(new Point(this.headPath[i - 1].x, this.headPath[i - 1].y));
@@ -86,7 +87,6 @@ class Snake {
     }
 
     drawBody(x, y) {
-
         let grd = this.ctx.createRadialGradient(x, y, 2, x + 4, y + 4, 10);
         grd.addColorStop(0, this.supportColor);
         grd.addColorStop(1, this.midColor);
@@ -118,7 +118,8 @@ class Snake {
                     this.counter++;
                 }, 1000);
             }
-            if (this.counter >= 1) {
+            if (this.counter >= 1)
+            {
                 this.length--;
                 this.counter = 0;
             }
@@ -156,15 +157,18 @@ class Snake {
         this.drawHead();
 
         this.setSize();
-        this.checkCollissionFood();
+        /*this.checkCollissionFood();
         this.checkCollissionSnake()
-        this.checkCollissionBorder();
+        this.checkCollissionBorder();*/
     }
 
     setSize() {
-        if (this.length % 5 === 0) this.size = this.size = this.length / 5 + 13;
-        if (this.size > this.MAXSIZE) this.size = this.MAXSIZE;
-        if (this.size < this.MINSIZE) this.size = this.MINSIZE;
+        if (this.length % 5 === 0)
+           this.size = this.length / 5 + 13;
+        if (this.size > this.MAXSIZE)
+            this.size = this.MAXSIZE;
+        if (this.size < this.MINSIZE)
+            this.size = this.MINSIZE;
     }
 
     addScore() {
@@ -278,18 +282,18 @@ class Snake {
         let last = this.length - 1;
         let arrayBody = [];
 
-        for (let i = last; i >= 1; i--) {
+        for (let i= last; i >= 1; i--) {
             game.foods.push(new Food(game.ctxSnake, this.arr[i].x, this.arr[i].y));
             arrayBody.push({
                 x: this.arr[i].x,
                 y: this.arr[i].y,
                 angle: this.angle
-            })
+            });
             this.arr.splice(i, 1);
         }
 
         this.death.play();
-        cancelAnimationFrame(updateId);
+        // cancelAnimationFrame(updateId);
 
         this.drawEffect(arrayBody);
 

@@ -29,7 +29,6 @@ function movement() {
     } else if (delta < 0) {
         d -= Math.PI / 32;
     }
-
     game.snakes[0].changeAngle(d);
 }
 
@@ -55,16 +54,13 @@ window.addEventListener('keyup', function (event) {
 
 function start() {
     game.init();
-    update();
+    // update();
 }
 
+let previousDelta= 0;
+let fpsLimit= 120;
 
-let updateId;
-let previousDelta = 0
-let fpsLimit = 120;
-
-
-function update(currentDelta) {
+/*function update(currentDelta) {
     movement();
     let delta = currentDelta - previousDelta;
     if (fpsLimit && delta < 1000 / fpsLimit)
@@ -75,8 +71,26 @@ function update(currentDelta) {
     ctxHex.clearRect(0, 0, canvas.width, canvas.height);
 
     game.draw();
-    updateId = requestAnimationFrame(update);
-}
+
+    ctxHex.fillStyle = 'green';
+    ctxHex.beginPath();
+    ctxHex.arc(game.world.x + game.WORLD_SIZE.x / 2, game.world.y + game.WORLD_SIZE.y / 2, 200, 0, 2*Math.PI);
+    ctxHex.fill();
+    ctxHex.fillStyle = '';
+
+    let data = {
+        snake: {
+            id: 0,
+            x: game.snakes[0].pos.x,
+            y: game.snakes[0].pos.y,
+            radius: game.snakes[0].size,
+            score: game.snakes[0].score,
+            body: game.snakes[0].arr
+        }
+    };
+    conn.send(JSON.stringify(data));
+    requestAnimationFrame(update);
+}*/
 
 
 conn.addEventListener("message", function (event) {
@@ -94,7 +108,41 @@ conn.addEventListener("message", function (event) {
             )
         );
     }
-    update();
+    game.ARENA_RADIUS = dataFromServer.wall;
+
+    if (Object.keys(dataFromServer.snake).length === 0)
+    {
+        game.snakes[0].die();
+    }
+
+    movement();
+    /*let delta = currentDelta - previousDelta;
+    if (fpsLimit && delta < 1000 / fpsLimit)
+        return;
+    previousDelta = currentDelta;*/
+
+    ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
+    ctxHex.clearRect(0, 0, canvas.width, canvas.height);
+
+    game.draw();
+
+    ctxHex.fillStyle = 'green';
+    ctxHex.beginPath();
+    ctxHex.arc(game.world.x + game.WORLD_SIZE.x / 2, game.world.y + game.WORLD_SIZE.y / 2, 200, 0, 2*Math.PI);
+    ctxHex.fill();
+    ctxHex.fillStyle = '';
+
+    let data = {
+        snake: {
+            id: 0,
+            x: game.snakes[0].pos.x,
+            y: game.snakes[0].pos.y,
+            radius: game.snakes[0].size,
+            score: game.snakes[0].score,
+            body: game.snakes[0].arr
+        }
+    };
+    conn.send(JSON.stringify(data));
 });
 
 

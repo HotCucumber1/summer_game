@@ -5,9 +5,9 @@ class Food {
         this.sizeMin = 5;
         this.sizeMax = 9;
 
-        this.size = 7;//ut.random(this.sizeMin, this.sizeMax);
+        this.size = 7; //ut.random(this.sizeMin, this.sizeMax);
 
-        this.mainColor = color;//ut.randomColor();
+        this.mainColor = color; //ut.randomColor();
     }
 
     draw(player) {

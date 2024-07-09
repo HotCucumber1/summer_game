@@ -3,7 +3,7 @@ class Game {
         this.ctxSnake = ctxSnake;
         this.ctxHex = ctxHex;
         this.WORLD_SIZE = new Point(40000, 20000);
-        this.ARENA_RADIUS = 5000
+        this.ARENA_RADIUS = 5000;
         this.SCREEN_SIZE = new Point(window.innerWidth, window.innerHeight);
         this.world = new Point(-20000, -10000);
         this.snakes = [];
@@ -31,9 +31,9 @@ class Game {
         if (this.snakes[0].state === 0)
             this.snakes[0].move();
 
-        for(let i=1; i < this.snakes.length; i++)
+        /*for(let i=1; i < this.snakes.length; i++)
             if(this.snakes[i].state === 0)
-                this.snakes[i].move(this.snakes[0]);
+                this.snakes[i].move(this.snakes[0]);*/
 
         this.drawLength();
     }
@@ -41,7 +41,6 @@ class Game {
     drawWorld() {
         // this.ctxHex.fillStyle = "white";
         // this.ctxHex.fillRect(this.world.x - 2, this.world.y - 2, this.WORLD_SIZE.x + 4, this.WORLD_SIZE.y + 4);
-
         this.ctxHex.save();
 
         // Заполнение области за пределами круга красным цветом
@@ -64,7 +63,7 @@ class Game {
         this.ctxHex.globalAlpha = 0.5;
 
         this.ctxHex.beginPath();
-        this.ctxHex.arc( this.world.x + this.WORLD_SIZE.x / 2, this.world.y + this.WORLD_SIZE.y / 2, this.ARENA_RADIUS,0, 2*Math.PI);
+        this.ctxHex.arc(this.world.x + this.WORLD_SIZE.x / 2, this.world.y + this.WORLD_SIZE.y / 2, this.ARENA_RADIUS,0, 2*Math.PI);
         this.ctxHex.fill();
         this.ctxHex.stroke();
 
