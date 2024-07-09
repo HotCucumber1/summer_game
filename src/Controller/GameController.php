@@ -21,25 +21,29 @@ class GameController extends AbstractController
     }
     public function start(Request $request): Response
     {
-        return $this->render('game.html.twig');
+        return $this->render('ws_testing.html.twig');
     }
 
-    public function setSnakeDirection(Request $request): Response
+    /*public function setSnakeDirection(Request $request): Response
     {
         $jsonData = $request->request->get('data');
         $data = json_decode($jsonData, true);
 
-        if (!isset($data['up']) ||
-            !isset($data['down']) ||
-            !isset($data['left']) ||
-            !isset($data['right']) ||
-            !isset($data['boost']))
+        if (!isset($data['snake']) ||
+            !isset($data['snake']['id']) ||
+            !isset($data['snake']['x']) ||
+            !isset($data['snake']['y']) ||
+            !isset($data['snake']['radius']) ||
+            !isset($data['snake']['score']) ||
+            !isset($data['snake']['body'])
+        )
         {
-            throw new BadRequestException('Not enough information about direction');
+            throw new BadRequestException('Not enough information about snake');
         }
-        $this->gameInfo->keyMovement($data);
+        // $this->gameInfo->keyMovement($data);
+        $this->gameInfo->checkCollision($data);
         return new Response('OK', 200);
-    }
+    }*/
 
     public function getGameInfo(): JsonResponse
     {

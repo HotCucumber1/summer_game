@@ -26,6 +26,10 @@ class GameInfo
         }
     }
 
+    public function setGameStatus($data): void
+    {
+    }
+
     public function mouseMovement(Snake $snake, array $controlInfo): void
     {
         $mouseX = $controlInfo['mouseX'];
