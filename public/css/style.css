@@ -26,5 +26,5 @@ body {
 
 #canvasSnake {
     background-color: transparent;
-    z-index: 3;
+    z-index: 2;
 }

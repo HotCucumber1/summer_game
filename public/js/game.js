@@ -1,7 +1,6 @@
 class Game {
-    constructor(ctxSnake, ctxFood, ctxHex) {
+    constructor(ctxSnake, ctxHex) {
         this.ctxSnake = ctxSnake;
-        this.ctxFood = ctxFood;
         this.ctxHex = ctxHex;
         this.WORLD_SIZE = new Point(40000, 20000);
         this.ARENA_RADIUS = 5000
@@ -14,21 +13,21 @@ class Game {
     }
 
     init() {
+        this.generateFoods(1500);
         this.snakes[0] = new Snake(this.ctxSnake, 0);
         for(let i=1; i<11; i++) this.addSnake(i);
-        this.generateFoods(3000);
     }
 
     draw() {
         this.drawWorld();
+
+        for (let i = 0; i < this.foods.length; i++) this.foods[i].draw(this.snakes[0]);
 
         if (this.snakes[0].state === 0)
             this.snakes[0].move();
 
         for(let i=1; i < this.snakes.length; i++)
             if(this.snakes[i].state === 0) this.snakes[i].move(this.snakes[0]);
-
-        for (let i = 0; i < this.foods.length; i++) this.foods[i].draw(this.snakes[0]);
 
         this.drawLength();
     }
@@ -49,7 +48,6 @@ class Game {
 
         this.ctxHex.globalCompositeOperation = 'destination-out';
         this.ctxHex.fill();
-
 
         this.ctxHex.restore();
 
@@ -85,8 +83,8 @@ class Game {
 
     generateFoods(n) {
         for (let i = 0; i < n; i++) {
-            let pos = ut.arcRandom(this.world.x + this.WORLD_SIZE.x / 2 - this.ARENA_RADIUS, this.world.x + this.WORLD_SIZE.x / 2 + this.ARENA_RADIUS, this.ARENA_RADIUS - 100);
-            this.foods.push(new Food(this.ctxFood, pos.x, pos.y));
+            let pos = ut.arcRandom(this.world.x + this.WORLD_SIZE.x / 2 - this.ARENA_RADIUS, this.world.x + this.WORLD_SIZE.x / 2 + this.ARENA_RADIUS, 0.9 * this.ARENA_RADIUS);
+            this.foods.push(new Food(this.ctxSnake, pos.x, pos.y));
         }
 
     }
