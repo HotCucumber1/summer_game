@@ -90,7 +90,7 @@ class SnakeService
         $snake->setAliveStatus(false);
     }
 
-    private function createBody(string $color, int $x, int $y): array
+    private function createBody(string $color, float $x, float $y): array
     {
         $body = [];
         for ($i = 0; $i < self::START_LENGTH; $i++)
@@ -102,7 +102,7 @@ class SnakeService
         return $body;
     }
 
-    private function moveBody(Snake $snake, int $x, int $y): void
+    private function moveBody(Snake $snake, float $x, float $y): void
     {
         // TODO: протестить передвижение
         /*$last = end($body);
