@@ -1,12 +1,8 @@
 <?php
 
-namespace Api;
+use App\Service\GameInfo;
 
-use OpenApi\Annotations as OA;
+// $userEventsJson = file_get_contents("php://input");
+// $userEvents = json_decode($userEventsJson);
 
-/**
- * @OA\Info(title="Python API", version="0.1")
- */
-class Api
-{
-}
+
