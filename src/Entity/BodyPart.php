@@ -4,19 +4,19 @@ namespace App\Entity;
 
 class BodyPart
 {
-    public function __construct(private int $x,
-                                private int $y,
+    public function __construct(private float $x,
+                                private float $y,
                                 private int $radius,
                                 private string $color)
     {
     }
 
-    public function getX(): int
+    public function getX(): float
     {
         return $this->x;
     }
 
-    public function getY(): int
+    public function getY(): float
     {
         return $this->y;
     }
@@ -31,12 +31,12 @@ class BodyPart
         return $this->radius;
     }
 
-    public function setX(int $x): void
+    public function setX(float $x): void
     {
         $this->x = $x;
     }
 
-    public function setY(int $y): void
+    public function setY(float $y): void
     {
         $this->y = $y;
     }

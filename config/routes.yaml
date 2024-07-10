@@ -13,6 +13,11 @@ login:
     methods: POST
     controller: App\Controller\UserController::login
 
+menu:
+    path: /menu
+    methods: GET
+    controller: App\Controller\GameController::showMenu
+
 game:
     path: /game
     methods: GET

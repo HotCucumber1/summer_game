@@ -3,6 +3,7 @@
 namespace App\Service\Server;
 
 use App\Controller\GameController;
+use App\Service\GameInfo;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use React\EventLoop\LoopInterface;
@@ -16,12 +17,12 @@ class WebSocketServer implements MessageComponentInterface
     protected const INTERVAL = 0.02;
 
     public function __construct(private readonly LoopInterface $loop,
-                                private readonly HttpKernelInterface $kernel,
-                                private readonly GameController $gameController)
+                                private readonly GameInfo $gameInfo)
     {
         $this->clients = new \SplObjectStorage;
 
         $this->loop->addPeriodicTimer(self::INTERVAL, function() {
+            // TODO: изменить на обычные данные!!!
             $this->sendData();
         });
     }
@@ -30,19 +31,17 @@ class WebSocketServer implements MessageComponentInterface
     {
         $this->clients->attach($conn);
         echo "New connection {$conn->resourceId}\n";
+        // $this->sendPointData();
     }
 
     public function onMessage(ConnectionInterface $from,  $msg): void
     {
-        $request = Request::create('/snake/move', 'POST', [
-            'data' => $msg
-        ]);
-        $response = $this->kernel->handle($request);
+        $this->gameInfo->setGameStatus($msg);
     }
 
     public function sendData(): void
     {
-        $response = $this->gameController->getGameInfo()->getContent();
+        $response = json_encode($this->gameInfo->getData());
         foreach ($this->clients as $client)
         {
             $client->send($response);

@@ -20,13 +20,14 @@
 
     conn.onopen = function (e) {
         alert("Connection established!");
-    };
+        update();
+    }
 
     conn.onmessage = function (e) {
         let response = document.getElementById('response');
         response.textContent = '';
         response.textContent = e.data;
-    };
+    }
 
     function sendMessage() {
         let input = document.getElementById('message');
@@ -34,68 +35,76 @@
         input.value = '';
     }
 
-    let data = {
-        up: false,
-        down: false,
-        left: false,
-        right: false,
-        boost: false
-    };
-    
-    window.addEventListener('keydown', function (event) {
-        if (event.key === 'w')
-        {
-            data.up = true;
-            let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
-        }
-        if (event.key === 'a')
-        {
-            data.left = true;
-            let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
-        }
-        if (event.key === 's')
-        {
-            data.down = true;
-            let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
-        }
-        if (event.key === 'd')
-        {
-            data.right = true;
-            let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
-        }
-    });
+    let snake = {
+        id: 0,
+        x: 0,
+        y: 0,
+        radius: 10,
+        score: 0,
+        color: 'red',
+        body: [
+            {
+                x: 0,
+                y: 0,
+            },
+            {
+                x: 0,
+                y: 0
+            },
+            {
+                x: 0,
+                y: 0,
+            },
+            {
+                x: 0,
+                y: 0,
+            },
+            {
+                x: 0,
+                y: 0,
+            },
+        ]
+    }
 
-    
-    window.addEventListener('keyup', function (event) {
-        if (event.key === 'w')
-        {
-            data.up = false;
-            let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
+    let direction = {
+        x_speed: 1,
+        y_speed: 1,
+    }
+
+    function update()
+    {
+        window.addEventListener('keydown', function (event) {
+            let key = event.code;
+            if (key === 'KeyW')
+            {
+                direction.y_speed = Math.abs(direction.y_speed);
+            }
+            if (key === 'KeyS')
+            {
+                direction.y_speed = - Math.abs(direction.y_speed);
+            }
+            if (key === 'KeyA')
+            {
+                direction.x_speed = - Math.abs(direction.x_speed);
+            }
+            if (key === 'KeyD')
+            {
+                direction.x_speed = Math.abs(direction.x_speed);
+            }
+        });
+
+        snake.x += direction.x_speed;
+        snake.y += direction.y_speed;
+
+        let data = {
+            snake: snake
         }
-        if (event.key === 'a')
-        {
-            data.left = false;
-            let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
-        }
-        if (event.key === 's')
-        {
-            data.down = false;
-            let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
-        }
-        if (event.key === 'd')
-        {
-            data.right = false;
-            let jsonData = JSON.stringify(data, null, 4);
-            conn.send(jsonData);
-        }
-    });
+
+        let jsonData = JSON.stringify(data);
+        conn.send(jsonData);
+        requestAnimationFrame(update);
+    }
+
 </script>
 </body>
 </html>

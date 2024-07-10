@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <meta charset="utf-8"/>
+    <title>Summer game</title>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css')}}">
+</head>
+<body>
+<div id="game">
+    <canvas class="cnv" id="canvasSnake"></canvas>
+    <canvas class="cnv" id="canvasFood"></canvas>
+    <canvas class="cnv" id="canvasHex"></canvas>
+</div>
+
+<script>
+    function resizeCanvas() {
+        const canvases = document.querySelectorAll('canvas.cnv');
+        canvases.forEach(canvas => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('load', resizeCanvas);
+</script>
+
+<script src="{{ asset('js/web_socket.js') }}" type="application/javascript" defer></script>
+<script src="{{ asset('js/util.js') }}" type="application/javascript" defer></script>
+<script src="{{ asset('js/point.js') }}" type="application/javascript" defer></script>
+<script src="{{ asset('/js/camera.js') }}" type="application/javascript" defer></script>
+<script src="{{ asset('js/snake.js') }}" type="application/javascript" defer></script>
+<script src="{{ asset('js/snakeBot.js') }}" type="application/javascript" defer></script>
+<script src="{{ asset('js/food.js') }}" type="application/javascript" defer></script>
+<script src="{{ asset('js/game.js') }}" type="application/javascript" defer></script>
+<script src="{{ asset('js/script.js') }}" type="application/javascript" defer></script>
+</body>
+</html>

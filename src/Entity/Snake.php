@@ -6,11 +6,10 @@ class Snake
 {
     public function __construct(
         private int       $id,
-        private int       $headX,
-        private int       $headY,
+        private float     $headX,
+        private float     $headY,
         private array     $bodyParts,
         private int       $radius,
-        private Direction $direction,
         private int       $score,
         private string    $color,
         private bool      $isAlive=true
@@ -23,12 +22,12 @@ class Snake
         return $this->id;
     }
 
-    public function getHeadX(): int
+    public function getHeadX(): float
     {
         return $this->headX;
     }
 
-    public function getHeadY(): int
+    public function getHeadY(): float
     {
         return $this->headY;
     }
@@ -46,10 +45,10 @@ class Snake
         return $this->radius;
     }
 
-    public function getDirection(): Direction
-    {
-        return $this->direction;
-    }
+//    public function getDirection(): Direction
+//    {
+//        return $this->direction;
+//    }
 
     public function getScore(): int
     {
@@ -71,12 +70,12 @@ class Snake
         return count($this->bodyParts) + 1; // + head
     }
 
-    public function setHeadX(int $headX): void
+    public function setHeadX(float $headX): void
     {
         $this->headX = $headX;
     }
 
-    public function setHeadY(int $headY): void
+    public function setHeadY(float $headY): void
     {
         $this->headY = $headY;
     }
@@ -91,10 +90,10 @@ class Snake
         $this->radius = $radius;
     }
 
-    public function setDirection(Direction $direction): void
-    {
-        $this->direction = $direction;
-    }
+//    public function setDirection(Direction $direction): void
+//    {
+//        $this->direction = $direction;
+//    }
 
     public function setColor(string $color): void
     {
@@ -111,7 +110,7 @@ class Snake
         $this->score += $add;
     }
 
-    public function addBodyPart(int $x, int $y, string $color): void
+    public function addBodyPart(float $x, float $y, string $color): void
     {
         $this->bodyParts[] = new BodyPart($x, $y,
                                           $this->getRadius(),

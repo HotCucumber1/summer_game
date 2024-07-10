@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Service\GameInfo;
-use App\Service\GameSettingsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,30 +19,14 @@ class GameController extends AbstractController
     {
         return new Response('hello');
     }
-    public function start(): Response
+
+    public function showMenu(): Response
     {
-        return $this->render('ws_testing.html.twig');
+        return $this->render('menu.html.twig');
     }
 
-    public function setSnakeDirection(Request $request): Response
+    public function start(Request $request): Response
     {
-        $jsonData = $request->request->get('data');
-        $data = json_decode($jsonData, true);
-
-        if (!isset($data['up']) ||
-            !isset($data['down']) ||
-            !isset($data['left']) ||
-            !isset($data['right']) ||
-            !isset($data['boost']))
-        {
-            throw new BadRequestException('Not enough information about direction');
-        }
-        $this->gameInfo->keyMovement($data);
-        return new Response('OK', 200);
-    }
-
-    public function getGameInfo(): JsonResponse
-    {
-        return new JsonResponse($this->gameInfo->getData());
+        return $this->render('game.html.twig');
     }
 }
