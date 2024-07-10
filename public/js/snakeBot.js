@@ -90,12 +90,12 @@ class SnakeBot extends Snake {
     checkPlayer() {
 
         if (this.border) return;
-        if (this != game.snakes[i]) {
+        if (this != game.snakes[0]) {
             let x = this.arr[0].x;
             let y = this.arr[0].y;
-            let snake = game.snakes[i].arr[0];
-            let snakeX = game.snakes[i].arr[0].x;
-            let snakeY = game.snakes[i].arr[0].y;
+            let snake = game.snakes[0].arr[0];
+            let snakeX = game.snakes[0].arr[0].x;
+            let snakeY = game.snakes[0].arr[0].y;
 
             if (snakeX - 300 < x && snakeX + 300 > x &&
                 snakeY - 300 < y && snakeY + 300 > y) {

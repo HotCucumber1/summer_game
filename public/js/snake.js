@@ -191,6 +191,8 @@ class Snake {
                     pop.muted = false;
                     pop.play();
 
+                    break;
+
                 }
                 // this.addLength(game.foods[i].size);
             }
@@ -205,6 +207,8 @@ class Snake {
                 if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
                     game.snakes[i].arr[j].y, game.snakes[i].size)) {
                     this.die();
+                    
+                    break;
                 }
         }
     }
