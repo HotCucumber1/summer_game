@@ -14,15 +14,14 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class WebSocketServer implements MessageComponentInterface
 {
     protected \SplObjectStorage $clients;
+    protected string $gameState;
     protected const INTERVAL = 0.02;
 
     public function __construct(private readonly LoopInterface $loop,
                                 private readonly GameInfo $gameInfo)
     {
         $this->clients = new \SplObjectStorage;
-
         $this->loop->addPeriodicTimer(self::INTERVAL, function() {
-            // TODO: изменить на обычные данные!!!
             $this->sendData();
         });
     }
@@ -31,11 +30,18 @@ class WebSocketServer implements MessageComponentInterface
     {
         $this->clients->attach($conn);
         echo "New connection {$conn->resourceId}\n";
-        // $this->sendPointData();
     }
 
     public function onMessage(ConnectionInterface $from,  $msg): void
     {
+        /*$data = json_decode($msg, true);
+        if ($data['action'] === 'start')
+        {
+            $this->startGame();
+        }
+        elseif ($data['action'] === 'restart') {
+            $this->restartGame();
+        }*/
         $this->gameInfo->setGameStatus($msg);
     }
 

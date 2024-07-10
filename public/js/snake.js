@@ -112,7 +112,7 @@ class Snake {
             this.ctx.shadowColor = this.supportColor; // цвет свечения
             this.ctx.shadowOffsetX = 0; // смещение тени по X
             this.ctx.shadowOffsetY = 0;
-            this.speed = 8;
+            this.speed = 10;
             if (this.intervalId === null) {
                 this.intervalId = setInterval(() => {
                     this.counter++;
@@ -254,6 +254,7 @@ class Snake {
                 document.body.classList.add("fade-out");
 
                 setTimeout(function () {
+                    conn.close();
                     window.location.href = "/menu";
                 }, 500);
             }
@@ -294,6 +295,5 @@ class Snake {
 
         let index = game.snakes.indexOf(this);
         game.snakes.splice(index, 1);
-        conn.close();
     }
 }

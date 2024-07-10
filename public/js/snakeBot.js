@@ -140,11 +140,9 @@ class SnakeBot extends Snake {
         super.checkCollissionFood();
         this.checkCollissionBot();
         this.checkCollissionBorder();
-
     }
 
     drawEffect(arr) {
-
         this.ctx.globalAlpha = 1;
         this.ctx.shadowBlur = 0; // радиус размытия тени
         this.ctx.shadowColor = this.supportColor; // цвет свечения

@@ -1,3 +1,6 @@
+
+
+
 let canvas = document.getElementById("canvasSnake");
 let ctxSnake = document.getElementById("canvasSnake").getContext("2d");
 let ctxHex = document.getElementById("canvasHex").getContext("2d");
@@ -6,6 +9,7 @@ let cursor = new Point(0, 0);
 let game = new Game(ctxSnake, ctxHex);
 
 let d = -Math.PI / 2;
+
 
 canvas.onmousemove = function (e) {
     cursor = ut.getMousePos(canvas, e);
@@ -22,9 +26,12 @@ function movement() {
         delta += 2 * Math.PI;
     }
 
-    if (delta > 0) {
+    if (delta >= 0)
+    {
         d += Math.PI / 32;
-    } else if (delta < 0) {
+    }
+    else
+    {
         d -= Math.PI / 32;
     }
     game.snakes[0].changeAngle(d);

@@ -46,6 +46,7 @@ class CollisionService implements CollisionServiceInterface
         $snakeY = $snake->getHeadY();
         $snakeR = $snake->getRadius();
 
+        // TODO: division by zero
         if ($snakeX !== 0 && $snakeY !== 0)
         {
             $dist = sqrt(($snakeX - Wall::centreX) ** 2 + ($snakeY - Wall::centreY) ** 2);
