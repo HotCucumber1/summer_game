@@ -40,6 +40,9 @@ class Snake {
         this.death.muted = false;
         this.death.load();
 
+        this.pop = new Audio("audio/pop.mp3");
+        this.pop.volume = 1.0;
+        // this.pop.muted = false;
     }
 
     drawHead() {
@@ -157,9 +160,9 @@ class Snake {
         this.drawHead();
 
         this.setSize();
-        /*this.checkCollissionFood();
-        this.checkCollissionSnake()
-        this.checkCollissionBorder();*/
+        // this.checkCollissionFood();
+        //this.checkCollissionSnake()
+        //this.checkCollissionBorder();
     }
 
     setSize() {
@@ -171,11 +174,10 @@ class Snake {
             this.size = this.MINSIZE;
     }
 
-    addScore() {
-        this.score++;
+    addLength(size) {
+        this.length++;
         this.arr.push(new Point(-100, -100));
     }
-
 
     checkCollissionFood() {
         let x = this.arr[0].x;
@@ -183,16 +185,12 @@ class Snake {
         for (let i = 0; i < game.foods.length; i++) {
             if (ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x, game.foods[i].pos.y, game.foods[i].size))
             {
-                game.foods[i].die();
-                this.length++;
-                this.addScore();
+                this.addLength(game.foods[i].size);
+                // game.foods[i].die();
 
-                let pop = new Audio("../public/audio/pop.mp3");
-                pop.volume = 1.0;
-                pop.muted = false;
-                pop.load();
-                pop.play();
-                // this.addLength(game.foods[i].size);
+                this.pop.load();
+                this.pop.play();
+                return;
             }
         }
     }
@@ -245,7 +243,9 @@ class Snake {
                 setTimeout(() => {
                     requestAnimationFrame(fadeEffect);
                 }, fadeInterval);
-            } else {
+            }
+            else
+            {
                 this.ctx.globalAlpha = 0; // Устанавливаем окончательно, если alpha стал отрицательным
                 let index = game.snakes.indexOf(this);
                 game.snakes.splice(index, 1);
@@ -253,13 +253,12 @@ class Snake {
                 document.body.classList.remove("fade-in");
                 document.body.classList.add("fade-out");
 
-                setTimeout(function () {
+                /*setTimeout(function () {
                     conn.close();
                     window.location.href = "/menu";
-                }, 500);
+                }, 500);*/
             }
         };
-
         fadeEffect();
     }
 

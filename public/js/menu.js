@@ -15,11 +15,11 @@ window.addEventListener("DOMContentLoaded", function () {
     }
 
     single.addEventListener("click", function () {
-        handleButtonClick("/game");
+        handleButtonClick("/reset");
     });
 
     multi.addEventListener("click", function () {
-        handleButtonClick("/game");
+        handleButtonClick("/reset");
     });
     
 });

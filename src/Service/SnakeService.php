@@ -41,7 +41,6 @@ class SnakeService
                          $headY,
                          $startBody,
                          self::START_RADIUS,
-                         self::START_SPEED,
                          self::START_SCORE,
                          $color);
     }
@@ -74,6 +73,55 @@ class SnakeService
     public function getSnakes(): array
     {
         return $this->snakeRepository->getSnakes();
+    }
+
+    public function grow(Snake $snake): void
+    {
+        $this->increaseLength($snake);
+        $this->increaseRadius($snake);
+    }
+
+    public function decline(Snake $snake): void
+    {
+        $this->decreaseLength($snake);
+        $this->decreaseRadius($snake);
+    }
+
+    private function increaseLength(Snake $snake): void
+    {
+        $body = $snake->getBodyParts();
+        $lastBodyPart = end($body);
+
+        $snake->addBodyPart($lastBodyPart->getX(),
+            $lastBodyPart->getY(),
+            $snake->getColor());
+    }
+
+    private function increaseRadius(Snake $snake): void
+    {
+        $newRadius = $snake->getRadius() + 1;
+        $snake->setRadius($newRadius);
+
+        $body = $snake->getBodyParts();
+        foreach ($body as $bodyPart)
+        {
+            $bodyPart->setRadius($newRadius);
+        }
+    }
+
+    private function decreaseLength(Snake $snake): void
+    {
+        $snake->deleteLastBodyPart();
+    }
+
+    private function decreaseRadius(Snake $snake): void
+    {
+        $newRadius = $snake->getRadius() - 1;
+        $body = $snake->getBodyParts();
+        foreach ($body as $bodyPart)
+        {
+            $bodyPart->setRadius($newRadius);
+        }
     }
 
     public function die(Snake $snake): void

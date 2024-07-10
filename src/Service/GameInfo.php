@@ -10,9 +10,9 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class GameInfo
 {
-    const START_POINTS_AMOUNT = 1000;
-    const DEFAULT_ROTATION_ANGLE = M_PI / 32;
-    private Snake $snake;
+    private const SPAWN_ZONE = 0.6;
+    const START_POINTS_AMOUNT = 2000;
+    private ?Snake $snake;
     private array $users_data = [];
 
     public function __construct(private readonly CollisionServiceInterface $collisionService,
@@ -24,13 +24,33 @@ class GameInfo
         for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
         {
             $this->pointService->addPoint(-Wall::$radius, -Wall::$radius,
-                                           Wall::$radius,  Wall::$radius);
+                Wall::$radius, Wall::$radius);
         }
     }
 
+    public function dropGameToStart(): void
+    {
+        if ($this->snake !== null)
+        {
+            return;
+        }
+        Wall::$radius = Wall::START_RADIUS;
+        $this->pointService->clearAllPoints();
+        $this->snake = $this->snakeService->createSnake();
+
+        for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
+        {
+            $this->pointService->addPoint(-Wall::$radius, -Wall::$radius,
+                Wall::$radius, Wall::$radius);
+        }
+    }
 
     public function setGameStatus(string $jsonData): void
     {
+        if ($this->snake === null)
+        {
+            return;
+        }
         $data = json_decode($jsonData, associative: true);
         if (!isset($data['snake']) ||
             !isset($data['snake']['id']) ||
@@ -49,6 +69,7 @@ class GameInfo
                                           $data['snake']['radius'],
                                           $this->snake->getColor(),
                                           $data['snake']['body']);
+
         $this->checkBumps();
         $this->updatePoints();
         $this->checkSnakeDeath();
@@ -59,7 +80,7 @@ class GameInfo
     {
         // пока текущая змея
         $snakeData = [];
-        if ($this->snake->getAliveStatus())
+        if ($this->snake !== null)
         {
             $snakeData = $this->getSnakeData();
         }
@@ -115,16 +136,23 @@ class GameInfo
 
     private function checkBumps(): void
     {
+        if ($this->snake === null)
+        {
+            return;
+        }
         if ($this->collisionService->isWallBump($this->snake) ||
             $this->collisionService->isSnakeBump($this->snake))
         {
-            // TODO: закоментировонно для отладки
-            $this->snakeService->die($this->snake);
+            $this->snake->setAliveStatus(false);
         }
     }
 
     private function updatePoints(): void
     {
+        if ($this->snake === null)
+        {
+            return;
+        }
         $points = $this->pointService->allPoints();
         foreach ($points as $point)
         {
@@ -135,6 +163,7 @@ class GameInfo
                 {
                     $this->pointService->clearPoint($point);
                     $this->snake->increaseScore(Point::PRICE);
+                    // $this->snakeService->grow($this->snake);
                 }
             }
 
@@ -156,6 +185,7 @@ class GameInfo
             // $this->userService->setUserScore($id, $score);
 
             $body = $this->snake->getBodyParts();
+            $this->snake = null;
             $pointsPerPart = intdiv($score, count($body));
 
             foreach ($body as $bodyPart)

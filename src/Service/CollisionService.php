@@ -70,6 +70,6 @@ class CollisionService implements CollisionServiceInterface
         $pointX = $point->getX();
         $pointY = $point->getY();
 
-        return (($pointX - $headX) ** 2 + ($pointY - $headY) ** 2 <= $radius ** 2);
+        return (($pointX - $headX) ** 2 + ($pointY - $headY) ** 2 <= ($radius + 5) ** 2);
     }
 }

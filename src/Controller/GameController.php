@@ -27,6 +27,14 @@ class GameController extends AbstractController
 
     public function start(Request $request): Response
     {
+        $this->gameInfo->dropGameToStart();
         return $this->render('game.html.twig');
+    }
+
+    public function reset(Request $request): Response
+    {
+        // Переход на стартовую страницу после сброса
+        $this->gameInfo->dropGameToStart();
+        return $this->redirectToRoute('game');
     }
 }

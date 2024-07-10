@@ -1,6 +1,3 @@
-
-
-
 let canvas = document.getElementById("canvasSnake");
 let ctxSnake = document.getElementById("canvasSnake").getContext("2d");
 let ctxHex = document.getElementById("canvasHex").getContext("2d");
@@ -9,6 +6,8 @@ let cursor = new Point(0, 0);
 let game = new Game(ctxSnake, ctxHex);
 
 let d = -Math.PI / 2;
+
+let counter = 0;
 
 
 canvas.onmousemove = function (e) {
@@ -61,41 +60,10 @@ window.addEventListener('keyup', function (event) {
 let previousDelta= 0;
 let fpsLimit= 120;
 
-/*function update(currentDelta) {
-    movement();
-    let delta = currentDelta - previousDelta;
-    if (fpsLimit && delta < 1000 / fpsLimit)
-        return;
-    previousDelta = currentDelta;
-
-    ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
-    ctxHex.clearRect(0, 0, canvas.width, canvas.height);
-
-    game.draw();
-
-    ctxHex.fillStyle = 'green';
-    ctxHex.beginPath();
-    ctxHex.arc(game.world.x + game.WORLD_SIZE.x / 2, game.world.y + game.WORLD_SIZE.y / 2, 200, 0, 2*Math.PI);
-    ctxHex.fill();
-    ctxHex.fillStyle = '';
-
-    let data = {
-        snake: {
-            id: 0,
-            x: game.snakes[0].pos.x,
-            y: game.snakes[0].pos.y,
-            radius: game.snakes[0].size,
-            score: game.snakes[0].score,
-            body: game.snakes[0].arr
-        }
-    };
-    conn.send(JSON.stringify(data));
-    requestAnimationFrame(update);
-}*/
-
 
 conn.addEventListener("message", function (event) {
     let dataFromServer = JSON.parse(event.data);
+    console.log(dataFromServer);
 
     // обновить информацию по точкам
     game.foods = [];
@@ -106,7 +74,7 @@ conn.addEventListener("message", function (event) {
                 ctxSnake,
                 dataFromServer.points[i].x - game.snakes[0].pos.x + game.SCREEN_SIZE.x / 2,
                 dataFromServer.points[i].y - game.snakes[0].pos.y + game.SCREEN_SIZE.y / 2,
-                dataFromServer.points[i].color
+                   dataFromServer.points[i].color
             )
         );
     }
@@ -117,32 +85,39 @@ conn.addEventListener("message", function (event) {
     // проверить, жива ли змея
     if (Object.keys(dataFromServer.snake).length === 0)
     {
+        console.log('hy');
         game.snakes[0].die();
     }
+    else
+    {
+        // обновить счет
+        game.snakes[0].score = dataFromServer.snake.score;
 
-    // обновить счет
-    game.snakes[0].score = dataFromServer.snake.score;
+        // движение
+        movement();
 
-    // движение
-    movement();
+        ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
+        ctxHex.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
-    ctxHex.clearRect(0, 0, canvas.width, canvas.height);
+        game.draw();
 
-    game.draw();
-
-    // отправить обновленные данные на бэк
-    let data = {
-        snake: {
-            id: 0,
-            x: game.snakes[0].pos.x,
-            y: game.snakes[0].pos.y,
-            radius: game.snakes[0].size,
-            score: game.snakes[0].score,
-            body: game.snakes[0].arr
+        // отправить обновленные данные на бэк
+        if (counter % 2 === 0)
+        {
+            let data = {
+                snake: {
+                    id: 0,
+                    x: game.snakes[0].pos.x,
+                    y: game.snakes[0].pos.y,
+                    radius: game.snakes[0].size,
+                    score: game.snakes[0].score,
+                    body: game.snakes[0].arr
+                }
+            };
+            conn.send(JSON.stringify(data));
         }
-    };
-    conn.send(JSON.stringify(data));
+        counter = (counter + 1) % 2;
+    }
 });
 
 

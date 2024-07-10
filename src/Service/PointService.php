@@ -23,6 +23,11 @@ class PointService
         $this->pointRepository->eatPoint($point);
     }
 
+    public function clearAllPoints(): void
+    {
+        $this->pointRepository->deleteAllPoints();
+    }
+
     public function clearEatenPoints(): void
     {
         $this->pointRepository->deleteEatenPoints();

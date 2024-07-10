@@ -16,6 +16,7 @@ interface PointRepositoryInterface
     public function findPoints(): array;
 
     public function eatPoint(Point $point): void;
+    public function deleteAllPoints(): void;
 
     public function deleteEatenPoints(): void;
 

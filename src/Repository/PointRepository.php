@@ -37,6 +37,11 @@ class PointRepository implements PointRepositoryInterface
         $point->setStatus(false);
     }
 
+    public function deleteAllPoints(): void
+    {
+        $this->points = [];
+    }
+
     public function deleteEatenPoints(): void
     {
         $this->points = array_filter($this->points, function ($point)

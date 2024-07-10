@@ -23,6 +23,11 @@ game:
     methods: GET
     controller: App\Controller\GameController::start
 
+reset:
+    path: /reset
+    methods: GET
+    controller: App\Controller\GameController::reset
+
 info:
     path: /game/info
     controller: App\Controller\GameController::getGameInfo
