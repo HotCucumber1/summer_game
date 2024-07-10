@@ -81,7 +81,7 @@ class Game {
         this.snakes.push(new SnakeBot(this.ctxSnake, id))
 
     }
-    
+
     drawName() {
         let start = new Point(game.SCREEN_SIZE.x / 2 + 20, game.SCREEN_SIZE.y / 2);
         this.ctxSnake.fillStyle = this.snakes[0].mainColor;
@@ -89,7 +89,6 @@ class Game {
         let nickname = sessionStorage.getItem("Nickname");
         this.ctxSnake.fillText(nickname, start.x, start.y);
     }
-
     generateFoods(n) {
         for (let i = 0; i < n; i++) {
             let pos = ut.arcRandom(this.world.x + this.WORLD_SIZE.x / 2 - this.ARENA_RADIUS, this.world.x + this.WORLD_SIZE.x / 2 + this.ARENA_RADIUS, 0.9 * this.ARENA_RADIUS);

@@ -2,7 +2,6 @@ class Snake {
     constructor(ctx, id) {
         this.ctx = ctx;
         this.id = id;
-        this.score = 0;
         this.speed = 4;
         this.boost = false;
         this.state = 0;
@@ -180,6 +179,7 @@ class Snake {
     checkCollissionFood() {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
+
         for (let i = 0; i < game.foods.length; i++) {
             if (ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x,
                 game.foods[i].pos.y, game.foods[i].size)) {
@@ -190,6 +190,8 @@ class Snake {
                 pop.volume = 1.0;
                 pop.muted = false;
                 pop.play();
+
+                break;
             }
         }
     }
@@ -202,6 +204,8 @@ class Snake {
                 if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
                     game.snakes[i].arr[j].y, game.snakes[i].size)) {
                     this.die();
+
+                    break;
                 }
         }
     }
