@@ -23,8 +23,8 @@ class Snake {
         this.arr = [];
         this.headPath = [];
 
-        this.arr.push(new Point(this.pos.x,  this.pos.y));
-        this.headPath.push(new Point(this.pos.x,  this.pos.y)) ;
+        this.arr.push(new Point(this.pos.x, this.pos.y));
+        this.headPath.push(new Point(this.pos.x, this.pos.y));
         for (let i = 1; i < this.length; i++) {
             this.arr.push(new Point(this.arr[i - 1].x, this.arr[i - 1].y));
             this.headPath.push(new Point(this.headPath[i - 1].x, this.headPath[i - 1].y));
@@ -112,7 +112,7 @@ class Snake {
             this.ctx.shadowColor = this.supportColor; // цвет свечения
             this.ctx.shadowOffsetX = 0; // смещение тени по X
             this.ctx.shadowOffsetY = 0;
-            this.speed = 8;
+            this.speed = 10;
             if (this.intervalId === null) {
                 this.intervalId = setInterval(() => {
                     this.counter++;
@@ -135,7 +135,7 @@ class Snake {
         this.velocity.x = this.speed * Math.cos(this.angle);
         this.velocity.y = this.speed * Math.sin(this.angle);
 
-        this.headPath.push({ x: this.pos.x, y: this.pos.y });
+        this.headPath.push({x: this.pos.x, y: this.pos.y});
 
         if (this.headPath.length > this.length) {
             this.headPath.shift();
@@ -166,12 +166,14 @@ class Snake {
         if (this.size < this.MINSIZE) this.size = this.MINSIZE;
     }
 
-    addScore() {
-        this.score++;
+    addLength(size) {
+        this.length++;
         this.arr.push(new Point(-100, -100));
     }
 
     // addLength(size) {
+    //     for (let i = 1; i <= size - 4; i++)
+    //         this.arr.push(new Point(-100, -100));
     //     this.length += (size - 4);
     // }
 
@@ -181,16 +183,13 @@ class Snake {
         for (let i = 0; i < game.foods.length; i++) {
             if (ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x,
                 game.foods[i].pos.y, game.foods[i].size)) {
+                this.addLength(game.foods[i].size);
                 game.foods[i].die();
-                this.length++;
-                this.addScore();
 
                 let pop = new Audio("../public/audio/pop.mp3");
                 pop.volume = 1.0;
                 pop.muted = false;
                 pop.play();
-
-                // this.addLength(game.foods[i].size);
             }
         }
     }
@@ -200,10 +199,10 @@ class Snake {
         let y = this.arr[0].y;
         for (let i = 1; i < game.snakes.length; i++) {
             for (let j = 0; j < game.snakes[i].arr.length; j++)
-            if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
-                game.snakes[i].arr[j].y, game.snakes[i].size)) {
-                this.die();
-            }
+                if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
+                    game.snakes[i].arr[j].y, game.snakes[i].size)) {
+                    this.die();
+                }
         }
     }
 

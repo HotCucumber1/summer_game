@@ -26,21 +26,21 @@ canvas.onmousemove = function (e) {
 }
 
 const sendMouseMove = setInterval(function () {
-    console.log(JSON.stringify({        // для отладки, нужно будет удалить
-        Snake: {
-            mouseX: cursor.x,
-            mouseY: cursor.y,
-            up: false,
-            down: false,
-            left: false,
-            right: false,
-            boost:  game.snakes[0].boost
-        },
-        winProp: {
-            windowH: canvas.height,
-            windowW: canvas.width
-        }
-    }));
+    // console.log(JSON.stringify({        // для отладки, нужно будет удалить
+    //     Snake: {
+    //         mouseX: cursor.x,
+    //         mouseY: cursor.y,
+    //         up: false,
+    //         down: false,
+    //         left: false,
+    //         right: false,
+    //         boost:  game.snakes[0].boost
+    //     },
+    //     winProp: {
+    //         windowH: canvas.height,
+    //         windowW: canvas.width
+    //     }
+    // }));
 
     // === для отладки
 
@@ -121,21 +121,21 @@ function movement() {
 
 canvas.onmousedown = function () {
     game.snakes[0].boost = true;
-    console.log(JSON.stringify({        // для отладки, нужно будет удалить
-        Snake: {
-            mouseX: cursor.x,
-            mouseY: cursor.y,
-            up: false,
-            down: false,
-            left: false,
-            right: false,
-            boost: game.snakes[0].boost
-        },
-        winProp: {
-            windowH: canvas.height,
-            windowW: canvas.width
-        }
-    }));
+    // console.log(JSON.stringify({        // для отладки, нужно будет удалить
+    //     Snake: {
+    //         mouseX: cursor.x,
+    //         mouseY: cursor.y,
+    //         up: false,
+    //         down: false,
+    //         left: false,
+    //         right: false,
+    //         boost: game.snakes[0].boost
+    //     },
+    //     winProp: {
+    //         windowH: canvas.height,
+    //         windowW: canvas.width
+    //     }
+    // }));
     // wsConnect.send(JSON.stringify({
     //     Snake: {
     //         mouseX: cursor.x,

@@ -37,3 +37,8 @@ body.fade-in {
     background-color: transparent;
     z-index: 2;
 }
+
+#canvasSnake {
+    background-color: transparent;
+    z-index: 2;
+}
