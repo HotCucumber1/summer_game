@@ -162,6 +162,7 @@ class GameInfo
                 {
                     $this->pointService->clearPoint($point);
                     $this->snake->increaseScore(Point::PRICE);
+                    var_dump('eaten');
                 }
             }
 

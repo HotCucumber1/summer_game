@@ -102,8 +102,8 @@ conn.addEventListener("message", function (event) {
         game.foods.push(
             new Food(
                 ctxSnake,
-                dataFromServer.points[i].x - game.snakes[0].pos.x,
-                dataFromServer.points[i].y - game.snakes[0].pos.y,
+                dataFromServer.points[i].x - game.snakes[0].pos.x + game.SCREEN_SIZE.x / 2,
+                dataFromServer.points[i].y - game.snakes[0].pos.y + game.SCREEN_SIZE.y / 2,
                 dataFromServer.points[i].color
             )
         );
@@ -115,22 +115,15 @@ conn.addEventListener("message", function (event) {
         game.snakes[0].die();
     }
 
+    console.log(dataFromServer.snake.score);
+    game.snakes[0].score = dataFromServer.snake.score;
+
     movement();
-    /*let delta = currentDelta - previousDelta;
-    if (fpsLimit && delta < 1000 / fpsLimit)
-        return;
-    previousDelta = currentDelta;*/
 
     ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
     ctxHex.clearRect(0, 0, canvas.width, canvas.height);
 
     game.draw();
-
-    ctxHex.fillStyle = 'green';
-    ctxHex.beginPath();
-    ctxHex.arc(game.world.x + game.WORLD_SIZE.x / 2, game.world.y + game.WORLD_SIZE.y / 2, 200, 0, 2*Math.PI);
-    ctxHex.fill();
-    ctxHex.fillStyle = '';
 
     let data = {
         snake: {

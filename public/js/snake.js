@@ -184,8 +184,8 @@ class Snake {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
         for (let i = 0; i < game.foods.length; i++) {
-            if (ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x,
-                game.foods[i].pos.y, game.foods[i].size)) {
+            if (ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x, game.foods[i].pos.y, game.foods[i].size))
+            {
                 game.foods[i].die();
                 this.length++;
                 this.addScore();
@@ -195,7 +195,6 @@ class Snake {
                 pop.muted = false;
                 pop.load();
                 pop.play();
-
                 // this.addLength(game.foods[i].size);
             }
         }
@@ -214,7 +213,6 @@ class Snake {
     }
 
     drawEffect(arr) {
-
         this.ctx.globalAlpha = 1;
         this.ctx.shadowBlur = 0; // радиус размытия тени
         this.ctx.shadowColor = this.supportColor; // цвет свечения

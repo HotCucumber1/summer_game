@@ -19,7 +19,7 @@ class Food {
         this.ctx.shadowOffsetY = 0;             // смещение тени по Y
 
         this.ctx.beginPath();
-        this.ctx.arc(parseInt(this.pos.x), parseInt(this.pos.y), this.size, 0, 2*Math.PI);
+        this.ctx.arc(this.pos.x, this.pos.y, this.size, 0, 2*Math.PI);
         this.ctx.fill();
 
         this.ctx.shadowBlur = 0;
