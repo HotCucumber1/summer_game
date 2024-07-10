@@ -2,12 +2,11 @@ class Snake {
     constructor(ctx, id) {
         this.ctx = ctx;
         this.id = id;
-        this.score = 0;
         this.speed = 4;
         this.boost = false;
         this.state = 0;
 
-        this.pos = new Point(game.world.x + game.WORLD_SIZE.x, game.world.y + game.WORLD_SIZE.y);
+        this.pos = new Point(game.world.x + game.WORLD_SIZE.x / 2 + game.SCREEN_SIZE.x / 2, game.world.y + game.WORLD_SIZE.y / 2 + game.SCREEN_SIZE.y / 2);
         this.velocity = new Point(0, 0);
         this.angle = ut.random(0, Math.PI);
 
@@ -21,14 +20,19 @@ class Snake {
         this.supportColor = ut.color(this.midColor, 0.33);
 
         this.arr = [];
-        this.arr.push(new Point(game.SCREEN_SIZE.x / 2, game.SCREEN_SIZE.y / 2));
+        this.headPath = [];
+
+        this.arr.push(new Point(this.pos.x, this.pos.y));
+        this.headPath.push(new Point(this.pos.x, this.pos.y));
         for (let i = 1; i < this.length; i++) {
             this.arr.push(new Point(this.arr[i - 1].x, this.arr[i - 1].y));
+            this.headPath.push(new Point(this.headPath[i - 1].x, this.headPath[i - 1].y));
         }
 
         this.counter = 0;
         this.intervalId = null;
 
+        this.camera = new Camera(0, 0, game.SCREEN_SIZE.x, game.SCREEN_SIZE.y);
         this.death = new Audio("../public/audio/minecraft-death-sound.mp3");
         this.death.volume = 1.0;
         this.death.muted = false;
@@ -113,7 +117,7 @@ class Snake {
                     this.counter++;
                 }, 1000);
             }
-            if (this.counter >= 3) {
+            if (this.counter >= 1) {
                 this.length--;
                 this.counter = 0;
             }
@@ -130,18 +134,25 @@ class Snake {
         this.velocity.x = this.speed * Math.cos(this.angle);
         this.velocity.y = this.speed * Math.sin(this.angle);
 
-        let d = this.size / 2;
+        this.headPath.push({ x: this.pos.x, y: this.pos.y });
 
-        for (let i = this.length - 1; i >= 1; i--) {
-            this.arr[i].x = this.arr[i - 1].x - d * Math.cos(this.angle);
-            this.arr[i].y = this.arr[i - 1].y - d * Math.sin(this.angle);
+        if (this.headPath.length > this.length) {
+            this.headPath.shift();
+        }
+
+        for (let i = this.length - 1; i > 0; i--) {
+            this.arr[i].x = this.headPath[this.headPath.length - 1 - i].x - this.camera.x;
+            this.arr[i].y = this.headPath[this.headPath.length - 1 - i].y - this.camera.y;
             this.drawBody(this.arr[i].x, this.arr[i].y);
         }
 
         this.pos.x += this.velocity.x;
         this.pos.y += this.velocity.y;
 
+        this.camera.follow(this.pos);
+
         this.drawHead();
+
         this.setSize();
         this.checkCollissionFood();
         this.checkCollissionSnake()
@@ -150,11 +161,12 @@ class Snake {
 
     setSize() {
         if (this.length % 5 === 0) this.size = this.size = this.length / 5 + 13;
+        if (this.size > this.MAXSIZE) this.size = this.MAXSIZE;
         if (this.size < this.MINSIZE) this.size = this.MINSIZE;
     }
 
     addScore() {
-        this.score++;
+        this.length++;
         this.arr.push(new Point(-100, -100));
     }
 
@@ -165,18 +177,21 @@ class Snake {
     checkCollissionFood() {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
+
         for (let i = 0; i < game.foods.length; i++) {
             if (ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x,
                 game.foods[i].pos.y, game.foods[i].size)) {
-                game.foods[i].die();
-                this.length++;
-                this.addScore();
 
-                let pop = new Audio("../public/audio/pop.mp3");
-                pop.volume = 1.0;
-                pop.muted = false;
-                pop.play();
-                
+                game.foods[i].die();
+                this.addScore();
+                if (this === game.snakes[0]) {
+
+                    let pop = new Audio("../public/audio/pop.mp3");
+                    pop.volume = 1.0;
+                    pop.muted = false;
+                    pop.play();
+
+                }
                 // this.addLength(game.foods[i].size);
             }
         }
@@ -232,7 +247,10 @@ class Snake {
                     requestAnimationFrame(fadeEffect);
                 }, fadeInterval);
             } else {
-                this.ctx.globalAlpha = 0; // Устанавливаем окончательно, если alpha стал отрицательным 
+                this.ctx.globalAlpha = 0; // Устанавливаем окончательно, если alpha стал отрицательным
+                let index = game.snakes.indexOf(this);
+                game.snakes.splice(index, 1);
+
                 document.body.classList.remove("fade-in");
                 document.body.classList.add("fade-out");
 
@@ -261,7 +279,7 @@ class Snake {
         let arrayBody = [];
 
         for (let i = last; i >= 1; i--) {
-            game.foods.push(new Food(game.ctxFood, this.arr[i].x, this.arr[i].y));
+            game.foods.push(new Food(game.ctxSnake, this.arr[i].x, this.arr[i].y));
             arrayBody.push({
                 x: this.arr[i].x,
                 y: this.arr[i].y,

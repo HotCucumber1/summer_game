@@ -18,7 +18,7 @@ class Util {
             x = Math.floor(Math.random() * (max - min + 1)) + min;
             y = Math.floor(Math.random() * (max - min + 1)) + min;
             if (x ** 2 + y ** 2 < radius ** 2)
-                return { x, y };
+                return {x, y};
         }
     }
 
@@ -36,10 +36,6 @@ class Util {
     }
 
     getDistance(i, f) {
-        // if (!i || !f ||  isNaN(i.y) ||  isNaN(f.x) || isNaN(f.y)) {
-        //     console.error('Invalid points provided to getDistance:', i, f);
-        //     return NaN;
-        // }
         return Math.abs(Math.sqrt(
             Math.pow((f.x - i.x), 2) + Math.pow((f.y - i.y), 2)));
     }
@@ -91,4 +87,6 @@ class Util {
     }
 
 }
+
+
 

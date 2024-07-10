@@ -28,11 +28,6 @@ body.fade-in {
     border-style: solid;
 }
 
-#canvasFood {
-    background-color: transparent;
-    z-index: 2;
-}
-
 #canvasHex {
     background-color: black;
     z-index: 1;
@@ -40,5 +35,5 @@ body.fade-in {
 
 #canvasSnake {
     background-color: transparent;
-    z-index: 3;
+    z-index: 2;
 }

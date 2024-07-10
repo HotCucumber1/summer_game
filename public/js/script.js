@@ -5,11 +5,10 @@ const wsConnect = new WebSocket('ws:/' + serverAdress + ':' + socketPort);
 
 let canvas = document.getElementById("canvasSnake");
 let ctxSnake = document.getElementById("canvasSnake").getContext("2d");
-let ctxFood = document.getElementById("canvasFood").getContext("2d");
 let ctxHex = document.getElementById("canvasHex").getContext("2d");
 let ut = new Util();
 let cursor = new Point(0, 0);
-let game = new Game(ctxSnake, ctxFood, ctxHex);
+let game = new Game(ctxSnake, ctxHex);
 
 let d = -Math.PI / 2;
 
@@ -158,39 +157,43 @@ canvas.onmousedown = function () {
     // }));
 }
 
+// canvas.onmouseup = function () {
+//     game.snakes[0].boost = false;
+//     game.snakes[0].intervalId = null;
+//     console.log(JSON.stringify({        // для отладки, нужно будет удалить
+//         Snake: {
+//             mouseX: cursor.x,
+//             mouseY: cursor.y,
+//             up: false,
+//             down: false,
+//             left: false,
+//             right: false,
+//             boost: game.snakes[0].boost
+//         },
+//         winProp: {
+//             windowH: canvas.height,
+//             windowW: canvas.width
+//         }
+//     }));
+//     // wsConnect.send(JSON.stringify({
+//     //     Snake: {
+//     //         mouseX: cursor.x,
+//     //         mouseY: cursor.y,
+//     //         up: false,
+//     //         down: false,
+//     //         left: false,
+//     //         right: false,
+//     //         boost: game.snakes[0].boost
+//     //     },
+//     //     winProp: {
+//     //         windowH: canvas.height,
+//     //         windowW: canvas.width
+//     //     }
+//     // }));
+// }
+
 canvas.onmouseup = function () {
     game.snakes[0].boost = false;
-    game.snakes[0].intervalId = null;
-    console.log(JSON.stringify({        // для отладки, нужно будет удалить
-        Snake: {
-            mouseX: cursor.x,
-            mouseY: cursor.y,
-            up: false,
-            down: false,
-            left: false,
-            right: false,
-            boost: game.snakes[0].boost
-        },
-        winProp: {
-            windowH: canvas.height,
-            windowW: canvas.width
-        }
-    }));
-    // wsConnect.send(JSON.stringify({
-    //     Snake: {
-    //         mouseX: cursor.x,
-    //         mouseY: cursor.y,
-    //         up: false,
-    //         down: false,
-    //         left: false,
-    //         right: false,
-    //         boost: game.snakes[0].boost
-    //     },
-    //     winProp: {
-    //         windowH: canvas.height,
-    //         windowW: canvas.width
-    //     }
-    // }));
 }
 
 window.addEventListener('keydown', function (event) {
@@ -225,7 +228,6 @@ function update(currentDelta) {
     previousDelta = currentDelta;
 
     ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
-    ctxFood.clearRect(0, 0, canvas.width, canvas.height);
     ctxHex.clearRect(0, 0, canvas.width, canvas.height);
 
     game.draw();
@@ -239,5 +241,6 @@ function update(currentDelta) {
 //
 //     update();
 // });
+
 
 start();
