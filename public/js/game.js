@@ -8,7 +8,7 @@ class Game {
         this.world = new Point(-20000, -10000);
         this.snakes = [];
         this.backgroundImage = new Image();
-        this.backgroundImage.src = '../public/images/background.png';
+        this.backgroundImage.src = 'images/background.png';
         this.foods = [];
     }
 

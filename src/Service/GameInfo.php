@@ -28,6 +28,7 @@ class GameInfo
         }
     }
 
+
     public function setGameStatus(string $jsonData): void
     {
         $data = json_decode($jsonData, associative: true);
@@ -119,10 +120,6 @@ class GameInfo
         {
             // TODO: закоментировонно для отладки
             $this->snakeService->die($this->snake);
-            /*$id = SessionService::takeUserIdFromSession();
-            $score = $this->snake->getScore();
-
-            $this->userService->setUserScore($id, $score);*/
         }
     }
 
@@ -138,7 +135,6 @@ class GameInfo
                 {
                     $this->pointService->clearPoint($point);
                     $this->snake->increaseScore(Point::PRICE);
-                    var_dump('eaten');
                 }
             }
 

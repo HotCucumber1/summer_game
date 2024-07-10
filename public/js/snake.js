@@ -35,7 +35,7 @@ class Snake {
         this.intervalId = null;
 
         this.camera = new Camera(0, 0, game.SCREEN_SIZE.x, game.SCREEN_SIZE.y);
-        this.death = new Audio("../public/audio/minecraft-death-sound.mp3");
+        this.death = new Audio("audio/minecraft-death-sound.mp3");
         this.death.volume = 1.0;
         this.death.muted = false;
         this.death.load();
@@ -176,9 +176,6 @@ class Snake {
         this.arr.push(new Point(-100, -100));
     }
 
-    // addLength(size) {
-    //     this.length += (size - 4);
-    // }
 
     checkCollissionFood() {
         let x = this.arr[0].x;
@@ -257,7 +254,7 @@ class Snake {
                 document.body.classList.add("fade-out");
 
                 setTimeout(function () {
-                    window.location.href = "menu.html";
+                    window.location.href = "/menu";
                 }, 500);
             }
         };
@@ -297,6 +294,6 @@ class Snake {
 
         let index = game.snakes.indexOf(this);
         game.snakes.splice(index, 1);
+        conn.close();
     }
-
 }

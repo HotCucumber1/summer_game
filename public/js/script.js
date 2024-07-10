@@ -7,11 +7,9 @@ let game = new Game(ctxSnake, ctxHex);
 
 let d = -Math.PI / 2;
 
-
 canvas.onmousemove = function (e) {
     cursor = ut.getMousePos(canvas, e);
 }
-
 
 function movement() {
     let a = ut.getAngle(game.snakes[0].arr[0], cursor);
@@ -52,10 +50,6 @@ window.addEventListener('keyup', function (event) {
     }
 });
 
-function start() {
-    game.init();
-    // update();
-}
 
 let previousDelta= 0;
 let fpsLimit= 120;
@@ -145,4 +139,4 @@ conn.addEventListener("message", function (event) {
 });
 
 
-start();
+game.init();
