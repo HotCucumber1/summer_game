@@ -1,4 +1,7 @@
 class Util {
+    constructor() {
+    }
+
     getMousePos(canvas, evt) {
         let rect = canvas.getBoundingClientRect();
 
@@ -20,8 +23,10 @@ class Util {
     }
 
     random(min, max) {
+
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
+
 
     randomColor() {
         let colors = ["#C0392B", "#E74C3C", "#9B59B6", "#8E44AD", "#2980B9",
@@ -62,6 +67,7 @@ class Util {
 
 
     color(hex, lum) {
+
         // validate hex string
         hex = String(hex).replace(/[^0-9a-f]/gi, '');
         if (hex.length < 6) {

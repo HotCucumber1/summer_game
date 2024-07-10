@@ -11,7 +11,7 @@ class Snake {
         this.velocity = new Point(0, 0);
         this.angle = ut.random(0, Math.PI);
 
-        this.length = 20;
+        this.length = 10;
         this.MAXSIZE = 80;
         this.MINSIZE = 15;
         this.size = 15;
@@ -24,8 +24,7 @@ class Snake {
         this.headPath = [];
 
         this.arr.push(new Point(this.pos.x,  this.pos.y));
-        this.headPath.push(new Point(this.pos.x,  this.pos.y));
-
+        this.headPath.push(new Point(this.pos.x,  this.pos.y)) ;
         for (let i = 1; i < this.length; i++) {
             this.arr.push(new Point(this.arr[i - 1].x, this.arr[i - 1].y));
             this.headPath.push(new Point(this.headPath[i - 1].x, this.headPath[i - 1].y));
@@ -35,7 +34,7 @@ class Snake {
         this.intervalId = null;
 
         this.camera = new Camera(0, 0, game.SCREEN_SIZE.x, game.SCREEN_SIZE.y);
-        this.death = new Audio("audio/minecraft-death-sound.mp3");
+        this.death = new Audio("../public/audio/minecraft-death-sound.mp3");
         this.death.volume = 1.0;
         this.death.muted = false;
         this.death.load();
@@ -87,6 +86,7 @@ class Snake {
     }
 
     drawBody(x, y) {
+
         let grd = this.ctx.createRadialGradient(x, y, 2, x + 4, y + 4, 10);
         grd.addColorStop(0, this.supportColor);
         grd.addColorStop(1, this.midColor);
@@ -118,8 +118,7 @@ class Snake {
                     this.counter++;
                 }, 1000);
             }
-            if (this.counter >= 1)
-            {
+            if (this.counter >= 1) {
                 this.length--;
                 this.counter = 0;
             }
@@ -142,8 +141,7 @@ class Snake {
             this.headPath.shift();
         }
 
-        for (let i = this.length - 1; i > 0; i--)
-        {
+        for (let i = this.length - 1; i > 0; i--) {
             this.arr[i].x = this.headPath[this.headPath.length - 1 - i].x - this.camera.x;
             this.arr[i].y = this.headPath[this.headPath.length - 1 - i].y - this.camera.y;
             this.drawBody(this.arr[i].x, this.arr[i].y);
@@ -157,18 +155,15 @@ class Snake {
         this.drawHead();
 
         this.setSize();
-        /*this.checkCollissionFood();
+        this.checkCollissionFood();
         this.checkCollissionSnake()
-        this.checkCollissionBorder();*/
+        this.checkCollissionBorder();
     }
 
     setSize() {
-        if (this.length % 5 === 0)
-           this.size = this.length / 5 + 13;
-        if (this.size > this.MAXSIZE)
-            this.size = this.MAXSIZE;
-        if (this.size < this.MINSIZE)
-            this.size = this.MINSIZE;
+        if (this.length % 5 === 0) this.size = this.size = this.length / 5 + 13;
+        if (this.size > this.MAXSIZE) this.size = this.MAXSIZE;
+        if (this.size < this.MINSIZE) this.size = this.MINSIZE;
     }
 
     addScore() {
@@ -176,13 +171,16 @@ class Snake {
         this.arr.push(new Point(-100, -100));
     }
 
+    // addLength(size) {
+    //     this.length += (size - 4);
+    // }
 
     checkCollissionFood() {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
         for (let i = 0; i < game.foods.length; i++) {
-            if (ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x, game.foods[i].pos.y, game.foods[i].size))
-            {
+            if (ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x,
+                game.foods[i].pos.y, game.foods[i].size)) {
                 game.foods[i].die();
                 this.length++;
                 this.addScore();
@@ -190,8 +188,8 @@ class Snake {
                 let pop = new Audio("../public/audio/pop.mp3");
                 pop.volume = 1.0;
                 pop.muted = false;
-                pop.load();
                 pop.play();
+
                 // this.addLength(game.foods[i].size);
             }
         }
@@ -210,6 +208,7 @@ class Snake {
     }
 
     drawEffect(arr) {
+
         this.ctx.globalAlpha = 1;
         this.ctx.shadowBlur = 0; // радиус размытия тени
         this.ctx.shadowColor = this.supportColor; // цвет свечения
@@ -254,7 +253,7 @@ class Snake {
                 document.body.classList.add("fade-out");
 
                 setTimeout(function () {
-                    window.location.href = "/menu";
+                    window.location.href = "menu.html";
                 }, 500);
             }
         };
@@ -277,23 +276,23 @@ class Snake {
         let last = this.length - 1;
         let arrayBody = [];
 
-        for (let i= last; i >= 1; i--) {
+        for (let i = last; i >= 1; i--) {
             game.foods.push(new Food(game.ctxSnake, this.arr[i].x, this.arr[i].y));
             arrayBody.push({
                 x: this.arr[i].x,
                 y: this.arr[i].y,
                 angle: this.angle
-            });
+            })
             this.arr.splice(i, 1);
         }
 
         this.death.play();
-        // cancelAnimationFrame(updateId);
+        cancelAnimationFrame(updateId);
 
         this.drawEffect(arrayBody);
 
         let index = game.snakes.indexOf(this);
         game.snakes.splice(index, 1);
-        conn.close();
     }
+
 }

@@ -15,11 +15,11 @@ window.addEventListener("DOMContentLoaded", function () {
     }
 
     single.addEventListener("click", function () {
-        handleButtonClick("/game");
+        handleButtonClick("../pages/index.html");
     });
 
     multi.addEventListener("click", function () {
-        handleButtonClick("/game");
+        handleButtonClick("../pages/index.html");
     });
     
 });
@@ -27,7 +27,7 @@ window.addEventListener("DOMContentLoaded", function () {
 function handleOnButton(e) {
     const button = e.target;
     button.style.boxShadow = "0 0 20px rgb(161, 161, 161)"; 
-}
+};
 
 function pullOfWithButton(e) {
     const button = e.target;

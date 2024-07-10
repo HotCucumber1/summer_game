@@ -1,3 +1,8 @@
+// создаем подключение к ws серверу
+const serverAdress = '10.250.104.40'; // нужно изменить на катуальный
+const socketPort = 8080;  // при необходимости заменить
+const wsConnect = new WebSocket('ws:/' + serverAdress + ':' + socketPort);
+
 let canvas = document.getElementById("canvasSnake");
 let ctxSnake = document.getElementById("canvasSnake").getContext("2d");
 let ctxHex = document.getElementById("canvasHex").getContext("2d");
@@ -7,9 +12,92 @@ let game = new Game(ctxSnake, ctxHex);
 
 let d = -Math.PI / 2;
 
+// события WebSocket
+// wsConnect.onopen = function () {
+//     console.log('подключился к серверу');   // для отладки, потом можно убрать
+// }
+//
+// wsConnect.onerror = function (e) {          // ошибка
+//     console.log('Websocket error:', e);
+// }
+
 canvas.onmousemove = function (e) {
     cursor = ut.getMousePos(canvas, e);
 }
+
+const sendMouseMove = setInterval(function () {
+    console.log(JSON.stringify({        // для отладки, нужно будет удалить
+        Snake: {
+            mouseX: cursor.x,
+            mouseY: cursor.y,
+            up: false,
+            down: false,
+            left: false,
+            right: false,
+            boost:  game.snakes[0].boost
+        },
+        winProp: {
+            windowH: canvas.height,
+            windowW: canvas.width
+        }
+    }));
+
+    // === для отладки
+
+    // console.log(JSON.parse(JSON.stringify({
+    //     Snake: {
+    //         mouseX: cursor.x,
+    //         mouseY: cursor.y,
+    //         up: false,
+    //         down: false,
+    //         left: false,
+    //         right: false,
+    //         boost:  game.snakes[0].boost
+    //     },
+    //     winProp: {
+    //         windowH: canvas.height,
+    //         windowW: canvas.width
+    //     }
+    // })));
+
+    // let dataFromServer = JSON.parse(JSON.stringify({
+    //     Snake: {
+    //         mouseX: cursor.x,
+    //         mouseY: cursor.y,
+    //         up: false,
+    //         down: false,
+    //         left: false,
+    //         right: false,
+    //         boost:  game.snakes[0].boost
+    //     },
+    //     winProp: {
+    //         windowH: canvas.height,
+    //         windowW: canvas.width
+    //     }
+    // }));
+
+    // console.log('new Data:', dataFromServer.Snake);
+
+    // ===
+
+    // отправка на wsServer
+    // wsConnect.send(JSON.stringify({
+    //     Snake: {
+    //         mouseX: cursor.x,
+    //         mouseY: cursor.y,
+    //         up: false,
+    //         down: false,
+    //         left: false,
+    //         right: false,
+    //         boost: false
+    //     },
+    //     winProp: {
+    //         windowH: canvas.height,
+    //         windowW: canvas.width
+    //     }
+    // }));
+
+}, 1000);
 
 function movement() {
     let a = ut.getAngle(game.snakes[0].arr[0], cursor);
@@ -27,12 +115,78 @@ function movement() {
     } else if (delta < 0) {
         d -= Math.PI / 32;
     }
+
     game.snakes[0].changeAngle(d);
 }
 
 canvas.onmousedown = function () {
     game.snakes[0].boost = true;
+    console.log(JSON.stringify({        // для отладки, нужно будет удалить
+        Snake: {
+            mouseX: cursor.x,
+            mouseY: cursor.y,
+            up: false,
+            down: false,
+            left: false,
+            right: false,
+            boost: game.snakes[0].boost
+        },
+        winProp: {
+            windowH: canvas.height,
+            windowW: canvas.width
+        }
+    }));
+    // wsConnect.send(JSON.stringify({
+    //     Snake: {
+    //         mouseX: cursor.x,
+    //         mouseY: cursor.y,
+    //         up: false,
+    //         down: false,
+    //         left: false,
+    //         right: false,
+    //         boost: game.snakes[0].boost
+    //     },
+    //     winProp: {
+    //         windowH: canvas.height,
+    //         windowW: canvas.width
+    //     }
+    // }));
 }
+
+// canvas.onmouseup = function () {
+//     game.snakes[0].boost = false;
+//     game.snakes[0].intervalId = null;
+//     console.log(JSON.stringify({        // для отладки, нужно будет удалить
+//         Snake: {
+//             mouseX: cursor.x,
+//             mouseY: cursor.y,
+//             up: false,
+//             down: false,
+//             left: false,
+//             right: false,
+//             boost: game.snakes[0].boost
+//         },
+//         winProp: {
+//             windowH: canvas.height,
+//             windowW: canvas.width
+//         }
+//     }));
+//     // wsConnect.send(JSON.stringify({
+//     //     Snake: {
+//     //         mouseX: cursor.x,
+//     //         mouseY: cursor.y,
+//     //         up: false,
+//     //         down: false,
+//     //         left: false,
+//     //         right: false,
+//     //         boost: game.snakes[0].boost
+//     //     },
+//     //     winProp: {
+//     //         windowH: canvas.height,
+//     //         windowW: canvas.width
+//     //     }
+//     // }));
+// }
 
 canvas.onmouseup = function () {
     game.snakes[0].boost = false;
@@ -50,93 +204,39 @@ window.addEventListener('keyup', function (event) {
     }
 });
 
+function start() {
+    game.init();
+    update();
+}
 
-let previousDelta= 0;
-let fpsLimit= 120;
 
-/*function update(currentDelta) {
+let updateId
+let previousDelta = 0
+let fpsLimit = 120;
+
+
+function update(currentDelta) {
+    updateId = requestAnimationFrame(update);
     movement();
+
     let delta = currentDelta - previousDelta;
-    if (fpsLimit && delta < 1000 / fpsLimit)
-        return;
+    if (fpsLimit && delta < 1000 / fpsLimit) return;
     previousDelta = currentDelta;
 
     ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
     ctxHex.clearRect(0, 0, canvas.width, canvas.height);
 
     game.draw();
+}
 
-    ctxHex.fillStyle = 'green';
-    ctxHex.beginPath();
-    ctxHex.arc(game.world.x + game.WORLD_SIZE.x / 2, game.world.y + game.WORLD_SIZE.y / 2, 200, 0, 2*Math.PI);
-    ctxHex.fill();
-    ctxHex.fillStyle = '';
-
-    let data = {
-        snake: {
-            id: 0,
-            x: game.snakes[0].pos.x,
-            y: game.snakes[0].pos.y,
-            radius: game.snakes[0].size,
-            score: game.snakes[0].score,
-            body: game.snakes[0].arr
-        }
-    };
-    conn.send(JSON.stringify(data));
-    requestAnimationFrame(update);
-}*/
+// wsConnect.addEventListener("message", function (event) {
+//     console.log('message from server:');            // для отладки, нужно будет удалить
+//     console.log(JSON.parse(event.data));            // для отладки, нужно будет удалить
+//     let dataFromServer = JSON.parse(event.data);
+//     // здесь нужно будет присваивать значения полученные с сервера
+//
+//     update();
+// });
 
 
-conn.addEventListener("message", function (event) {
-    let dataFromServer = JSON.parse(event.data);
-
-    // обновить информацию по точкам
-    game.foods = [];
-    for (let i= 0; i < dataFromServer.points.length; i++)
-    {
-        game.foods.push(
-            new Food(
-                ctxSnake,
-                dataFromServer.points[i].x - game.snakes[0].pos.x + game.SCREEN_SIZE.x / 2,
-                dataFromServer.points[i].y - game.snakes[0].pos.y + game.SCREEN_SIZE.y / 2,
-                dataFromServer.points[i].color
-            )
-        );
-    }
-
-    // новить информацию по зоне
-    game.ARENA_RADIUS = dataFromServer.wall;
-
-    // проверить, жива ли змея
-    if (Object.keys(dataFromServer.snake).length === 0)
-    {
-        game.snakes[0].die();
-    }
-
-    // обновить счет
-    game.snakes[0].score = dataFromServer.snake.score;
-
-    // движение
-    movement();
-
-    ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
-    ctxHex.clearRect(0, 0, canvas.width, canvas.height);
-
-    game.draw();
-
-    // отправить обновленные данные на бэк
-    let data = {
-        snake: {
-            id: 0,
-            x: game.snakes[0].pos.x,
-            y: game.snakes[0].pos.y,
-            radius: game.snakes[0].size,
-            score: game.snakes[0].score,
-            body: game.snakes[0].arr
-        }
-    };
-    conn.send(JSON.stringify(data));
-});
-
-
-game.init();
+start();

@@ -203,7 +203,7 @@ class SnakeBot extends Snake {
                 for (let j = 0; j < game.snakes[i].arr.length; j++)
                     if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
                         game.snakes[i].arr[j].y, game.snakes[i].size)) {
-                        // this.die();
+                        this.die();
                     }
         }
     }
