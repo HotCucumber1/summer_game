@@ -76,7 +76,7 @@ class Game {
         {
             this.ctxSnake.fillStyle = this.snakes[i].mainColor;
             this.ctxSnake.font = "bold 12px Arial";
-            this.ctxSnake.fillText("Your length: " + this.snakes[i].length,
+            this.ctxSnake.fillText("Your length: " + this.snakes[i].score, // счет
                 start.x - 5, start.y + i * 15);
         }
     }

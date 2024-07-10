@@ -96,6 +96,7 @@ let fpsLimit= 120;
 conn.addEventListener("message", function (event) {
     let dataFromServer = JSON.parse(event.data);
 
+    // обновить информацию по точкам
     game.foods = [];
     for (let i= 0; i < dataFromServer.points.length; i++)
     {
@@ -108,16 +109,20 @@ conn.addEventListener("message", function (event) {
             )
         );
     }
+
+    // новить информацию по зоне
     game.ARENA_RADIUS = dataFromServer.wall;
 
+    // проверить, жива ли змея
     if (Object.keys(dataFromServer.snake).length === 0)
     {
         game.snakes[0].die();
     }
 
-    console.log(dataFromServer.snake.score);
+    // обновить счет
     game.snakes[0].score = dataFromServer.snake.score;
 
+    // движение
     movement();
 
     ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
@@ -125,6 +130,7 @@ conn.addEventListener("message", function (event) {
 
     game.draw();
 
+    // отправить обновленные данные на бэк
     let data = {
         snake: {
             id: 0,

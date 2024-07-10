@@ -11,7 +11,7 @@ use Config\Config;
 class SnakeService
 {
     private const START_RADIUS = 15;
-    private const START_SCORE = 0;
+    private const START_SCORE = 20;
     private const START_LENGTH = 10;
     public const START_SPEED = 3;
     public const BOOST_SPEED = 10;

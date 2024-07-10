@@ -48,15 +48,6 @@ class WebSocketServer implements MessageComponentInterface
         }
     }
 
-    public function sendPointData(): void
-    {
-        $response = json_encode($this->gameInfo->getPointData());
-        foreach ($this->clients as $client)
-        {
-            $client->send($response);
-        }
-    }
-
     public function onClose(ConnectionInterface $conn): void
     {
         $this->clients->detach($conn);
