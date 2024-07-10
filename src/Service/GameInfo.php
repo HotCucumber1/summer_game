@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 class GameInfo
 {
     private const SPAWN_ZONE = 0.6;
-    const START_POINTS_AMOUNT = 2000;
+    private const START_POINTS_AMOUNT = 2000;
     private ?Snake $snake;
     private array $users_data = [];
 
@@ -41,7 +41,7 @@ class GameInfo
         for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
         {
             $this->pointService->addPoint(-Wall::$radius, -Wall::$radius,
-                Wall::$radius, Wall::$radius);
+                                            Wall::$radius, Wall::$radius);
         }
     }
 
@@ -51,7 +51,7 @@ class GameInfo
         {
             return;
         }
-        $data = json_decode($jsonData, associative: true);
+        $data = json_decode($jsonData, true, 512, JSON_THROW_ON_ERROR);
         if (!isset($data['snake']) ||
             !isset($data['snake']['id']) ||
             !isset($data['snake']['x']) ||

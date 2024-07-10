@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Service\SessionService;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends AbstractController
 {
@@ -29,14 +29,25 @@ class UserController extends AbstractController
     {
         $name = $request->get('name');
         $password = $request->get('password');
+        try
+        {
+            $user = $this->userService->getUserByName($name);
+            if (!$this->userService->isPasswordRight($user, $password))
+            {
+                return new Response('Password is incorrect', Response::HTTP_UNAUTHORIZED);
+            }
+            SessionService::putUserIdInSession($user->getUserId());
 
-        $userId = $this->userService->addUser($name, $password);
-        SessionService::putUserIdInSession($userId);
-
+        }
+        catch (NotFoundHttpException)
+        {
+            $userId = $this->userService->addUser($name, $password);
+            SessionService::putUserIdInSession($userId);
+        }
         return $this->redirectToRoute('game');
     }
 
-    public function signIn(Request $request): Response
+    /*public function signIn(Request $request): Response
     {
         $name = $request->get('name');
         $password = $request->get('password');
@@ -49,5 +60,5 @@ class UserController extends AbstractController
         SessionService::putUserIdInSession($user->getUserId());
 
         return $this->redirectToRoute('game');
-    }
+    }*/
 }

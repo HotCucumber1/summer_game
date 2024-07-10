@@ -63,7 +63,7 @@ let fpsLimit= 120;
 
 conn.addEventListener("message", function (event) {
     let dataFromServer = JSON.parse(event.data);
-    console.log(dataFromServer);
+    // console.log(dataFromServer);
 
     // обновить информацию по точкам
     game.foods = [];

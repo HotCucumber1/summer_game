@@ -1,4 +1,5 @@
-class Snake {
+class Snake
+{
     constructor(ctx, id) {
         this.ctx = ctx;
         this.id = id;
@@ -36,7 +37,7 @@ class Snake {
 
         this.camera = new Camera(0, 0, game.SCREEN_SIZE.x, game.SCREEN_SIZE.y);
         this.death = new Audio("audio/minecraft-death-sound.mp3");
-        this.death.volume = 1.0;
+        this.death.volume = 0.6;
         this.death.muted = false;
         this.death.load();
 
@@ -72,7 +73,6 @@ class Snake {
         this.ctx.arc(p1.x + Math.cos(this.angle), p1.y + Math.sin(this.angle), this.size / 4, 0, 2 * Math.PI);
         this.ctx.fill();
 
-
         //eye2
         let p2 = ut.rotate(p1, this.arr[0], 40);
         //eye
@@ -86,7 +86,6 @@ class Snake {
         this.ctx.beginPath();
         this.ctx.arc(p2.x + Math.cos(this.angle), p2.y + Math.sin(this.angle), this.size / 4, 0, 2 * Math.PI);
         this.ctx.fill();
-
     }
 
     drawBody(x, y) {
@@ -220,7 +219,8 @@ class Snake {
         const fadeInterval = fadeDuration / (1 / fadeStep);
 
         const fadeEffect = () => {
-            if (alpha > 0) {
+            if (alpha > 0)
+            {
                 alpha -= fadeStep;
                 this.ctx.shadowBlur++;
                 this.ctx.globalAlpha = alpha;

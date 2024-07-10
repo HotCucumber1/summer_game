@@ -3,6 +3,7 @@
 namespace App\Service\Server;
 
 use App\Controller\GameController;
+use App\Repository\RoomRepository;
 use App\Service\GameInfo;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
@@ -14,13 +15,15 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class WebSocketServer implements MessageComponentInterface
 {
     protected \SplObjectStorage $clients;
-    protected string $gameState;
     protected const INTERVAL = 0.02;
+    private array $clientRooms;
 
     public function __construct(private readonly LoopInterface $loop,
-                                private GameInfo $gameInfo)
+                                private readonly GameInfo $gameInfo,
+                                private readonly RoomRepository $roomRepository)
     {
         $this->clients = new \SplObjectStorage;
+        $this->clientRooms = [];
         $this->loop->addPeriodicTimer(self::INTERVAL, function() {
             $this->sendData();
         });
@@ -32,14 +35,29 @@ class WebSocketServer implements MessageComponentInterface
         echo "New connection {$conn->resourceId}\n";
     }
 
-    public function onMessage(ConnectionInterface $from,  $msg): void
+    public function onMessage(ConnectionInterface $from, $msg): void
     {
+        $data = json_decode($msg, false, 512, JSON_THROW_ON_ERROR);
+        /*if (isset($data['roomId']))
+        {
+            $roomId = $data['roomId'];
+            // Записать текущему клиенту код комнаты
+            $this->clientRooms[$from->resourceId] = $roomId;
+
+            $room = $this->roomRepository->getRoomByName($roomId);
+            if ($room === null)
+            {
+                $this->roomRepository->addRoom($roomId);
+                $room = $this->roomRepository->getRoomByName($roomId);
+            }
+            $room->setGameStatus($msg);
+        }*/
         $this->gameInfo->setGameStatus($msg);
     }
 
     public function sendData(): void
     {
-        $response = json_encode($this->gameInfo->getData());
+        $response = json_encode($this->gameInfo->getData(), JSON_THROW_ON_ERROR | true);
         foreach ($this->clients as $client)
         {
             $client->send($response);

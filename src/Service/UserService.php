@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\User;
 use App\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class UserService
@@ -50,7 +51,7 @@ class UserService
         $user = $this->userRepository->findUserByName($name);
         if ($user === null)
         {
-            throw new BadRequestException("User not found");
+            throw new NotFoundHttpException("User not found");
         }
         return $user;
     }

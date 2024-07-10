@@ -35,11 +35,20 @@ class Game {
                 this.snakes[i].move(this.snakes[0]);*/
 
         this.drawLength();
+        this.drawSize();
+    }
+
+    drawSize() {
+        let start = new Point(120, 20);
+        for (let i = 0; i < this.snakes.length; i++) {
+            this.ctxSnake.fillStyle = this.snakes[i].mainColor;
+            this.ctxSnake.font = "bold 12px Arial";
+            this.ctxSnake.fillText("Your size: " + this.snakes[i].size,
+                start.x - 5, start.y + i * 15);
+        }
     }
 
     drawWorld() {
-        // this.ctxHex.fillStyle = "white";
-        // this.ctxHex.fillRect(this.world.x - 2, this.world.y - 2, this.WORLD_SIZE.x + 4, this.WORLD_SIZE.y + 4);
         this.ctxHex.save();
 
         // Заполнение области за пределами круга красным цветом
@@ -62,7 +71,7 @@ class Game {
         this.ctxHex.globalAlpha = 0.5;
 
         this.ctxHex.beginPath();
-        this.ctxHex.arc(this.world.x + this.WORLD_SIZE.x / 2, this.world.y + this.WORLD_SIZE.y / 2, this.ARENA_RADIUS,0, 2*Math.PI);
+        this.ctxHex.arc(this.world.x + this.WORLD_SIZE.x / 2, this.world.y + this.WORLD_SIZE.y / 2, this.ARENA_RADIUS, 0, 2 * Math.PI);
         this.ctxHex.fill();
         this.ctxHex.stroke();
 
@@ -72,8 +81,7 @@ class Game {
 
     drawLength() {
         let start = new Point(20, 20);
-        for (let i = 0; i < this.snakes.length; i++)
-        {
+        for (let i = 0; i < this.snakes.length; i++) {
             this.ctxSnake.fillStyle = this.snakes[i].mainColor;
             this.ctxSnake.font = "bold 12px Arial";
             this.ctxSnake.fillText("Your length: " + this.snakes[i].score, // счет
@@ -81,10 +89,10 @@ class Game {
         }
     }
 
-    addSnake(id){
+    addSnake(id) {
         this.snakes.push(new SnakeBot(this.ctxSnake, id))
     }
-    
+
     drawName() {
         let start = new Point(game.SCREEN_SIZE.x / 2 + 20, game.SCREEN_SIZE.y / 2);
         this.ctxSnake.fillStyle = this.snakes[0].mainColor;
@@ -93,11 +101,4 @@ class Game {
         this.ctxSnake.fillText(nickname, start.x, start.y);
     }
 
-    generateFoods(n) {
-        for (let i = 0; i < n; i++)
-        {
-            let pos = ut.arcRandom(this.world.x + this.WORLD_SIZE.x / 2 - this.ARENA_RADIUS, this.world.x + this.WORLD_SIZE.x / 2 + this.ARENA_RADIUS, 0.9 * this.ARENA_RADIUS);
-            this.foods.push(new Food(this.ctxSnake, pos.x, pos.y));
-        }
-    }
 }
