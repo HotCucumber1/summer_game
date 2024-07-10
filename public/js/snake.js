@@ -128,9 +128,8 @@ class Snake {
         }
     }
 
-    move() {
-        this.boostMove();
-
+    moveCalc()
+    {
         this.velocity.x = this.speed * Math.cos(this.angle);
         this.velocity.y = this.speed * Math.sin(this.angle);
 
@@ -146,10 +145,24 @@ class Snake {
             this.drawBody(this.arr[i].x, this.arr[i].y);
         }
 
+        this.arr[0].x = this.pos.x - this.camera.x;
+        this.arr[0].y = this.pos.y - this.camera.y;
+
         this.pos.x += this.velocity.x;
         this.pos.y += this.velocity.y;
+    }
+
+    move() {
+        this.boostMove();
+
+        this.moveCalc()
 
         this.camera.follow(this.pos);
+
+        // let scale = Math.max(0.5, 1 - (this.length - 10) / 100);
+        // this.camera.setScale(scale);
+        //
+        // this.camera.applyTransform(game.ctxSnake);
 
         this.drawHead();
 
@@ -163,17 +176,27 @@ class Snake {
         if (this.length % 5 === 0) this.size = this.size = this.length / 5 + 13;
         if (this.size > this.MAXSIZE) this.size = this.MAXSIZE;
         if (this.size < this.MINSIZE) this.size = this.MINSIZE;
+        
+        // if ((this.size % 5 === 0) && (this.size !== 15) && (this.length % 10 === 0))
+        // {
+        //     // game.ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
+        //     game.ctxHex.clearRect(0, 0, canvas.width, canvas.height);
+        //     // this.ctx.scale(0.99, 0.999);
+        //     game.ctxHex.scale(0.95, 0.95);
+        // }
     }
 
     addLength(size) {
         this.length++;
-        this.arr.push(new Point(-100, -100));
+        this.arr.push(new Point(this.arr[this.arr.length - 1].x, this.arr[this.arr.length - 1].y));
     }
 
     // addLength(size) {
     //     for (let i = 1; i <= size - 4; i++)
-    //         this.arr.push(new Point(-100, -100));
-    //     this.length += (size - 4);
+    //     {
+    //         this.arr.push(new Point(this.arr[this.arr.length - 1].x, this.arr[this.arr.length - 1].y));
+    //         this.length++;
+    //     }
     // }
 
     checkCollissionFood() {
@@ -204,7 +227,6 @@ class Snake {
                 if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
                     game.snakes[i].arr[j].y, game.snakes[i].size)) {
                     this.die();
-
                     break;
                 }
         }

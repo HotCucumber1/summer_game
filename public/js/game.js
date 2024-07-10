@@ -30,6 +30,7 @@ class Game {
             if(this.snakes[i].state === 0) this.snakes[i].move(this.snakes[0]);
 
         this.drawLength();
+        this.drawSize();
     }
 
     drawWorld() {
@@ -72,6 +73,16 @@ class Game {
             this.ctxSnake.fillStyle = this.snakes[i].mainColor;
             this.ctxSnake.font = "bold 12px Arial";
             this.ctxSnake.fillText("Your length: " + this.snakes[i].length,
+                start.x - 5, start.y + i * 15);
+        }
+    }
+
+    drawSize() {
+        let start = new Point(120, 20);
+        for (let i = 0; i < this.snakes.length; i++) {
+            this.ctxSnake.fillStyle = this.snakes[i].mainColor;
+            this.ctxSnake.font = "bold 12px Arial";
+            this.ctxSnake.fillText("Your size: " + this.snakes[i].size,
                 start.x - 5, start.y + i * 15);
         }
     }

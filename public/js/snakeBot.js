@@ -275,6 +275,7 @@ class SnakeBot extends Snake {
                     if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
                         game.snakes[i].arr[j].y, game.snakes[i].size)) {
                         this.die();
+                        break;
                     }
         }
     }
@@ -293,7 +294,7 @@ class SnakeBot extends Snake {
             this.arr.splice(i, 1);
         }
 
-        // super.drawEffect(arrayBody);
+        // this.drawEffect(arrayBody);
         let index = game.snakes.indexOf(this);
         game.snakes.splice(index, 1);
     }
