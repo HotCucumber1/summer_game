@@ -16,23 +16,23 @@ class Game {
         // this.generateFoods(1500);
         this.snakes[0] = new Snake(this.ctxSnake, 0);
         // боты
-        // for(let i=1; i<11; i++)
-        //     this.addSnake(i);
+        for(let i= 1; i< 30; i++)
+             this.addSnake(i);
     }
 
     draw() {
         this.drawWorld();
 
         for (let i = 0; i < this.foods.length; i++) {
-            this.foods[i].draw(this.snakes[0]);
+            this.foods[i].draw();
         }
 
         if (this.snakes[0].state === 0)
             this.snakes[0].move();
 
-        /*for(let i=1; i < this.snakes.length; i++)
+        for(let i=1; i < this.snakes.length; i++)
             if(this.snakes[i].state === 0)
-                this.snakes[i].move(this.snakes[0]);*/
+                this.snakes[i].move(this.snakes[0]);
 
         this.drawLength();
         this.drawSize();
@@ -84,7 +84,7 @@ class Game {
         for (let i = 0; i < this.snakes.length; i++) {
             this.ctxSnake.fillStyle = this.snakes[i].mainColor;
             this.ctxSnake.font = "bold 12px Arial";
-            this.ctxSnake.fillText("Your length: " + this.snakes[i].score, // счет
+            this.ctxSnake.fillText("Your length: " + this.snakes[i].length, // счет
                 start.x - 5, start.y + i * 15);
         }
     }

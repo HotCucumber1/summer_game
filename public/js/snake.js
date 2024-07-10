@@ -13,9 +13,10 @@ class Snake
         this.angle = ut.random(0, Math.PI);
 
         this.length = 20;
-        this.MAXSIZE = 80;
+        this.MAXSIZE = 50;
         this.MINSIZE = 15;
         this.size = 15;
+        this.MAXLENGTH = 200;
 
         this.mainColor = ut.randomColor();
         this.midColor = ut.color(this.mainColor, 0.33);
@@ -43,6 +44,7 @@ class Snake
 
         this.pop = new Audio("audio/pop.mp3");
         this.pop.volume = 1.0;
+        this.pop.load();
         // this.pop.muted = false;
     }
 
@@ -94,7 +96,8 @@ class Snake
         grd.addColorStop(1, this.midColor);
 
         let radius = this.size;
-        if (radius < 0) radius = 1;
+        if (radius < 0)
+            radius = 1;
 
         this.ctx.beginPath();
         this.ctx.fillStyle = this.mainColor;
@@ -109,12 +112,13 @@ class Snake
     }
 
     boostMove() {
-        if (this.boost && this.length > 10) {
+        if (this.boost && this.length > 10)
+        {
             this.ctx.shadowBlur = 20; // радиус размытия тени
             this.ctx.shadowColor = this.supportColor; // цвет свечения
             this.ctx.shadowOffsetX = 0; // смещение тени по X
             this.ctx.shadowOffsetY = 0;
-            this.speed = 10;
+            this.speed = 15;
             if (this.intervalId === null) {
                 this.intervalId = setInterval(() => {
                     this.counter++;
@@ -125,7 +129,9 @@ class Snake
                 this.length--;
                 this.counter = 0;
             }
-        } else {
+        }
+        else
+        {
             this.ctx.shadowBlur = 0;
             this.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
             this.speed = 6;
@@ -159,7 +165,7 @@ class Snake
         this.drawHead();
 
         this.setSize();
-        // this.checkCollissionFood();
+        this.checkCollissionFood();
         //this.checkCollissionSnake()
         //this.checkCollissionBorder();
     }
@@ -174,21 +180,31 @@ class Snake
     }
 
     addLength(size) {
-        this.length++;
-        this.arr.push(new Point(-100, -100));
+        if (this.arr.length < this.MAXLENGTH)
+        {
+            this.length++;
+            this.arr.push(new Point(-100, -100));
+        }
     }
 
     checkCollissionFood() {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
         for (let i = 0; i < game.foods.length; i++) {
-            if (ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x, game.foods[i].pos.y, game.foods[i].size))
+            if (!game.foods[i].eaten &&
+                ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x, game.foods[i].pos.y, game.foods[i].size))
             {
                 this.addLength(game.foods[i].size);
-                // game.foods[i].die();
+                game.foods[i].die();
 
-                this.pop.load();
-                this.pop.play();
+                if (this.id === 0)
+                {
+                    this.pop.pause();
+                    this.pop = new Audio("audio/pop.mp3");
+                    this.pop.volume = 1.0;
+                    this.pop.play();
+                }
+
                 return;
             }
         }
@@ -253,10 +269,10 @@ class Snake
                 document.body.classList.remove("fade-in");
                 document.body.classList.add("fade-out");
 
-                /*setTimeout(function () {
+                setTimeout(function () {
                     conn.close();
                     window.location.href = "/menu";
-                }, 500);*/
+                }, 500);
             }
         };
         fadeEffect();

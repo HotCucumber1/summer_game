@@ -2,15 +2,13 @@ class Food {
     constructor(ctx, x, y, color) {
         this.ctx = ctx;
         this.pos = new Point(x, y);
-        this.sizeMin = 5;
-        this.sizeMax = 9;
+        this.eaten = false;
 
-        this.size = 7; //ut.random(this.sizeMin, this.sizeMax);
-
+        this.size = 5; //ut.random(this.sizeMin, this.sizeMax);
         this.mainColor = color; //ut.randomColor();
     }
 
-    draw(player) {
+    draw() {
         this.ctx.fillStyle = this.mainColor;
 
         this.ctx.shadowBlur = 20;               // радиус размытия тени
@@ -27,7 +25,6 @@ class Food {
     }
 
     die() {
-        let index = game.foods.indexOf(this);
-        game.foods.splice(index, 1);
+        this.eaten = true;
     }
 }

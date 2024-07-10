@@ -9,6 +9,8 @@ class SnakeBot extends Snake {
 
         this.angle = 0;
         this.length = 10;
+        this.avoidSnake = false;
+        this.border = false;
 
         this.speed = 4;
         this.boost = false;
@@ -28,12 +30,119 @@ class SnakeBot extends Snake {
         // }, this.changeDirectionInterval);
 
         setInterval(() => {
+            this.checkPlayer();
+        }, 100)
+
+        setInterval(() => {
             this.findFood();
         }, 100)
+
+        setInterval(() => {
+            this.checkBorderInField();
+        }, 100)
+
     }
+
+    turn(p1, p2) {
+
+        let angle = ut.getAngle(p1, p2);
+
+        let delta = angle - this.d;
+
+        if (delta > Math.PI) {
+            delta -= 2 * Math.PI;
+        }
+        if (delta < -Math.PI) {
+            delta += 2 * Math.PI;
+        }
+
+        if (delta > 0) {
+            this.d += Math.PI / 16;
+        } else if (delta < 0) {
+            this.d -= Math.PI / 16;
+        }
+
+        this.changeAngle(this.d);
+    }
+
+    findFood() {
+
+        if (this.avoidSnake) return;
+        if (this.border) return
+
+        let min = Infinity;
+        let minFood = null;
+
+        for (let i = 0; i < game.foods.length; i++) {
+            let distance = ut.getDistance(game.foods[i].pos, this.arr[0]);
+            if (distance < min) {
+                min = distance;
+                minFood = game.foods[i].pos;
+            }
+        }
+
+        if (minFood) {
+            this.turn(this.arr[0], minFood);
+        }
+
+    }
+
+    checkPlayer() {
+
+        if (this.border) return;
+        if (this != game.snakes[0]) {
+            let x = this.arr[0].x;
+            let y = this.arr[0].y;
+            let snake = game.snakes[0].arr[0];
+            let snakeX = game.snakes[0].arr[0].x;
+            let snakeY = game.snakes[0].arr[0].y;
+
+            if (snakeX - 300 < x && snakeX + 300 > x &&
+                snakeY - 300 < y && snakeY + 300 > y) {
+
+                this.turn(snake, this.arr[0]);
+
+                this.avoidSnake = true;
+
+            } else {
+
+                this.avoidSnake = false;
+
+            }
+
+        }
+    }
+
+    checkBorderInField() {
+        if (this != game.snakes[0]) {
+
+            let center = new Point(game.world.x + game.WORLD_SIZE.x / 2, game.world.y + game.WORLD_SIZE.y / 2);
+
+            let distanceToBorder = ut.getDistance(this.arr[0], center);
+
+            const safeDistance = 300;
+            const safeArena = game.ARENA_RADIUS - safeDistance;
+
+            if (distanceToBorder >= safeArena) {
+
+                this.border = true;
+                this.d += Math.PI / 24;
+                this.changeAngle(this.d);
+
+            } else {
+
+                this.border = false
+            }
+        }
+    }
+
 
     randomizeDirection() {
         this.angle = Math.random() * 2 * Math.PI;
+    }
+
+    changeAngle(angle) {
+        this.angle = angle;
     }
 
     boostMove() {
@@ -58,44 +167,6 @@ class SnakeBot extends Snake {
             this.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
             this.speed = 4;
         }
-    }
-
-    findFood() {
-        let min = Infinity;
-        let minFood = null;
-
-        for (let i = 0; i < game.foods.length; i++) {
-            let distance = ut.getDistance(game.foods[i].pos, this.arr[0]);
-            if (distance < min) {
-                min = distance;
-                minFood = game.foods[i].pos;
-            }
-        }
-
-        if (minFood) {
-            let angle = ut.getAngle(this.arr[0], minFood);
-            let delta = angle - this.d;
-
-            if (delta > Math.PI) {
-                delta -= 2 * Math.PI;
-            }
-            if (delta < -Math.PI) {
-                delta += 2 * Math.PI;
-            }
-
-            if (delta > 0) {
-                this.d += Math.PI / 16;
-            } else if (delta < 0) {
-                this.d -= Math.PI / 16;
-            }
-
-            this.changeAngle(this.d);
-        }
-
-    }
-
-    changeAngle(angle) {
-        this.angle = angle;
     }
 
     move(player) {
@@ -140,9 +211,11 @@ class SnakeBot extends Snake {
         super.checkCollissionFood();
         this.checkCollissionBot();
         this.checkCollissionBorder();
+
     }
 
     drawEffect(arr) {
+
         this.ctx.globalAlpha = 1;
         this.ctx.shadowBlur = 0; // радиус размытия тени
         this.ctx.shadowColor = this.supportColor; // цвет свечения
@@ -202,6 +275,7 @@ class SnakeBot extends Snake {
                     if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
                         game.snakes[i].arr[j].y, game.snakes[i].size)) {
                         this.die();
+                        break;
                     }
         }
     }
@@ -211,7 +285,7 @@ class SnakeBot extends Snake {
         let arrayBody = [];
 
         for (let i = last; i >= 1; i--) {
-            game.foods.push(new Food(game.ctxFood, this.arr[i].x, this.arr[i].y));
+            game.foods.push(new Food(game.ctxSnake, this.arr[i].x, this.arr[i].y));
             arrayBody.push({
                 x: this.arr[i].x,
                 y: this.arr[i].y,
@@ -220,9 +294,8 @@ class SnakeBot extends Snake {
             this.arr.splice(i, 1);
         }
 
-        // super.drawEffect(arrayBody);
+        // this.drawEffect(arrayBody);
         let index = game.snakes.indexOf(this);
         game.snakes.splice(index, 1);
     }
 }
-

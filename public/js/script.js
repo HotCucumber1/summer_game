@@ -6,7 +6,6 @@ let cursor = new Point(0, 0);
 let game = new Game(ctxSnake, ctxHex);
 
 let d = -Math.PI / 2;
-
 let counter = 0;
 
 
@@ -82,10 +81,18 @@ conn.addEventListener("message", function (event) {
     // новить информацию по зоне
     game.ARENA_RADIUS = dataFromServer.wall;
 
+    // отрисовать ботов
+    let botData = dataFromServer.bots;
+    /*for (let i = 1; i < game.snakes.length; i++)
+    {
+        game.snakes[i].pos.x = botData[i].x;
+        game.snakes[i].pos.y = botData[i].y;
+    }*/
+
     // проверить, жива ли змея
     if (Object.keys(dataFromServer.snake).length === 0)
     {
-        console.log('hy');
+        console.log('hi');
         game.snakes[0].die();
     }
     else

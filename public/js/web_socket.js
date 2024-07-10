@@ -8,5 +8,5 @@ conn.onopen = function (e) {
 };
 
 conn.onerror = function (e) {
-    alert(`Error`);
+    alert(`Error ${e.data}`);
 }

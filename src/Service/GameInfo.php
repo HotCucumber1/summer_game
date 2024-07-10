@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\BodyPart;
 use App\Entity\Point;
 use App\Entity\Snake;
+use App\Entity\SnakeBot;
 use App\Entity\Wall;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
@@ -13,7 +14,11 @@ class GameInfo
     private const SPAWN_ZONE = 0.6;
     private const START_POINTS_AMOUNT = 2000;
     private ?Snake $snake;
-    private array $users_data = [];
+    private const START_BOT_NUMBER = 20;
+    /**
+     * @var SnakeBot[]
+     */
+    private array $bots = [];
 
     public function __construct(private readonly CollisionServiceInterface $collisionService,
                                 private readonly PointService              $pointService,
@@ -21,6 +26,10 @@ class GameInfo
                                 private readonly UserService               $userService)
     {
         $this->snake = $this->snakeService->createSnake();
+        for ($i = 0; $i < self::START_BOT_NUMBER; $i++)
+        {
+            $this->bots[] = $this->snakeService->createSnakeBot();
+        }
         for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
         {
             $this->pointService->addPoint(-Wall::$radius, -Wall::$radius,
@@ -70,6 +79,7 @@ class GameInfo
                                           $this->snake->getColor(),
                                           $data['snake']['body']);
 
+        $this->moveBots();
         $this->checkBumps();
         $this->updatePoints();
         $this->checkSnakeDeath();
@@ -100,12 +110,46 @@ class GameInfo
             }
         }
 
+        // Информация по ботам
+        $botsData = [];
+        foreach ($this->bots as $bot)
+        {
+            $body = $bot->getBodyParts();
+            $bodyData = [];
+            foreach ($body as $bodyPart)
+            {
+                $bodyData[] = [
+                    'x' => $bodyPart->getX(),
+                    'y' => $bodyPart->getY(),
+                    'color' => $bodyPart->getColor()
+                ];
+            }
+
+            $botsData[] = [
+                'x' => $bot->getHeadX(),
+                'y' => $bot->getHeadY(),
+                'body' => $bodyData,
+                'radius' => $bot->getRadius(),
+                'score' => $bot->getScore(),
+            ];
+        }
+
         return [
             'snake' => $snakeData,
             'points' => $pointsData,
-            'wall' => Wall::$radius
+            'wall' => Wall::$radius,
+            'bots' => $botsData,
         ];
     }
+
+    private function moveBots(): void
+    {
+        foreach ($this->bots as $bot)
+        {
+            $this->snakeService->move($bot);
+        }
+    }
+
 
     private function getSnakeData(): array
     {
@@ -208,7 +252,7 @@ class GameInfo
     {
         if (Wall::$radius > 500)
         {
-            Wall::$radius -= 1;
+            Wall::$radius -= 2;
         }
     }
 }

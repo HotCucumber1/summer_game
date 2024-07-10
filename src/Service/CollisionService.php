@@ -42,8 +42,8 @@ class CollisionService implements CollisionServiceInterface
 
     public function isWallBump(Snake $snake): bool
     {
-        $snakeX = $snake->getHeadX();
-        $snakeY = $snake->getHeadY();
+        $snakeX = (int) $snake->getHeadX();
+        $snakeY = (int) $snake->getHeadY();
         $snakeR = $snake->getRadius();
 
         // TODO: division by zero
