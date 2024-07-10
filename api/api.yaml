@@ -1,0 +1,146 @@
+openapi: 3.0.3
+info:
+  title: PythonGame API
+  description: |-
+
+  version: 1.0.11
+servers:
+  - url: http://localhost/
+
+
+paths:
+  /game/start:
+    post:
+      tags:
+        - game
+      summary: Set window settings
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settings'
+        '400':
+          description: Invalid operation
+  /game/info:
+    get:
+      tags:
+        - game
+      summary: Get current game information
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '400':
+          description: Invalid operation
+
+  /snake/move:
+    post:
+      tags:
+        - snake
+      summary: Change current snake movement
+      requestBody:
+        description: Change current snake movement
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Control'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+
+components:
+  schemas:
+    Settings:
+      type: object
+      properties:
+        width:
+          type: integer
+        height:
+          type: integer
+
+    Game:
+      type: object
+      properties:
+        snake:
+          type: object
+          properties:
+            x:
+              type: integer
+              format: int
+            y:
+              type: integer
+              format: int
+            body:
+              type: array
+              items:
+                $ref: '#/components/schemas/BodyPart'
+            radius:
+              type: integer
+              format: int
+            score:
+              type: integer
+              format: int
+            color:
+              type: string
+              example: "#AAA"
+        points:
+          type: array
+          items:
+            $ref: '#/components/schemas/Point'
+
+    BodyPart:
+      type: object
+      properties:
+        x:
+          type: integer
+          format: int
+        y:
+          type: integer
+          format: int
+        radius:
+          type: integer
+          format: int
+        color:
+          type: string
+          example: "#AAA"
+
+    Point:
+      type: object
+      properties:
+        x:
+          type: integer
+          format: int
+        y:
+          type: integer
+          format: int
+        color:
+          type: string
+          example: "#AAA"
+
+    Control:
+      type: object
+      properties:
+        mouseX:
+          type: integer
+          format: int
+        mouseY:
+          type: integer
+          format: int
+        up:
+          type: boolean
+        down:
+          type: boolean
+        left:
+          type: boolean
+        right:
+          type: boolean
