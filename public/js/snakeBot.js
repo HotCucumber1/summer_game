@@ -130,6 +130,7 @@ class SnakeBot extends Snake {
         this.avoidSnake = snakeInSight;
 
     }
+
     checkBorderInField() {
         if (this != game.snakes[0]) {
 

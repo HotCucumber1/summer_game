@@ -2,7 +2,7 @@ class Snake {
     constructor(ctx, id) {
         this.ctx = ctx;
         this.id = id;
-        this.defaultSpeed = 5;
+        this.defaultSpeed = 4;
         this.speed = this.defaultSpeed;
         this.boost = false;
         this.state = 0;
@@ -106,7 +106,7 @@ class Snake {
             this.ctx.shadowColor = this.supportColor; // цвет свечения
             this.ctx.shadowOffsetX = 0; // смещение тени по X
             this.ctx.shadowOffsetY = 0;
-            this.speed = 10;
+            this.speed = 8;
             if (this.intervalId === null) {
                 this.intervalId = setInterval(() => {
                     this.counter++;
@@ -204,10 +204,10 @@ class Snake {
                 game.foods[i].die();
                 if (this === game.snakes[0]) {
 
-                let pop = new Audio("../public/audio/pop.mp3");
-                pop.volume = 1.0;
-                pop.muted = false;
-                pop.play();
+                    let pop = new Audio("../public/audio/pop.mp3");
+                    pop.volume = 1.0;
+                    pop.muted = false;
+                    pop.play();
 
                     break;
                 }

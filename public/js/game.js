@@ -15,7 +15,7 @@ class Game {
     init() {
         this.generateFoods(2000);
         this.snakes[0] = new Snake(this.ctxSnake, localStorage.getItem("nickname"));
-        for(let i=1; i<20; i++) this.addSnake(i);
+        for (let i = 1; i < 20; i++) this.addSnake(i);
     }
 
     draw() {
@@ -26,11 +26,11 @@ class Game {
         if (this.snakes[0].state === 0)
             this.snakes[0].move();
 
-        for(let i=1; i < this.snakes.length; i++)
-            if(this.snakes[i].state === 0) this.snakes[i].move(this.snakes[0]);
+        for (let i = 1; i < this.snakes.length; i++)
+            if (this.snakes[i].state === 0) this.snakes[i].move(this.snakes[0]);
 
         this.drawLength();
-        this.drawSize();
+        // this.drawSize();
         this.drawName();
     }
 
@@ -57,7 +57,7 @@ class Game {
         this.ctxHex.globalAlpha = 0.5;
 
         this.ctxHex.beginPath();
-        this.ctxHex.arc( this.world.x + this.WORLD_SIZE.x / 2, this.world.y + this.WORLD_SIZE.y / 2, this.ARENA_RADIUS,0, 2*Math.PI);
+        this.ctxHex.arc(this.world.x + this.WORLD_SIZE.x / 2, this.world.y + this.WORLD_SIZE.y / 2, this.ARENA_RADIUS, 0, 2 * Math.PI);
         this.ctxHex.fill();
         this.ctxHex.stroke();
 
@@ -77,7 +77,7 @@ class Game {
         for (let i = 0; i < 10; i++) {
             this.ctxSnake.fillStyle = leaderBoard[i].mainColor;
             this.ctxSnake.font = "bold 12px Arial";
-            this.ctxSnake.fillText("#" + (i+1) + " " + leaderBoard[i].id + " length: " + leaderBoard[i].length,
+            this.ctxSnake.fillText("#" + (i + 1) + " " + leaderBoard[i].id + " length: " + leaderBoard[i].length,
                 start.x - 5, start.y + i * 15);
         }
 
@@ -99,7 +99,7 @@ class Game {
         }
     }
 
-    addSnake(id){
+    addSnake(id) {
 
         this.snakes.push(new SnakeBot(this.ctxSnake, id))
 
@@ -112,6 +112,7 @@ class Game {
         let nickname = localStorage.getItem("nickname");
         this.ctxSnake.fillText(nickname, start.x, start.y);
     }
+
     generateFoods(n) {
         for (let i = 0; i < n; i++) {
             let pos = ut.arcRandom(this.world.x + this.WORLD_SIZE.x / 2 - this.ARENA_RADIUS, this.world.x + this.WORLD_SIZE.x / 2 + this.ARENA_RADIUS, 0.9 * this.ARENA_RADIUS);
