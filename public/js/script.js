@@ -7,6 +7,10 @@ let game = new Game(ctxSnake, ctxHex);
 
 let d = -Math.PI / 2;
 
+window.addEventListener("load", function () {
+    document.body.classList.add("fade-in");
+});
+
 canvas.onmousemove = function (e) {
     cursor = ut.getMousePos(canvas, e);
 }

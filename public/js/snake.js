@@ -44,14 +44,14 @@ class Snake {
     drawRetina(p) {
         this.ctx.fillStyle = "black";
         this.ctx.beginPath();
-        this.ctx.arc(p.x + Math.cos(this.angle), p.y + Math.sin(this.angle), this.size / 4, 0, 2 * Math.PI);
+        this.ctx.arc(p.x + Math.cos(this.angle), p.y + Math.sin(this.angle), 0.23 * this.size, 0, 2 * Math.PI);
         this.ctx.fill();
     }
 
     drawEye(p) {
         this.ctx.fillStyle = "whitesmoke";
         this.ctx.beginPath();
-        this.ctx.arc(p.x, p.y, this.size / 2 - 1, 0, 2 * Math.PI);
+        this.ctx.arc(p.x, p.y, 0.42 * this.size, 0, 2 * Math.PI);
         this.ctx.fill();
     }
 
