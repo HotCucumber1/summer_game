@@ -14,7 +14,7 @@ class Game {
 
     init() {
         this.generateFoods(1500);
-        this.snakes[0] = new Snake(this.ctxSnake, 0);
+        this.snakes[0] = new Snake(this.ctxSnake, localStorage.getItem("nickname"));
         for(let i=1; i<11; i++) this.addSnake(i);
     }
 
