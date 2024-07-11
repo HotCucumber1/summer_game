@@ -1,7 +1,6 @@
 class Snake {
     constructor(ctx, id) {
         this.ctx = ctx;
-        // this.id = localStorage.getItem("nickname");  // для мультиплеера лучше сделать так
         this.id = id;
         this.defaultSpeed = 5;
         this.speed = this.defaultSpeed;
@@ -73,8 +72,6 @@ class Snake {
         p1 = ut.rotate(p1, this.arr[0], -20);
         this.drawEye(p1);
         this.drawRetina(p1);
-        //retina
-
 
         //eye2
         let p2 = ut.rotate(p1, this.arr[0], 40);
@@ -205,13 +202,15 @@ class Snake {
                 game.foods[i].pos.y, game.foods[i].size)) {
                 this.addLength(game.foods[i].size);
                 game.foods[i].die();
+                if (this === game.snakes[0]) {
 
                 let pop = new Audio("../public/audio/pop.mp3");
                 pop.volume = 1.0;
                 pop.muted = false;
                 pop.play();
 
-                break;
+                    break;
+                }
             }
         }
     }
@@ -219,6 +218,7 @@ class Snake {
     checkCollissionSnake() {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
+
         for (let i = 1; i < game.snakes.length; i++) {
             for (let j = 0; j < game.snakes[i].length; j++)
                 if (ut.cirCollission(x, y, this.size, game.snakes[i].arr[j].x,

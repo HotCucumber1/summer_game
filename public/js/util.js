@@ -36,8 +36,8 @@ class Util {
     }
 
     getDistance(i, f) {
-        return Math.abs(Math.sqrt(
-            Math.pow((f.x - i.x), 2) + Math.pow((f.y - i.y), 2)));
+        return Math.sqrt(
+            Math.pow((f.x - i.x), 2) + Math.pow((f.y - i.y), 2));
     }
 
     getAngle(p1, p2) {

@@ -33,7 +33,7 @@ class SnakeBot extends Snake {
     initBot() {
 
         setInterval(() => {
-            this.checkPlayer();
+            this.checkSnake();
         }, 100)
 
         setInterval(() => {
@@ -65,6 +65,14 @@ class SnakeBot extends Snake {
             this.d -= Math.PI / 16;
         }
 
+
+        if (this.d > Math.PI) {
+            this.d -= 2 * Math.PI
+        }
+        if (this.d < -Math.PI) {
+            this.d += 2 * Math.PI
+        }
+
         this.changeAngle(this.d);
     }
 
@@ -90,7 +98,7 @@ class SnakeBot extends Snake {
 
     }
 
-    checkPlayer() {
+    checkSnake() {
 
         if (this.border) return;
 
@@ -122,7 +130,6 @@ class SnakeBot extends Snake {
         this.avoidSnake = snakeInSight;
 
     }
-
     checkBorderInField() {
         if (this != game.snakes[0]) {
 
@@ -148,6 +155,7 @@ class SnakeBot extends Snake {
 
     changeAngle(angle) {
         this.angle = angle;
+        this.d = angle;
     }
 
     boostMove() {
@@ -200,8 +208,6 @@ class SnakeBot extends Snake {
         this.pos.x += this.velocity.x;
         this.pos.y += this.velocity.y;
 
-        //relative motion with player
-
         this.drawHead();
 
 
@@ -241,7 +247,7 @@ class SnakeBot extends Snake {
                 this.ctx.globalAlpha = alpha;
 
                 // Очищаем канвас перед перерисовкой (если нужно)
-                game.ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
+                this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 // Рисуем эффект
                 for (let i = arr.length - 1; i >= 0; i--) {
@@ -277,13 +283,16 @@ class SnakeBot extends Snake {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
         for (let i = 0; i < game.snakes.length; i++) {
-            if (game.snakes[i].id !== this.id)
-                    for (let j = 0; j < game.snakes[i].length; j++)
-                    if (ut.cirCollission(x, y, this.size, game.snakes[i].arr[j].x,
+            if (game.snakes[i].id != this.id) {
+                for (let j = 0; j < game.snakes[i].length; j++) {
+                    if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
                         game.snakes[i].arr[j].y, game.snakes[i].size)) {
+
                         this.die();
                         break;
                     }
+                }
+            }
         }
     }
 
