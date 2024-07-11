@@ -215,6 +215,13 @@ class Snake {
         }
     }
 
+    drawYourLength() {
+        this.ctx.fillStyle = this.mainColor;
+            this.ctx.font = "bold 12px Arial";
+            this.ctx.fillText("Your length: " + this.length,
+                20, game.SCREEN_SIZE.y - 20);
+        }
+
     checkCollissionSnake() {
         let x = this.arr[0].x;
         let y = this.arr[0].y;

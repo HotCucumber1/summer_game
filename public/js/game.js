@@ -29,6 +29,7 @@ class Game {
         for (let i = 1; i < this.snakes.length; i++)
             if (this.snakes[i].state === 0) this.snakes[i].move(this.snakes[0]);
 
+        this.snakes[0].drawYourLength();
         this.drawLength();
         // this.drawSize();
         this.drawName();
@@ -101,7 +102,7 @@ class Game {
 
     addSnake(id) {
 
-        this.snakes.push(new SnakeBot(this.ctxSnake, id))
+        this.snakes.push(new SnakeBot(this.ctxSnake, 'Bot' + id))
 
     }
 
