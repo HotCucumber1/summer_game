@@ -112,14 +112,17 @@ class Snake {
             this.ctx.shadowOffsetX = 0; // смещение тени по X
             this.ctx.shadowOffsetY = 0;
             this.speed = 8;
+
             if (this.intervalId === null) {
                 this.intervalId = setInterval(() => {
                     this.counter++;
                 }, 1000);
             }
             if (this.counter >= 1) {
-                this.length--;
                 this.counter = 0;
+                this.length--;
+                this.arr.shift();
+                this.headPath.shift();
             }
         } else {
             this.ctx.shadowBlur = 0;
@@ -134,6 +137,9 @@ class Snake {
         this.velocity.x = this.speed * Math.cos(this.angle);
         this.velocity.y = this.speed * Math.sin(this.angle);
 
+        this.pos.x += this.velocity.x;
+        this.pos.y += this.velocity.y;
+
         this.headPath.push({ x: this.pos.x, y: this.pos.y });
 
         if (this.headPath.length > this.length) {
@@ -146,9 +152,6 @@ class Snake {
             this.drawBody(this.arr[i].x, this.arr[i].y);
         }
 
-        this.pos.x += this.velocity.x;
-        this.pos.y += this.velocity.y;
-
         this.camera.follow(this.pos);
 
         this.drawHead();
@@ -160,19 +163,37 @@ class Snake {
     }
 
     setSize() {
-        if (this.length % 5 === 0) this.size = this.size = this.length / 5 + 13;
+        if (this.length % 5 === 0) {
+            this.size = Math.floor(this.length / 5) + 13
+        };
         if (this.size > this.MAXSIZE) this.size = this.MAXSIZE;
         if (this.size < this.MINSIZE) this.size = this.MINSIZE;
     }
 
-    addScore() {
-        this.length++;
-        this.arr.push(new Point(this.arr[this.arr.length - 1].x, this.arr[this.arr.length - 1].y));
-    }
+    addLength(size) {
+        if (this.size >= 20 && this.size < 35) {
+            size -= 1;
+        }
 
-    // addLength(size) {
-    //     this.length += (size - 4);
-    // }
+        if (this.size >= 35 && this.size < 50) {
+            size -= 2;
+        }
+
+        if (this.size >= 50 && this.size < 65) {
+            size -= 3;
+        }
+
+        if (this.size >= 65) {
+            size -= 4;
+        }
+
+        this.length += (size - 4);
+
+        for (let i = 0; i < (size - 4); i++) {
+            this.arr.push(new Point(this.pos.x, this.pos.y));
+            this.headPath.push(new Point(this.pos.x, this.pos.y));
+        }
+    }
 
     checkCollissionFood() {
         let x = this.arr[0].x;
@@ -181,9 +202,8 @@ class Snake {
         for (let i = 0; i < game.foods.length; i++) {
             if (ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x,
                 game.foods[i].pos.y, game.foods[i].size)) {
-
+                this.addLength(game.foods[i].size);
                 game.foods[i].die();
-                this.addScore();
                 if (this === game.snakes[0]) {
 
                     let pop = new Audio("../public/audio/pop.mp3");
@@ -194,7 +214,7 @@ class Snake {
                     break;
 
                 }
-                // this.addLength(game.foods[i].size);
+
             }
         }
     }
@@ -205,12 +225,12 @@ class Snake {
         let y = this.arr[0].y;
 
         for (let i = 1; i < game.snakes.length; i++) {
-            for (let j = 0; j < game.snakes[i].arr.length; j++)
+            for (let j = 0; j < game.snakes[i].length; j++)
                 if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
                     game.snakes[i].arr[j].y, game.snakes[i].size)) {
                     this.die();
 
-                    break;
+                    return;
                 }
         }
     }

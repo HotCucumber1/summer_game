@@ -25,12 +25,9 @@ class SnakeBot extends Snake {
     }
 
     initBot() {
-        // setInterval(() => {
-        //     this.randomizeDirection();
-        // }, this.changeDirectionInterval);
 
         setInterval(() => {
-            this.checkPlayer();
+            this.checkSnake();
         }, 100)
 
         setInterval(() => {
@@ -62,6 +59,14 @@ class SnakeBot extends Snake {
             this.d -= Math.PI / 16;
         }
 
+
+        if (this.d > Math.PI) {
+            this.d -= 2 * Math.PI
+        }
+        if (this.d < -Math.PI) {
+            this.d += 2 * Math.PI
+        }
+
         this.changeAngle(this.d);
     }
 
@@ -87,7 +92,7 @@ class SnakeBot extends Snake {
 
     }
 
-    checkPlayer() {
+    checkSnake() {
 
         if (this.border) return;
 
@@ -142,13 +147,9 @@ class SnakeBot extends Snake {
         }
     }
 
-
-    randomizeDirection() {
-        this.angle = Math.random() * 2 * Math.PI;
-    }
-
     changeAngle(angle) {
         this.angle = angle;
+        this.d = angle;
     }
 
     boostMove() {
@@ -177,8 +178,10 @@ class SnakeBot extends Snake {
 
     move(player) {
         this.boostMove();
+
         this.velocity.x = this.speed * Math.cos(this.angle);
         this.velocity.y = this.speed * Math.sin(this.angle);
+
         for (let i = this.length - 1; i >= 1; i--) {
             this.arr[i].x = this.arr[i - 1].x;
             this.arr[i].y = this.arr[i - 1].y;
@@ -193,9 +196,6 @@ class SnakeBot extends Snake {
         //move head
         this.arr[0].x += this.velocity.x;
         this.arr[0].y += this.velocity.y;
-
-        // this.pos.x += this.velocity.x;
-        // this.pos.y += this.velocity.y;
 
         //relative motion with player
         this.arr[0].x -= player.velocity.x;
@@ -240,7 +240,7 @@ class SnakeBot extends Snake {
                 this.ctx.globalAlpha = alpha;
 
                 // Очищаем канвас перед перерисовкой (если нужно)
-                game.ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
+                this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 // Рисуем эффект
                 for (let i = arr.length - 1; i >= 0; i--) {
@@ -276,12 +276,17 @@ class SnakeBot extends Snake {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
         for (let i = 0; i < game.snakes.length; i++) {
-            if (game.snakes[i].id != this.id)
-                for (let j = 0; j < game.snakes[i].arr.length; j++)
+            if (game.snakes[i].id != this.id) {
+                for (let j = 0; j < game.snakes[i].length; j++) {
                     if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
                         game.snakes[i].arr[j].y, game.snakes[i].size)) {
+
                         this.die();
+
+                        return;
                     }
+                }
+            }
         }
     }
 
