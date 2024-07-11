@@ -167,7 +167,7 @@ class Snake {
 
     addScore() {
         this.length++;
-        this.arr.push(new Point(-100, -100));
+        this.arr.push(new Point(this.arr[this.arr.length - 1].x, this.arr[this.arr.length - 1].y));
     }
 
     // addLength(size) {
@@ -200,14 +200,16 @@ class Snake {
     }
 
     checkCollissionSnake() {
+
         let x = this.arr[0].x;
         let y = this.arr[0].y;
+
         for (let i = 1; i < game.snakes.length; i++) {
             for (let j = 0; j < game.snakes[i].arr.length; j++)
                 if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
                     game.snakes[i].arr[j].y, game.snakes[i].size)) {
                     this.die();
-                    
+
                     break;
                 }
         }

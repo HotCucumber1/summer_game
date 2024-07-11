@@ -10,7 +10,7 @@ let ut = new Util();
 let cursor = new Point(0, 0);
 let game = new Game(ctxSnake, ctxHex);
 
-let d = -Math.PI / 2;
+let d = 0;
 
 window.addEventListener("load", function () {
     document.body.classList.add("fade-in");
@@ -38,7 +38,7 @@ const sendMouseMove = setInterval(function () {
             down: false,
             left: false,
             right: false,
-            boost:  game.snakes[0].boost
+            boost: game.snakes[0].boost
         },
         winProp: {
             windowH: canvas.height,
@@ -118,6 +118,14 @@ function movement() {
         d += Math.PI / 32;
     } else if (delta < 0) {
         d -= Math.PI / 32;
+    }
+
+    if (d > Math.PI) {
+        d -= 2 * Math.PI
+    }
+
+    if (d < -Math.PI) {
+        d += 2 * Math.PI
     }
 
     game.snakes[0].changeAngle(d);

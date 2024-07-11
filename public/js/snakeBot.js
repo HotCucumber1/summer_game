@@ -90,29 +90,35 @@ class SnakeBot extends Snake {
     checkPlayer() {
 
         if (this.border) return;
-        if (this != game.snakes[0]) {
-            let x = this.arr[0].x;
-            let y = this.arr[0].y;
-            let snake = game.snakes[0].arr[0];
-            let snakeX = game.snakes[0].arr[0].x;
-            let snakeY = game.snakes[0].arr[0].y;
 
-            if (snakeX - 300 < x && snakeX + 300 > x &&
-                snakeY - 300 < y && snakeY + 300 > y) {
+        let snakeInSight = false;
 
-                this.turn(snake, this.arr[0]);
+        for (let i = 0; i < game.snakes.length; i++) {
 
-                this.avoidSnake = true;
+            if (this != game.snakes[i]) {
 
-            } else {
+                let x = this.arr[0].x;
+                let y = this.arr[0].y;
 
-                this.avoidSnake = false;
+                let snake = game.snakes[i].arr[0];
+                let snakeX = game.snakes[i].arr[0].x;
+                let snakeY = game.snakes[i].arr[0].y;
 
+                if (snakeX - 300 < x && snakeX + 300 > x &&
+                    snakeY - 300 < y && snakeY + 300 > y) {
+
+                    this.turn(snake, this.arr[0]);
+
+                    snakeInSight = true;
+                    break;
+
+                }
             }
-
         }
-    }
 
+        this.avoidSnake = snakeInSight;
+
+    }
     checkBorderInField() {
         if (this != game.snakes[0]) {
 
@@ -293,7 +299,7 @@ class SnakeBot extends Snake {
             this.arr.splice(i, 1);
         }
 
-        // super.drawEffect(arrayBody);
+        // this.drawEffect(arrayBody);
         let index = game.snakes.indexOf(this);
         game.snakes.splice(index, 1);
     }
