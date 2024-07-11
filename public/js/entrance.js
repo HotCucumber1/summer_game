@@ -13,12 +13,13 @@ window.addEventListener("DOMContentLoaded", function () {
         }, 2000);
     }
 
-    enter.addEventListener("submit", function () {
-        const nickname = document.getElementById("nickname");
-        const nick = nickname.value;
-        sessionStorage.setItem("Nickname", nick);
-        hangleButtonClick("../pages/menu.html");
+    nickname.addEventListener("input", () => {
+        this.localStorage.setItem("nickname", nickname.value)
     });
+
+    enter.addEventListener("submit", function () {
+        hangleButtonClick("../pages/menu.html");
+        });
 
 });
 

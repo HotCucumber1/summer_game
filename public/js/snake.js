@@ -1,6 +1,7 @@
 class Snake {
     constructor(ctx, id) {
         this.ctx = ctx;
+        // this.id = localStorage.getItem("nickname");  // для мультиплеера лучше сделать так
         this.id = id;
         this.speed = 4;
         this.boost = false;

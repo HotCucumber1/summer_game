@@ -1,6 +1,6 @@
-const single = document.getElementById("single");
-const multi = document.getElementById("multi");
-const form = document.querySelector("menu");
+const create = document.getElementById("create");
+const join = document.getElementById("join");
+const form = document.querySelector("room");
 
 window.addEventListener("DOMContentLoaded", function () {
     document.body.classList.add("fade-in");
@@ -14,12 +14,12 @@ window.addEventListener("DOMContentLoaded", function () {
         }, 500);
     }
 
-    single.addEventListener("click", function () {
+    create.addEventListener("click", function () {
         handleButtonClick("../pages/index.html");
     });
 
-    multi.addEventListener("click", function () {
-        handleButtonClick("../pages/room.html");
+    join.addEventListener("click", function () {
+        handleButtonClick("../pages/index.html");
     });
     
 });
@@ -34,10 +34,10 @@ function pullOfWithButton(e) {
     button.style.boxShadow = "";
 }
 
-single.addEventListener('mouseover', handleOnButton);
-single.addEventListener('mouseout', pullOfWithButton);
+create.addEventListener('mouseover', handleOnButton);
+create.addEventListener('mouseout', pullOfWithButton);
 
-multi.addEventListener('mouseover', handleOnButton);
-multi.addEventListener('mouseout', pullOfWithButton);
+join.addEventListener('mouseover', handleOnButton);
+join.addEventListener('mouseout', pullOfWithButton);
 
 
