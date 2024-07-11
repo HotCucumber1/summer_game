@@ -227,6 +227,7 @@ function update(currentDelta) {
     ctxHex.clearRect(0, 0, canvas.width, canvas.height);
 
     game.draw();
+    game.drawName();
 }
 
 // wsConnect.addEventListener("message", function (event) {

@@ -1,7 +1,7 @@
 class Snake {
     constructor(ctx, id) {
         this.ctx = ctx;
-        this.id = id;
+        this.id = localStorage.getItem("nickname");
         this.score = 0;
         this.speed = 4;
         this.boost = false;
