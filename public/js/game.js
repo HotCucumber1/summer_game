@@ -13,9 +13,9 @@ class Game {
     }
 
     init() {
-        this.generateFoods(1500);
+        this.generateFoods(2000);
         this.snakes[0] = new Snake(this.ctxSnake, localStorage.getItem("nickname"));
-        for(let i=1; i<11; i++) this.addSnake(i);
+        for(let i=1; i<20; i++) this.addSnake(i);
     }
 
     draw() {
@@ -31,12 +31,10 @@ class Game {
 
         this.drawLength();
         this.drawSize();
+        this.drawName();
     }
 
     drawWorld() {
-        // this.ctxHex.fillStyle = "white";
-        // this.ctxHex.fillRect(this.world.x - 2, this.world.y - 2, this.WORLD_SIZE.x + 4, this.WORLD_SIZE.y + 4);
-
         this.ctxHex.save();
 
         // Заполнение области за пределами круга красным цветом

@@ -116,6 +116,14 @@ function movement() {
         d -= Math.PI / 32;
     }
 
+    if (d > Math.PI) {
+        d -= 2 * Math.PI
+    }
+
+    if (d < -Math.PI) {
+        d += 2 * Math.PI
+    }
+
     game.snakes[0].changeAngle(d);
 }
 
@@ -227,7 +235,6 @@ function update(currentDelta) {
     ctxHex.clearRect(0, 0, canvas.width, canvas.height);
 
     game.draw();
-    game.drawName();
 }
 
 // wsConnect.addEventListener("message", function (event) {

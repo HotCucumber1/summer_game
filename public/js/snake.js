@@ -3,7 +3,8 @@ class Snake {
         this.ctx = ctx;
         // this.id = localStorage.getItem("nickname");  // для мультиплеера лучше сделать так
         this.id = id;
-        this.speed = 4;
+        this.defaultSpeed = 5;
+        this.speed = this.defaultSpeed;
         this.boost = false;
         this.state = 0;
 
@@ -12,7 +13,7 @@ class Snake {
         this.angle = ut.random(0, Math.PI);
 
         this.length = 10;
-        this.MAXSIZE = 80;
+        this.MAXSIZE = 60;
         this.MINSIZE = 15;
         this.size = 15;
 
@@ -41,48 +42,44 @@ class Snake {
 
     }
 
+    drawRetina(p) {
+        this.ctx.fillStyle = "black";
+        this.ctx.beginPath();
+        this.ctx.arc(p.x + Math.cos(this.angle), p.y + Math.sin(this.angle), this.size / 4, 0, 2 * Math.PI);
+        this.ctx.fill();
+    }
+
+    drawEye(p) {
+        this.ctx.fillStyle = "whitesmoke";
+        this.ctx.beginPath();
+        this.ctx.arc(p.x, p.y, this.size / 2 - 1, 0, 2 * Math.PI);
+        this.ctx.fill();
+    }
+
     drawHead() {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
 
         //head
-        this.ctx.fillStyle = this.color;
+        this.ctx.fillStyle = this.midColor;
         this.ctx.beginPath();
         this.ctx.arc(x, y, this.size, 0, 2 * Math.PI);
         this.ctx.fill();
 
+        let d = this.size / 2;
 
         //eye 1
-        let d = this.size / 2;
         let p1 = new Point(x + d * Math.cos(this.angle), y + d * Math.sin(this.angle));
         p1 = ut.rotate(p1, this.arr[0], -20);
-        //eye
-        this.ctx.fillStyle = "whitesmoke";
-        this.ctx.beginPath();
-        this.ctx.arc(p1.x, p1.y, this.size / 2 - 1, 0, 2 * Math.PI);
-        this.ctx.fill();
-
+        this.drawEye(p1);
+        this.drawRetina(p1);
         //retina
-        this.ctx.fillStyle = "black";
-        this.ctx.beginPath();
-        this.ctx.arc(p1.x + Math.cos(this.angle), p1.y + Math.sin(this.angle), this.size / 4, 0, 2 * Math.PI);
-        this.ctx.fill();
 
 
         //eye2
         let p2 = ut.rotate(p1, this.arr[0], 40);
-        //eye
-        this.ctx.fillStyle = "whitesmoke";
-        this.ctx.beginPath();
-        this.ctx.arc(p2.x, p2.y, this.size / 2 - 1, 0, 2 * Math.PI);
-        this.ctx.fill();
-
-        //retina
-        this.ctx.fillStyle = "black";
-        this.ctx.beginPath();
-        this.ctx.arc(p2.x + Math.cos(this.angle), p2.y + Math.sin(this.angle), this.size / 4, 0, 2 * Math.PI);
-        this.ctx.fill();
-
+        this.drawEye(p2)
+        this.drawRetina(p2);
     }
 
     drawBody(x, y) {
@@ -120,17 +117,19 @@ class Snake {
             }
             if (this.counter >= 1) {
                 this.length--;
+                this.arr.shift();
+                this.headPath.shift();
+
                 this.counter = 0;
             }
         } else {
             this.ctx.shadowBlur = 0;
             this.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
-            this.speed = 6;
+            this.speed = this.defaultSpeed;
         }
     }
 
-    moveCalc()
-    {
+    moveCalc() {
         this.velocity.x = this.speed * Math.cos(this.angle);
         this.velocity.y = this.speed * Math.sin(this.angle);
 
@@ -157,48 +156,45 @@ class Snake {
         this.boostMove();
 
         this.moveCalc()
-
         this.camera.follow(this.pos);
-
-        // let scale = Math.max(0.5, 1 - (this.length - 10) / 100);
-        // this.camera.setScale(scale);
-        //
-        // this.camera.applyTransform(game.ctxSnake);
-
         this.drawHead();
 
-        this.setSize();
         this.checkCollissionFood();
         this.checkCollissionSnake()
         this.checkCollissionBorder();
+        this.setSize();
     }
 
     setSize() {
-        if (this.length % 5 === 0) this.size = this.size = this.length / 5 + 13;
+        if (this.length % 5 === 0) this.size = (this.length / 5) / 2 + 13;
         if (this.size > this.MAXSIZE) this.size = this.MAXSIZE;
         if (this.size < this.MINSIZE) this.size = this.MINSIZE;
-        
-        // if ((this.size % 5 === 0) && (this.size !== 15) && (this.length % 10 === 0))
-        // {
-        //     // game.ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
-        //     game.ctxHex.clearRect(0, 0, canvas.width, canvas.height);
-        //     // this.ctx.scale(0.99, 0.999);
-        //     game.ctxHex.scale(0.95, 0.95);
-        // }
     }
 
     addLength(size) {
-        this.length++;
-        this.arr.push(new Point(this.arr[this.arr.length - 1].x, this.arr[this.arr.length - 1].y));
-    }
+        if (this.size >= 20 && this.size < 30) {
+            size -= 1;
+        }
 
-    // addLength(size) {
-    //     for (let i = 1; i <= size - 4; i++)
-    //     {
-    //         this.arr.push(new Point(this.arr[this.arr.length - 1].x, this.arr[this.arr.length - 1].y));
-    //         this.length++;
-    //     }
-    // }
+        if (this.size >= 30 && this.size < 40) {
+            size -= 2;
+        }
+
+        if (this.size >= 40 && this.size < 50) {
+            size -= 3;
+        }
+
+        if (this.size >= 50) {
+            size -= 4;
+        }
+
+        this.length += (size - 4);
+
+        for (let i = 0; i < (size - 4); i++) {
+            this.arr.push(new Point(this.pos.x, this.pos.y));
+            this.headPath.push(new Point(this.pos.x, this.pos.y));
+        }
+    }
 
     checkCollissionFood() {
         let x = this.arr[0].x;
@@ -224,8 +220,8 @@ class Snake {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
         for (let i = 1; i < game.snakes.length; i++) {
-            for (let j = 0; j < game.snakes[i].arr.length; j++)
-                if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
+            for (let j = 0; j < game.snakes[i].length; j++)
+                if (ut.cirCollission(x, y, this.size, game.snakes[i].arr[j].x,
                     game.snakes[i].arr[j].y, game.snakes[i].size)) {
                     this.die();
                     break;

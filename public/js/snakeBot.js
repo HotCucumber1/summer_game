@@ -17,17 +17,20 @@ class SnakeBot extends Snake {
         this.d = -Math.PI;
 
         this.arr = [];
-        this.arr.push(this.pos);
-        for (let i = 1; i < this.length; i++) this.arr.push(new Point(this.arr[i - 1].x, this.arr[i - 1].y));
+        this.headPath = [];
+
+        this.arr.push(new Point(this.pos.x, this.pos.y));
+        this.headPath.push(new Point(this.pos.x, this.pos.y));
+        for (let i = 1; i < this.length; i++) {
+            this.arr.push(new Point(this.arr[i - 1].x, this.arr[i - 1].y));
+            this.headPath.push(new Point(this.headPath[i - 1].x, this.headPath[i - 1].y));
+        }
 
         this.initBot();
 
     }
 
     initBot() {
-        // setInterval(() => {
-        //     this.randomizeDirection();
-        // }, this.changeDirectionInterval);
 
         setInterval(() => {
             this.checkPlayer();
@@ -90,27 +93,34 @@ class SnakeBot extends Snake {
     checkPlayer() {
 
         if (this.border) return;
-        if (this != game.snakes[0]) {
-            let x = this.arr[0].x;
-            let y = this.arr[0].y;
-            let snake = game.snakes[0].arr[0];
-            let snakeX = game.snakes[0].arr[0].x;
-            let snakeY = game.snakes[0].arr[0].y;
 
-            if (snakeX - 300 < x && snakeX + 300 > x &&
-                snakeY - 300 < y && snakeY + 300 > y) {
+        let snakeInSight = false;
 
-                this.turn(snake, this.arr[0]);
+        for (let i = 0; i < game.snakes.length; i++) {
 
-                this.avoidSnake = true;
+            if (this != game.snakes[i]) {
 
-            } else {
+                let x = this.arr[0].x;
+                let y = this.arr[0].y;
 
-                this.avoidSnake = false;
+                let snake = game.snakes[i].arr[0];
+                let snakeX = game.snakes[i].arr[0].x;
+                let snakeY = game.snakes[i].arr[0].y;
 
+                if (snakeX - 300 < x && snakeX + 300 > x &&
+                    snakeY - 300 < y && snakeY + 300 > y) {
+
+                    this.turn(snake, this.arr[0]);
+
+                    snakeInSight = true;
+                    break;
+
+                }
             }
-
         }
+
+        this.avoidSnake = snakeInSight;
+
     }
 
     checkBorderInField() {
@@ -134,11 +144,6 @@ class SnakeBot extends Snake {
                 this.border = false
             }
         }
-    }
-
-
-    randomizeDirection() {
-        this.angle = Math.random() * 2 * Math.PI;
     }
 
     changeAngle(angle) {
@@ -171,29 +176,31 @@ class SnakeBot extends Snake {
 
     move(player) {
         this.boostMove();
+
         this.velocity.x = this.speed * Math.cos(this.angle);
         this.velocity.y = this.speed * Math.sin(this.angle);
-        for (let i = this.length - 1; i >= 1; i--) {
-            this.arr[i].x = this.arr[i - 1].x;
-            this.arr[i].y = this.arr[i - 1].y;
 
-            //relative motion with player
-            this.arr[i].x -= player.velocity.x;
-            this.arr[i].y -= player.velocity.y;
+        this.headPath.push({x: this.pos.x, y: this.pos.y});
+
+        if (this.headPath.length > this.length) {
+            this.headPath.shift();
+        }
+
+        for (let i = this.length - 1; i > 0; i--) {
+            this.arr[i].x = this.headPath[this.headPath.length - 1 - i].x - player.pos.x;
+            this.arr[i].y = this.headPath[this.headPath.length - 1 - i].y - player.pos.y;
 
             this.drawBody(this.arr[i].x, this.arr[i].y);
         }
 
-        //move head
-        this.arr[0].x += this.velocity.x;
-        this.arr[0].y += this.velocity.y;
+        this.arr[0].x = this.pos.x - player.pos.x;
+        this.arr[0].y = this.pos.y - player.pos.y;
 
-        // this.pos.x += this.velocity.x;
-        // this.pos.y += this.velocity.y;
+        //move head
+        this.pos.x += this.velocity.x;
+        this.pos.y += this.velocity.y;
 
         //relative motion with player
-        this.arr[0].x -= player.velocity.x;
-        this.arr[0].y -= player.velocity.y;
 
         this.drawHead();
 
@@ -270,9 +277,9 @@ class SnakeBot extends Snake {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
         for (let i = 0; i < game.snakes.length; i++) {
-            if (game.snakes[i].id != this.id)
-                for (let j = 0; j < game.snakes[i].arr.length; j++)
-                    if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
+            if (game.snakes[i].id !== this.id)
+                    for (let j = 0; j < game.snakes[i].length; j++)
+                    if (ut.cirCollission(x, y, this.size, game.snakes[i].arr[j].x,
                         game.snakes[i].arr[j].y, game.snakes[i].size)) {
                         this.die();
                         break;
