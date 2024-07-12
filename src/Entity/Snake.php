@@ -4,27 +4,26 @@ namespace App\Entity;
 
 class Snake
 {
-    public function __construct(
-        private int       $id,
-        private float     $headX,
-        private float     $headY,
-        private array     $bodyParts,
-        private int       $radius,
-        private int       $score,
-        private string    $color,
-        private bool      $isAlive=true
-    )
+    private const START_RADIUS = 15;
+    private const START_SCORE = 0;
+    private int $radius;
+    private int $score;
+    private string $color;
+
+    public function __construct(private int    $id,
+                                private float  $headX,
+                                private float  $headY,
+                                private array  $bodyParts,
+                                private bool   $isAlive=true)
     {
+        $this->radius = self::START_RADIUS;
+        $this->score = self::START_SCORE;
+        $this->color = Color::getRandomColor();
     }
 
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 
     public function getHeadX(): float
@@ -50,11 +49,6 @@ class Snake
         return $this->radius;
     }
 
-//    public function getDirection(): Direction
-//    {
-//        return $this->direction;
-//    }
-
     public function getScore(): int
     {
         return $this->score;
@@ -73,6 +67,11 @@ class Snake
     public function getLength(): int
     {
         return count($this->bodyParts) + 1; // + head
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     public function setHeadX(float $headX): void
@@ -94,11 +93,6 @@ class Snake
     {
         $this->radius = $radius;
     }
-
-//    public function setDirection(Direction $direction): void
-//    {
-//        $this->direction = $direction;
-//    }
 
     public function setColor(string $color): void
     {

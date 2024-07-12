@@ -4,7 +4,7 @@ namespace App\Service;
 
 class PasswordHasher
 {
-    const SALT = 'sugar';
+    private const SALT = 'sugar';
 
     public function hash(string $password): string
     {

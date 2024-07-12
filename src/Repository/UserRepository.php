@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Exception\ORMException;
@@ -17,10 +16,6 @@ class UserRepository implements UserRepositoryInterface
         $this->repository = $entityManager->getRepository(User::class);
     }
 
-    /**
-     * @throws OptimisticLockException
-     * @throws ORMException
-     */
     public function findUserById(int $id): ?User
     {
         return $this->entityManager->find(User::class, $id);

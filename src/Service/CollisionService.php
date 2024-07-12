@@ -6,7 +6,7 @@ use App\Entity\Snake;
 use App\Entity\Point;
 use App\Entity\Wall;
 
-class CollisionService implements CollisionServiceInterface
+class CollisionService
 {
     public function __construct(private readonly SnakeService $snakeService)
     {
@@ -20,6 +20,7 @@ class CollisionService implements CollisionServiceInterface
 
         $currentId = $snake->getId();
 
+        // TODO: need to optimize
         $snakes = $this->snakeService->getSnakes();
         foreach ($snakes as $id => $snakeUser)
         {
@@ -40,13 +41,13 @@ class CollisionService implements CollisionServiceInterface
         return false;
     }
 
-    public function isWallBump(Snake $snake): bool
+    public function isWallBump(Snake $snake, int $wallRadius): bool
     {
         $snakeX = $snake->getHeadX();
         $snakeY = $snake->getHeadY();
         $snakeR = $snake->getRadius();
 
-        if ($snakeX ** 2 + $snakeY ** 2 >= (Wall::$radius - $snakeR - 50) ** 2)
+        if ($snakeX ** 2 + $snakeY ** 2 >= ($wallRadius - $snakeR - 10) ** 2)
         {
             $dist = sqrt(($snakeX - Wall::centreX) ** 2 + ($snakeY - Wall::centreY) ** 2);
             $sin = $snakeY / $dist;
@@ -55,20 +56,14 @@ class CollisionService implements CollisionServiceInterface
             $bumpX = abs($snakeX) + $snakeR * abs($cos);
             $bumpY = abs($snakeY) + $snakeR * abs($sin);
 
-            return ($bumpX ** 2 + $bumpY ** 2 >= Wall::$radius ** 2);
+            return ($bumpX ** 2 + $bumpY ** 2 >= $wallRadius ** 2);
         }
         return false;
     }    
     
     public function isPointEaten(Snake $snake, Point $point): bool
     {
-        $headX = $snake->getHeadX();
-        $headY = $snake->getHeadY();
-        $radius = $snake->getRadius();
-
-        $pointX = $point->getX();
-        $pointY = $point->getY();
-
-        return (($pointX - $headX) ** 2 + ($pointY - $headY) ** 2 <= ($radius + 5) ** 2);
+        return (($point->getX() - $snake->getHeadX()) ** 2 +
+                ($point->getY() - $snake->getHeadY()) ** 2 <= ($snake->getRadius() + 5) ** 2);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 use App\Entity\BodyPart;
+use App\Entity\Color;
 use App\Entity\Snake;
 use App\Entity\Wall;
 use App\Repository\SnakeRepositoryInterface;
@@ -20,31 +21,27 @@ class SnakeService
 
     public function createSnake(int $id): Snake
     {
-        $color = Config::COLORS[array_rand(Config::COLORS)];
+        $color = Color::getRandomColor();
 
         // $id = SessionService::takeUserIdFromSession();
         do
         {
-            $headX = random_int(-self::SPAWN_ZONE * Wall::$radius, self::SPAWN_ZONE * Wall::$radius);
-            $headY = random_int(-self::SPAWN_ZONE * Wall::$radius, self::SPAWN_ZONE * Wall::$radius);
+            $headX = rand(-self::SPAWN_ZONE * Wall::START_RADIUS, self::SPAWN_ZONE * Wall::START_RADIUS);
+            $headY = rand(-self::SPAWN_ZONE * Wall::START_RADIUS, self::SPAWN_ZONE * Wall::START_RADIUS);
         }
-        while ($headX ** 2 + $headY ** 2 >= (self::SPAWN_ZONE * Wall::$radius) ** 2);
+        while ($headX ** 2 + $headY ** 2 >= (self::SPAWN_ZONE * Wall::START_RADIUS) ** 2);
 
         $startBody = $this->createBody($color, $headX, $headY);
         return new Snake($id,
                          $headX,
                          $headY,
-                         $startBody,
-                         self::START_RADIUS,
-                         self::START_SCORE,
-                         $color);
+                         $startBody);
     }
 
     public function setSnakeData(Snake $snake,
                                  int $x,
                                  int $y,
                                  int $radius,
-                                 string $color,
                                  array $oldSnakeBody): void
     {
         $snake->setHeadX($x);
@@ -57,7 +54,7 @@ class SnakeService
             $newBody[] = new BodyPart($bodyPart['x'],
                                       $bodyPart['y'],
                                       $radius,
-                                      $color);
+                                      $snake->getColor());
         }
         $snake->setBodyParts($newBody);
     }
@@ -72,11 +69,6 @@ class SnakeService
 
     public function getSnakeData(Snake $snake): array
     {
-        $x = $snake->getHeadX();
-        $y = $snake->getHeadY();
-        $radius = $snake->getRadius();
-        $score = $snake->getScore();
-
         $body = $snake->getBodyParts();
         $bodyData = [];
         foreach ($body as $bodyPart)
@@ -90,11 +82,11 @@ class SnakeService
 
         return [
             'id' => $snake->getId(),
-            'x' => $x,
-            'y' => $y,
+            'x' => $snake->getHeadX(),
+            'y' => $snake->getHeadY(),
             'body' => $bodyData,
-            'radius' => $radius,
-            'score' => $score,
+            'radius' => $snake->getRadius(),
+            'score' => $snake->getScore(),
         ];
     }
 

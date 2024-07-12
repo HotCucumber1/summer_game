@@ -2,9 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Color;
 use App\Entity\Point;
-use App\Entity\Wall;
-use Config\Config;
 
 class PointRepository implements PointRepositoryInterface
 {
@@ -18,8 +17,8 @@ class PointRepository implements PointRepositoryInterface
             $x = rand($minX, $maxX);
             $y = rand($minY, $maxY);
         }
-        while ($x ** 2 + $y ** 2 >= Wall::$radius ** 2);
-        $color = $this->getPointColor();
+        while ($x ** 2 + $y ** 2 >= $maxY ** 2);
+        $color = Color::getRandomColor();
 
         $this->points[] = new Point($x, $y, $color);
     }
@@ -37,7 +36,7 @@ class PointRepository implements PointRepositoryInterface
         $point->setStatus(false);
     }
 
-    public function deleteAllPoints(): void
+    public function clearAllPoints(): void
     {
         $this->points = [];
     }
@@ -48,11 +47,5 @@ class PointRepository implements PointRepositoryInterface
         {
             return $point->getStatus();
         });
-    }
-
-    public function getPointColor(): string
-    {
-        $key = array_rand(Config::COLORS);
-        return Config::COLORS[$key];
     }
 }

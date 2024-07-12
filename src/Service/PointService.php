@@ -25,7 +25,7 @@ class PointService
 
     public function clearAllPoints(): void
     {
-        $this->pointRepository->deleteAllPoints();
+        $this->pointRepository->clearAllPoints();
     }
 
     public function clearEatenPoints(): void

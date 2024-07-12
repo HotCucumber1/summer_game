@@ -34,7 +34,7 @@ class WebSocketServer implements MessageComponentInterface
         $this->clients->attach($conn);
         //$this->gameInfo->addUserToGame($conn->resourceId);
         //SessionService::putUserIdInSession($conn->resourceId);
-        $this->gameInfo->dropGameToStart();
+        //$this->gameInfo->dropGameToStart();
         echo "New connection {$conn->resourceId}\n";
     }
 
@@ -70,7 +70,7 @@ class WebSocketServer implements MessageComponentInterface
     public function onClose(ConnectionInterface $conn): void
     {
         $this->clients->detach($conn);
-        SessionService::destroySession();
+        //SessionService::destroySession();
         $this->gameInfo->deleteUser($conn->resourceId);
         echo "Connection {$conn->resourceId} has disconnected\n";
     }

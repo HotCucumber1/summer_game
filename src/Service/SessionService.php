@@ -6,10 +6,12 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class SessionService
 {
-    const SESSION_NAME = 'user';
+    private const SESSION_NAME = 'user';
 
     public static function putUserIdInSession(int $id): bool
     {
+        session_name(self::SESSION_NAME);
+        session_start();
         $_SESSION['user_id'] = $id;
         if ($_SESSION['user_id'])
         {

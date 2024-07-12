@@ -4,10 +4,8 @@ namespace App\Entity;
 
 class Direction
 {
-    public function __construct(
-        private int $speed,
-        private float $angle
-    )
+    public function __construct(private int $speed,
+                                private float $angle)
     {
     }
 

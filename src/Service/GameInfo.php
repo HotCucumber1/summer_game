@@ -10,25 +10,26 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 class GameInfo
 {
     private const START_POINTS_AMOUNT = 2000;
-    private ?Snake $snake;
+    private Snake $snake;
+
     /**
      * @var Snake[]
      */
-    public array $users;
+    public array $users = [];
+    private int $wallRadius = Wall::START_RADIUS;
 
-    public function __construct(private readonly CollisionServiceInterface $collisionService,
-                                private readonly PointService              $pointService,
-                                private readonly SnakeService              $snakeService,
-                                private readonly UserService               $userService)
+    public function __construct(private readonly CollisionService $collisionService,
+                                private readonly PointService     $pointService,
+                                private readonly SnakeService     $snakeService,
+                                private readonly UserService      $userService)
     {
         $this->snake = $this->snakeService->createSnake(0);
 
         for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
         {
-            $this->pointService->addPoint(-Wall::$radius, -Wall::$radius,
-                Wall::$radius, Wall::$radius);
+            $this->pointService->addPoint(-$this->wallRadius, -$this->wallRadius,
+                                           $this->wallRadius,  $this->wallRadius);
         }
-        $this->users = [];
     }
 
     public function addUserToGame(int $id): void
@@ -41,20 +42,21 @@ class GameInfo
 
     public function dropGameToStart(): void
     {
-        if ($this->snake !== null)
+        /*if ($this->snake->getAliveStatus())
         {
             return;
-        }
+        }*/
 
         $this->users = [];
-        Wall::$radius = Wall::START_RADIUS;
+        $this->wallRadius = Wall::START_RADIUS;
         $this->pointService->clearAllPoints();
+
         $this->snake = $this->snakeService->createSnake(0);
 
         for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
         {
-            $this->pointService->addPoint(-Wall::$radius, -Wall::$radius,
-                                            Wall::$radius, Wall::$radius);
+            $this->pointService->addPoint(-$this->wallRadius, -$this->wallRadius,
+                                           $this->wallRadius,  $this->wallRadius);
         }
     }
 
@@ -62,11 +64,11 @@ class GameInfo
     {
         //$snake = $this->users[$id];
         $snake = $this->snake;
-        if ($snake === null)
+        if (!$snake->getAliveStatus())
         {
             return;
         }
-        $data = json_decode($jsonData, true, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode($jsonData, true);
         if (!isset($data['snake']) ||
             !isset($data['snake']['id']) ||
             !isset($data['snake']['x']) ||
@@ -75,15 +77,13 @@ class GameInfo
             !isset($data['snake']['score']) ||
             !isset($data['snake']['body']))
         {
-            throw new BadRequestException('Not enough information about snake');
+            throw new BadRequestException("Not enough information about snake {$data['snake']['id']}");
         }
-
 
         $this->snakeService->setSnakeData($snake,
                                           $data['snake']['x'],
                                           $data['snake']['y'],
                                           $data['snake']['radius'],
-                                          $snake->getColor(),
                                           $data['snake']['body']);
 
         $this->checkBumps($snake);
@@ -98,7 +98,7 @@ class GameInfo
         $snake = $this->getCurrentSnake();
         //$snake = $this->users[$id];
         $snakeData = [];
-        if ($snake !== null)
+        if ($snake->getAliveStatus())
         {
             $snakeData = $this->snakeService->getSnakeData($snake);
         }
@@ -128,7 +128,7 @@ class GameInfo
         return [
             'snake' => $snakeData,
             'points' => $pointsData,
-            'wall' => Wall::$radius,
+            'wall' => $this->wallRadius,
             'users' => $userData
         ];
     }
@@ -139,24 +139,24 @@ class GameInfo
     }
 
 
-    private function checkBumps(?Snake $snake): void
+    private function checkBumps(Snake $snake): void
     {
         //$snake = $this->getCurrentSnake();
-        if ($snake === null)
+        if (!$snake->getAliveStatus())
         {
             return;
         }
-        if ($this->collisionService->isWallBump($snake) ||
+        if ($this->collisionService->isWallBump($snake, $this->wallRadius) ||
             $this->collisionService->isSnakeBump($snake))
         {
             $snake->setAliveStatus(false);
         }
     }
 
-    private function updatePoints(?Snake $snake): void
+    private function updatePoints(Snake $snake): void
     {
         //$snake = $this->getCurrentSnake();
-        if ($snake === null)
+        if (!$snake->getAliveStatus())
         {
             return;
         }
@@ -173,7 +173,7 @@ class GameInfo
                 }
             }
 
-            if ($point->getX() ** 2 + $point->getY() ** 2 >= Wall::$radius ** 2)
+            if ($point->getX() ** 2 + $point->getY() ** 2 >= $this->wallRadius ** 2)
             {
                 $this->pointService->clearPoint($point);
             }
@@ -181,45 +181,41 @@ class GameInfo
         $this->pointService->clearEatenPoints();
     }
 
-    private function checkSnakeDeath(?Snake $snake): void
+    private function checkSnakeDeath(Snake $snake): void
     {
         //$snake = $this->getCurrentSnake();
-        if ($snake === null)
+        if (!$snake->getAliveStatus())
         {
             return;
         }
-        if (!$snake->getAliveStatus())
+        $score = $snake->getScore();
+
+        // $id = SessionService::takeUserIdFromSession();
+        // $this->userService->setUserScore($id, $score);
+
+        $body = $snake->getBodyParts();
+        $pointsPerPart = intdiv($score, count($body));
+
+        foreach ($body as $bodyPart)
         {
-            $score = $snake->getScore();
+            $x1 = $bodyPart->getX() - $bodyPart->getRadius();
+            $y1 = $bodyPart->getY() - $bodyPart->getRadius();
 
-            // $id = SessionService::takeUserIdFromSession();
-            // $this->userService->setUserScore($id, $score);
+            $x2 = $bodyPart->getX() + $bodyPart->getRadius();
+            $y2 = $bodyPart->getY() + $bodyPart->getRadius();
 
-            $body = $snake->getBodyParts();
-            $this->snake = null;
-            $pointsPerPart = intdiv($score, count($body));
-
-            foreach ($body as $bodyPart)
+            for ($j = 0; $j < $pointsPerPart; $j++)
             {
-                $x1 = $bodyPart->getX() - $bodyPart->getRadius();
-                $y1 = $bodyPart->getY() - $bodyPart->getRadius();
-
-                $x2 = $bodyPart->getX() + $bodyPart->getRadius();
-                $y2 = $bodyPart->getY() + $bodyPart->getRadius();
-
-                for ($j = 0; $j < $pointsPerPart; $j++)
-                {
-                    $this->pointService->addPoint($x1, $y1, $x2, $y2);
-                }
+                $this->pointService->addPoint($x1, $y1, $x2, $y2);
             }
         }
     }
 
     private function compressWall(): void
     {
-        if (Wall::$radius > 500)
+        if ($this->wallRadius > 500)
         {
-            Wall::$radius -= 2;
+            $this->wallRadius -= 2;
         }
     }
 

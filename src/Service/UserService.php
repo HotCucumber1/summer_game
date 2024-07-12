@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 class UserService
 {
     public function __construct(private readonly UserRepositoryInterface $userRepository,
-                                private PasswordHasher $hasher)
+                                private readonly PasswordHasher $hasher)
     {
     }
 
@@ -21,11 +21,11 @@ class UserService
         {
             throw new BadRequestException("User data is not valid");
         }
-        $existingUser = $this->userRepository->findUserByName($name);
+        /*$existingUser = $this->userRepository->findUserByName($name);
         if ($existingUser !== null)
         {
             throw new UnauthorizedHttpException('User with name "' . $name . '" has already been registered');
-        }
+        }*/
         $hashPassword = $this->hasher->hash($password);
         $user = new User(
             null,

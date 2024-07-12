@@ -11,7 +11,6 @@ use App\Service\PasswordHasher;
 use App\Service\PointService;
 use App\Service\SnakeService;
 use App\Service\UserService;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
 class GameFactory

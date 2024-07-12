@@ -4,13 +4,11 @@ namespace App\Entity;
 
 class Point
 {
-    const PRICE = 1;
-    public function __construct(
-        private int    $x,
-        private int    $y,
-        private string $color,
-        private bool   $status = true
-    )
+    public const PRICE = 1;
+    public function __construct(private int    $x,
+                                private int    $y,
+                                private string $color,
+                                private bool   $status = true)
     {
     }
 
