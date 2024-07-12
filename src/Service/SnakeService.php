@@ -1,17 +1,16 @@
 <?php
 
 namespace App\Service;
+
 use App\Entity\BodyPart;
 use App\Entity\Color;
 use App\Entity\Snake;
 use App\Entity\Wall;
 use App\Repository\SnakeRepositoryInterface;
-use Config\Config;
 
 class SnakeService
 {
     private const START_RADIUS = 15;
-    private const START_SCORE = 20;
     private const START_LENGTH = 10;
     private const SPAWN_ZONE = 0.6;
 

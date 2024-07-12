@@ -26,6 +26,11 @@ class Snake
         return $this->id;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function getHeadX(): float
     {
         return $this->headX;
@@ -72,6 +77,11 @@ class Snake
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
     public function setHeadX(float $headX): void

@@ -62,8 +62,8 @@ class GameInfo
 
     public function setGameStatus(string $jsonData, int $id): void
     {
-        //$snake = $this->users[$id];
-        $snake = $this->snake;
+        $snake = $this->users[$id];
+        // $snake = $this->snake;
         if (!$snake->getAliveStatus())
         {
             return;
@@ -141,7 +141,7 @@ class GameInfo
 
     private function checkBumps(Snake $snake): void
     {
-        //$snake = $this->getCurrentSnake();
+        // $snake = $this->getCurrentSnake();
         if (!$snake->getAliveStatus())
         {
             return;
@@ -221,8 +221,8 @@ class GameInfo
 
     private function getCurrentSnake(): ?Snake
     {
-        //$id = SessionService::takeUserIdFromSession();
-        //return $this->users[$id];
-        return $this->snake;
+        $id = CookieService::getUserId();
+        return $this->users[$id];
+        // return $this->snake;
     }
 }
