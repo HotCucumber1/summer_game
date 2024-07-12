@@ -12,15 +12,17 @@ class Game {
         this.foods = [];
     }
 
-    init() {
+    init()
+    {
         // this.generateFoods(1500);
         this.snakes[0] = new Snake(this.ctxSnake, 0);
         // боты
-        for(let i= 1; i< 30; i++)
-             this.addSnake(i);
+        /*for(let i= 1; i< 30; i++)
+             this.addSnake(i);*/
     }
 
-    draw() {
+    draw()
+    {
         this.drawWorld();
 
         for (let i = 0; i < this.foods.length; i++) {
@@ -30,15 +32,16 @@ class Game {
         if (this.snakes[0].state === 0)
             this.snakes[0].move();
 
-        for(let i=1; i < this.snakes.length; i++)
+        /*for(let i=1; i < this.snakes.length; i++)
             if(this.snakes[i].state === 0)
-                this.snakes[i].move(this.snakes[0]);
+                this.snakes[i].move(this.snakes[0]);*/
 
         this.drawLength();
         this.drawSize();
     }
 
-    drawSize() {
+    drawSize()
+    {
         let start = new Point(120, 20);
         for (let i = 0; i < this.snakes.length; i++) {
             this.ctxSnake.fillStyle = this.snakes[i].mainColor;

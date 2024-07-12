@@ -21,11 +21,11 @@ class CollisionService implements CollisionServiceInterface
         $currentId = $snake->getId();
 
         $snakes = $this->snakeService->getSnakes();
-        foreach ($snakes as $id => $snake)
+        foreach ($snakes as $id => $snakeUser)
         {
             if ($id !== $currentId)
             {
-                foreach ($snake->getBodyParts() as $bodyPart)
+                foreach ($snakeUser->getBodyParts() as $bodyPart)
                 {
                     $bodyX = $bodyPart->getX();
                     $bodyY = $bodyPart->getY();
@@ -42,12 +42,11 @@ class CollisionService implements CollisionServiceInterface
 
     public function isWallBump(Snake $snake): bool
     {
-        $snakeX = (int) $snake->getHeadX();
-        $snakeY = (int) $snake->getHeadY();
+        $snakeX = $snake->getHeadX();
+        $snakeY = $snake->getHeadY();
         $snakeR = $snake->getRadius();
 
-        // TODO: division by zero
-        if ($snakeX !== 0 && $snakeY !== 0)
+        if ($snakeX ** 2 + $snakeY ** 2 >= (Wall::$radius - $snakeR - 50) ** 2)
         {
             $dist = sqrt(($snakeX - Wall::centreX) ** 2 + ($snakeY - Wall::centreY) ** 2);
             $sin = $snakeY / $dist;

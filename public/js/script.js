@@ -23,14 +23,16 @@ function movement() {
     if (delta < -Math.PI) {
         delta += 2 * Math.PI;
     }
-
-    if (delta >= 0)
-    {
+    if (delta > 0) {
         d += Math.PI / 32;
-    }
-    else
-    {
+    } else if (delta < 0) {
         d -= Math.PI / 32;
+    }
+    if (d > Math.PI) {
+        d -= 2 * Math.PI
+    }
+    if (d < -Math.PI) {
+        d += 2 * Math.PI
     }
     game.snakes[0].changeAngle(d);
 }
@@ -62,7 +64,7 @@ let fpsLimit= 120;
 
 conn.addEventListener("message", function (event) {
     let dataFromServer = JSON.parse(event.data);
-    // console.log(dataFromServer);
+    console.log(dataFromServer);
 
     // обновить информацию по точкам
     game.foods = [];
@@ -77,17 +79,8 @@ conn.addEventListener("message", function (event) {
             )
         );
     }
-
     // новить информацию по зоне
     game.ARENA_RADIUS = dataFromServer.wall;
-
-    // отрисовать ботов
-    let botData = dataFromServer.bots;
-    /*for (let i = 1; i < game.snakes.length; i++)
-    {
-        game.snakes[i].pos.x = botData[i].x;
-        game.snakes[i].pos.y = botData[i].y;
-    }*/
 
     // проверить, жива ли змея
     if (Object.keys(dataFromServer.snake).length === 0)

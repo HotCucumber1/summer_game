@@ -11,7 +11,6 @@ class SessionService
     public static function putUserIdInSession(int $id): bool
     {
         $_SESSION['user_id'] = $id;
-        $_SESSION['order'] = [];
         if ($_SESSION['user_id'])
         {
             return true;

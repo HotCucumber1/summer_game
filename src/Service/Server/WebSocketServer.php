@@ -5,6 +5,7 @@ namespace App\Service\Server;
 
 use App\Repository\RoomRepository;
 use App\Service\GameInfo;
+use App\Service\SessionService;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use React\EventLoop\LoopInterface;
@@ -13,7 +14,7 @@ use React\EventLoop\LoopInterface;
 class WebSocketServer implements MessageComponentInterface
 {
     protected \SplObjectStorage $clients;
-    protected const INTERVAL = 0.02;
+    protected const INTERVAL = 0.03;
     private array $clientRooms;
 
     public function __construct(private readonly LoopInterface $loop,
@@ -29,13 +30,17 @@ class WebSocketServer implements MessageComponentInterface
 
     public function onOpen(ConnectionInterface $conn): void
     {
+        echo 'OK';
         $this->clients->attach($conn);
+        //$this->gameInfo->addUserToGame($conn->resourceId);
+        //SessionService::putUserIdInSession($conn->resourceId);
+        $this->gameInfo->dropGameToStart();
         echo "New connection {$conn->resourceId}\n";
     }
 
     public function onMessage(ConnectionInterface $from, $msg): void
     {
-        $data = json_decode($msg, false, 512, JSON_THROW_ON_ERROR);
+        //$data = json_decode($msg, true);
         /*if (isset($data['roomId']))
         {
             $roomId = $data['roomId'];
@@ -43,14 +48,14 @@ class WebSocketServer implements MessageComponentInterface
             $this->clientRooms[$from->resourceId] = $roomId;
 
             $room = $this->roomRepository->getRoomByName($roomId);
-            if ($room === null)
+            /*if ($room === null)
             {
                 $this->roomRepository->addRoom($roomId);
                 $room = $this->roomRepository->getRoomByName($roomId);
             }
             $room->setGameStatus($msg);
         }*/
-        $this->gameInfo->setGameStatus($msg);
+        $this->gameInfo->setGameStatus($msg, $from->resourceId);
     }
 
     public function sendData(): void
@@ -65,6 +70,8 @@ class WebSocketServer implements MessageComponentInterface
     public function onClose(ConnectionInterface $conn): void
     {
         $this->clients->detach($conn);
+        SessionService::destroySession();
+        $this->gameInfo->deleteUser($conn->resourceId);
         echo "Connection {$conn->resourceId} has disconnected\n";
     }
 
