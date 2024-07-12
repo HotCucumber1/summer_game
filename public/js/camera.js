@@ -1,5 +1,7 @@
-class Camera {
-    constructor(x, y, width, height) {
+class Camera 
+{
+    constructor(x, y, width, height) 
+    {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -7,16 +9,19 @@ class Camera {
         this.scale = 1;
     }
 
-    follow(point) {
+    follow(point) 
+    {
         this.x = point.x - this.width / 2 / this.scale;
         this.y = point.y - this.height / 2 / this.scale;
     }
 
-    setScale(scale) {
+    setScale(scale) 
+    {
         this.scale = scale;
     }
 
-    applyTransform(ctx) {
+    applyTransform(ctx) 
+    {
         ctx.setTransform(this.scale, 0, 0, this.scale, -this.x * this.scale, -this.y * this.scale);
     }
 }

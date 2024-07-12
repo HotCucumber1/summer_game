@@ -217,10 +217,15 @@ class Snake {
 
     drawYourLength() {
         this.ctx.fillStyle = this.mainColor;
+        if (window.innerWidth > 1920) 
+        {
+            this.ctx.font = "bold 24px Arial";
+            this.ctx.fillText("Your length: " + this.length, 20, window.innerHeight - 20);
+        } else {
             this.ctx.font = "bold 12px Arial";
-            this.ctx.fillText("Your length: " + this.length,
-                20, game.SCREEN_SIZE.y - 20);
+            this.ctx.fillText("Your length: " + this.length, 20, window.innerHeight - 20);
         }
+    }
 
     checkCollissionSnake() {
         let x = this.arr[0].x;

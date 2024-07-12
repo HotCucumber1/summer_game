@@ -1,5 +1,7 @@
-class Food {
-    constructor(ctx, x, y) {
+class Food 
+{
+    constructor(ctx, x, y) 
+    {
         this.ctx = ctx;
         this.pos = new Point(x, y);
         this.sizeMin = 5;
@@ -10,8 +12,8 @@ class Food {
         this.mainColor = ut.randomColor();
     }
 
-    draw(player) {
-
+    draw(player) 
+    {
         this.pos.x -= player.velocity.x;
         this.pos.y -= player.velocity.y;
 
@@ -27,10 +29,11 @@ class Food {
         this.ctx.fill();
 
         this.ctx.shadowBlur = 0;
-        this.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
+        this.ctx.shadowColor = "rgba(0, 0, 0, 0)";
     }
 
-    die() {
+    die() 
+    {
         let index = game.foods.indexOf(this);
         game.foods.splice(index, 1);
     }
