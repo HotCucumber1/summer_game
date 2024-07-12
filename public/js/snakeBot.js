@@ -232,7 +232,7 @@ class SnakeBot extends Snake
             this.arr[i].x -= player.velocity.x;
             this.arr[i].y -= player.velocity.y;
 
-            this.drawBody(this.arr[i].x, this.arr[i].y);
+            this.drawBody(this.arr[i].x, this.arr[i].y, i);
         }
 
         //move head

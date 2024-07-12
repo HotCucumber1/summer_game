@@ -44,6 +44,7 @@ class Game
         }
 
         this.drawLength();
+        this.snakes[0].drawYourLength();
     }
 
     drawWorld() 

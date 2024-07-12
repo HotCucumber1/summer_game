@@ -50,7 +50,7 @@ class Snake
         let y = this.arr[0].y;
 
         //head
-        this.ctx.fillStyle = this.color;
+        this.ctx.fillStyle = this.supportColor;
         this.ctx.beginPath();
         this.ctx.arc(x, y, this.size, 0, 2 * Math.PI);
         this.ctx.fill();
@@ -89,23 +89,35 @@ class Snake
 
     }
 
-    drawBody(x, y) 
+    drawBody(x, y, index) 
     {
+        let baseColorValue = 255 - (index % 10) * 25;
+        if (Math.floor(index / 10) % 2 === 1) {
+            baseColorValue = 255 - baseColorValue;
+        }
 
-        let grd = this.ctx.createRadialGradient(x, y, 2, x + 4, y + 4, 10);
+        let baseColor = `rgb(${baseColorValue}, ${baseColorValue}, ${baseColorValue})`;
+
+        let grd = this.ctx.createRadialGradient(x, y, this.size * 0.1, x, y, this.size);
         grd.addColorStop(0, this.supportColor);
-        grd.addColorStop(1, this.midColor);
+        grd.addColorStop(0.5, baseColor);
+        grd.addColorStop(1, this.supportColor);
 
         let radius = this.size;
-        if (radius < 0) radius = 1;
+
+        if (radius < 0) {
+             radius = 1;
+        }
+
+        let flicker = Math.sin(Date.now() / 50 - index / 5) * 10 + 20;
+
+        this.ctx.shadowBlur = this.boost ? flicker : 20; // радиус размытия тени
+        this.ctx.shadowColor = this.boost ? this.supportColor : `rgb(0, 0, 0, 0.3)`; // цвет свечения
+        this.ctx.shadowOffsetX = this.boost ? 0 : 3; // смещение тени по X
+        this.ctx.shadowOffsetY = this.boost ? 0 : 3;
 
         this.ctx.beginPath();
-        this.ctx.fillStyle = this.mainColor;
-        this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        this.ctx.fill();
-
         this.ctx.fillStyle = grd;
-        this.ctx.beginPath();
         this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
         this.ctx.fill();
 
@@ -115,10 +127,6 @@ class Snake
     {
         if (this.boost && this.length > 10) 
         {
-            this.ctx.shadowBlur = 20; // радиус размытия тени
-            this.ctx.shadowColor = this.supportColor; // цвет свечения
-            this.ctx.shadowOffsetX = 0; // смещение тени по X
-            this.ctx.shadowOffsetY = 0;
             this.speed = 8;
 
             if (this.intervalId === null) 
@@ -130,7 +138,6 @@ class Snake
 
             if (this.counter >= 1) 
             {
-
                 this.counter = 0;
                 this.length--;
                 this.arr.shift();
@@ -165,7 +172,7 @@ class Snake
         {
             this.arr[i].x = this.headPath[this.headPath.length - 1 - i].x - this.camera.x;
             this.arr[i].y = this.headPath[this.headPath.length - 1 - i].y - this.camera.y;
-            this.drawBody(this.arr[i].x, this.arr[i].y);
+            this.drawBody(this.arr[i].x, this.arr[i].y, i);
         }
 
         this.camera.follow(this.pos);
@@ -182,7 +189,7 @@ class Snake
     {
         if (this.length % 5 === 0) 
         {
-            this.size = Math.floor(this.length / 5) / 2 + 13
+            this.size = Math.floor(this.length / 5) / 3 + 13
         }
 
         if (this.size > this.MAXSIZE) this.size = this.MAXSIZE;
@@ -250,7 +257,7 @@ class Snake
     }
 
     checkCollissionSnake() 
-{
+    {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
 
@@ -266,6 +273,24 @@ class Snake
                     return;
                 }
             }
+        }
+    }
+
+    drawYourLength() 
+    {
+
+        this.ctx.fillStyle = this.mainColor;
+        if (window.innerWidth > 1920) 
+        {
+
+            this.ctx.font = "bold 24px Arial";
+            this.ctx.fillText("Your length: " + this.length, 20, window.innerHeight - 20);
+
+        } else {
+
+            this.ctx.font = "bold 12px Arial";
+            this.ctx.fillText("Your length: " + this.length, 20, window.innerHeight - 20);
+
         }
     }
 
