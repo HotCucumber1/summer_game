@@ -1,4 +1,5 @@
 let canvas = document.getElementById("canvasSnake");
+let canvas2 = document.getElementById("canvasHex");
 let ctxSnake = document.getElementById("canvasSnake").getContext("2d");
 let ctxHex = document.getElementById("canvasHex").getContext("2d");
 let ut = new Util();
@@ -64,6 +65,21 @@ window.addEventListener('keyup', function (event) {
     }
 });
 
+function canvasSize(snakeSize)
+{
+    let scale = Math.log10(snakeSize);
+    document.body.style.zoom = 1 / scale;
+    canvas.width = window.innerWidth * scale ;
+    canvas.height = window.innerHeight * scale;
+    canvas2.width = window.innerWidth * scale;
+    canvas2.height = window.innerHeight * scale;
+    game.snakes[0].camera.width = window.innerWidth * scale;
+    game.snakes[0].camera.height = window.innerHeight * scale;
+
+    console.log(cursor);
+    console.log(game.snakes[0].arr[0]);
+}
+
 function start() {
     game.init();
     update();
@@ -76,6 +92,7 @@ let fpsLimit = 120;
 
 
 function update(currentDelta) {
+    // canvasSize(game.snakes[0].size);
     updateId = requestAnimationFrame(update);
     movement();
 

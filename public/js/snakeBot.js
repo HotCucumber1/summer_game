@@ -199,7 +199,7 @@ class SnakeBot extends Snake {
             this.arr[i].x = this.headPath[this.headPath.length - 1 - i].x - player.pos.x;
             this.arr[i].y = this.headPath[this.headPath.length - 1 - i].y - player.pos.y;
 
-            this.drawBody(this.arr[i].x, this.arr[i].y);
+            this.drawBody(this.arr[i].x, this.arr[i].y, i);
         }
 
         this.arr[0].x = this.pos.x - player.pos.x;

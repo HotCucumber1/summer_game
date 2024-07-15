@@ -18,15 +18,13 @@ class Game
     {
         this.generateFoods(2000);
         this.snakes[0] = new Snake(this.ctxSnake, localStorage.getItem("nickname"));
-        for (let i = 1; i < 20; i++)
-        {    
+        for (let i = 1; i < 40; i++)
             this.addSnake(i);
-        }
     }
 
     draw() 
     {
-        this.drawWorld();
+        this.drawWorld( );
 
         for (let i = 0; i < this.foods.length; i++) 
         {    
@@ -52,7 +50,7 @@ class Game
         this.drawName();
     }
 
-    drawWorld() 
+    drawWorld()
     {
         this.ctxHex.save();
 
@@ -134,7 +132,7 @@ class Game
 
     drawName() 
     {
-        let start = new Point(game.SCREEN_SIZE.x / 2 + 20, game.SCREEN_SIZE.y / 2);
+        let start = new Point(game.snakes[0].arr[0].x + 20, game.snakes[0].arr[0].y);
         this.ctxSnake.fillStyle = this.snakes[0].mainColor;
         this.ctxSnake.font = "bold 24px Arial";
         let nickname = localStorage.getItem("nickname");
