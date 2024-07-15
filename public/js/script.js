@@ -106,7 +106,6 @@ conn.addEventListener("message", function (event) {
         {
             let data = {
                 snake: {
-                    id: 0,
                     x: game.snakes[0].pos.x,
                     y: game.snakes[0].pos.y,
                     radius: game.snakes[0].size,

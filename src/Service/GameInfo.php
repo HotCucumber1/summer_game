@@ -23,20 +23,22 @@ class GameInfo
                                 private readonly SnakeService     $snakeService,
                                 private readonly UserService      $userService)
     {
-        $this->snake = $this->snakeService->createSnake(0);
+        //$this->snake = $this->snakeService->createSnake(0);
 
         for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
         {
             $this->pointService->addPoint(-$this->wallRadius, -$this->wallRadius,
-                                           $this->wallRadius,  $this->wallRadius);
+                $this->wallRadius,  $this->wallRadius);
         }
     }
 
-    public function addUserToGame(int $id): void
+    public function addUserToGame(string $id, string $name): void
     {
         if (!isset($this->users[$id]))
         {
-            $this->users[$id] = $this->snakeService->createSnake($id);
+            // $name = 'name';
+            $this->users[$id] = $this->snakeService->createSnake($id, $name);
+            echo "Create {$id} snake" . PHP_EOL;
         }
     }
 
@@ -51,40 +53,38 @@ class GameInfo
         $this->wallRadius = Wall::START_RADIUS;
         $this->pointService->clearAllPoints();
 
-        $this->snake = $this->snakeService->createSnake(0);
+        //$this->snake = $this->snakeService->createSnake(0);
 
         for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
         {
             $this->pointService->addPoint(-$this->wallRadius, -$this->wallRadius,
-                                           $this->wallRadius,  $this->wallRadius);
+                $this->wallRadius,  $this->wallRadius);
         }
     }
 
     public function setGameStatus(string $jsonData, int $id): void
     {
         $snake = $this->users[$id];
-        // $snake = $this->snake;
         if (!$snake->getAliveStatus())
         {
             return;
         }
         $data = json_decode($jsonData, true);
         if (!isset($data['snake']) ||
-            !isset($data['snake']['id']) ||
             !isset($data['snake']['x']) ||
             !isset($data['snake']['y']) ||
             !isset($data['snake']['radius']) ||
             !isset($data['snake']['score']) ||
             !isset($data['snake']['body']))
         {
-            throw new BadRequestException("Not enough information about snake {$data['snake']['id']}");
+            throw new BadRequestException("Not enough information about snake");
         }
 
         $this->snakeService->setSnakeData($snake,
-                                          $data['snake']['x'],
-                                          $data['snake']['y'],
-                                          $data['snake']['radius'],
-                                          $data['snake']['body']);
+            $data['snake']['x'],
+            $data['snake']['y'],
+            $data['snake']['radius'],
+            $data['snake']['body']);
 
         $this->checkBumps($snake);
         $this->updatePoints($snake);
@@ -95,13 +95,13 @@ class GameInfo
     public function getData(): array
     {
         // пока текущая змея
-        $snake = $this->getCurrentSnake();
+        // $snake = $this->getCurrentSnake();
         //$snake = $this->users[$id];
-        $snakeData = [];
+        /*$snakeData = [];
         if ($snake->getAliveStatus())
         {
             $snakeData = $this->snakeService->getSnakeData($snake);
-        }
+        }*/
 
         // Информация по точкам
         $points = $this->pointService->allPoints();
@@ -120,16 +120,18 @@ class GameInfo
 
         // информация по другим игроквм
         $userData = [];
-        foreach ($this->users as $user)
+        foreach ($this->users as $user => $userSnake)
         {
-            $userData[] = $this->snakeService->getSnakeData($user);
+            $userData[] = $this->snakeService->getSnakeData($userSnake);
         }
 
         return [
-            'snake' => $snakeData,
+            'usersLength' => count($this->users),
+            'users' => $userData,
+            //'snake' => $snakeData,
             'points' => $pointsData,
             'wall' => $this->wallRadius,
-            'users' => $userData
+
         ];
     }
 
@@ -219,10 +221,10 @@ class GameInfo
         }
     }
 
-    private function getCurrentSnake(): ?Snake
+    /*private function getCurrentSnake(): ?Snake
     {
-        $id = CookieService::getUserId();
+        // $id = CookieService::getUserId();
         return $this->users[$id];
         // return $this->snake;
-    }
+    }*/
 }

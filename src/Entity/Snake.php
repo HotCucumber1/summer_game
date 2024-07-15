@@ -10,7 +10,8 @@ class Snake
     private int $score;
     private string $color;
 
-    public function __construct(private int    $id,
+    public function __construct(private ?int    $id,
+                                private string $name,
                                 private float  $headX,
                                 private float  $headY,
                                 private array  $bodyParts,

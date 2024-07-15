@@ -18,7 +18,7 @@ class SnakeService
     {
     }
 
-    public function createSnake(int $id): Snake
+    public function createSnake(int $id, string $name): Snake
     {
         $color = Color::getRandomColor();
 
@@ -32,6 +32,7 @@ class SnakeService
 
         $startBody = $this->createBody($color, $headX, $headY);
         return new Snake($id,
+                         $name,
                          $headX,
                          $headY,
                          $startBody);
@@ -81,6 +82,7 @@ class SnakeService
 
         return [
             'id' => $snake->getId(),
+            'name' => $snake->getName(),
             'x' => $snake->getHeadX(),
             'y' => $snake->getHeadY(),
             'body' => $bodyData,

@@ -38,6 +38,7 @@ class UserController extends AbstractController
             {
                 return new Response('Password is incorrect', Response::HTTP_UNAUTHORIZED);
             }
+            SessionService::putUserNameInSession($name);
             SessionService::putUserIdInSession($user->getUserId());
         }
         catch (NotFoundHttpException)
@@ -45,6 +46,7 @@ class UserController extends AbstractController
             try
             {
                 $userId = $this->userService->addUser($name, $password);
+                SessionService::putUserNameInSession($name);
                 SessionService::putUserIdInSession($userId);
             }
             catch (BadRequestException $exception)

@@ -31,17 +31,21 @@ class WebSocketServer implements MessageComponentInterface
 
     public function onOpen(ConnectionInterface $conn): void
     {
-        echo 'OK';
         $this->clients->attach($conn);
-        $this->gameInfo->addUserToGame($conn->resourceId);
-        // CookieService::putUserId($conn->resourceId);
+        //$this->gameInfo->addUserToGame($conn->resourceId, 'name');
         //$this->gameInfo->dropGameToStart();
         echo "New connection {$conn->resourceId}\n";
     }
 
     public function onMessage(ConnectionInterface $from, $msg): void
     {
-        //$data = json_decode($msg, true);
+        $data = json_decode($msg, true);
+        var_dump($data);
+        if (isset($data['name']))
+        {
+            echo 'OK' . PHP_EOL;
+            $this->gameInfo->addUserToGame($from->resourceId, $data['name']);
+        }
         /*if (isset($data['roomId']))
         {
             $roomId = $data['roomId'];
@@ -56,7 +60,10 @@ class WebSocketServer implements MessageComponentInterface
             }
             $room->setGameStatus($msg);
         }*/
-        $this->gameInfo->setGameStatus($msg, $from->resourceId);
+        if (isset($data['snake']))
+        {
+            $this->gameInfo->setGameStatus($msg, $from->resourceId);
+        }
     }
 
     public function sendData(): void
@@ -71,7 +78,6 @@ class WebSocketServer implements MessageComponentInterface
     public function onClose(ConnectionInterface $conn): void
     {
         $this->clients->detach($conn);
-        CookieService::destroyCookie();
         $this->gameInfo->deleteUser($conn->resourceId);
         echo "Connection {$conn->resourceId} has disconnected\n";
     }

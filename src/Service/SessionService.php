@@ -10,14 +10,30 @@ class SessionService
 
     public static function putUserIdInSession(int $id): bool
     {
-        session_name(self::SESSION_NAME);
-        session_start();
         $_SESSION['user_id'] = $id;
         if ($_SESSION['user_id'])
         {
             return true;
         }
         return false;
+    }
+
+    public static function putUserNameInSession(string $name): void
+    {
+        session_name(self::SESSION_NAME);
+        session_start();
+        $_SESSION['user_name'] = $name;
+    }
+
+    public static function takeUserNameFromSession(): string
+    {
+        session_name(self::SESSION_NAME);
+        session_start();
+        if (isset($_SESSION['user_name']))
+        {
+            return $_SESSION['user_name'];
+        }
+        throw new UnauthorizedHttpException('You are not authorized (name)');
     }
 
     public static function takeUserIdFromSession(): int

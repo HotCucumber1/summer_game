@@ -5,6 +5,10 @@ let conn = new WebSocket('ws://10.250.104.40:8080');
 
 conn.onopen = function (e) {
     console.log("Connection established!");
+    let userData = {
+        'name': localStorage.getItem("nickname"),
+    }
+    conn.send(JSON.stringify(userData));
 };
 
 conn.onerror = function (e) {
