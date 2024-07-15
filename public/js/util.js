@@ -15,10 +15,13 @@ class Util {
     arcRandom(min, max, radius) {
         let x, y;
         while (true) {
+
             x = Math.floor(Math.random() * (max - min + 1)) + min;
             y = Math.floor(Math.random() * (max - min + 1)) + min;
-            if (x ** 2 + y ** 2 < radius ** 2)
-                return {x, y};
+
+            if (x ** 2 + y ** 2 < radius ** 2) {
+                return { x, y };
+            }
         }
     }
 
@@ -32,7 +35,7 @@ class Util {
         let colors = ["#C0392B", "#E74C3C", "#9B59B6", "#8E44AD", "#2980B9",
             "#3498DB", "#17A589", "#138D75", "#229954", "#28B463", "#D4AC0D",
             "#D68910", "#CA6F1E", "#BA4A00"];
-        return colors[this.random(0, colors.length - 1)]
+        return colors[this.random(0, colors.length - 1)];
     }
 
     getDistance(i, f) {
@@ -70,9 +73,11 @@ class Util {
 
         // validate hex string
         hex = String(hex).replace(/[^0-9a-f]/gi, '');
+        
         if (hex.length < 6) {
             hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
         }
+
         lum = lum || 0;
 
         // convert to decimal and change luminosity
@@ -87,6 +92,3 @@ class Util {
     }
 
 }
-
-
-
