@@ -1,9 +1,8 @@
-class Util 
-{
-    constructor() {}
+class Util {
+    constructor() {
+    }
 
-    getMousePos(canvas, evt) 
-    {
+    getMousePos(canvas, evt) {
         let rect = canvas.getBoundingClientRect();
 
         let x = evt.clientX - rect.left;
@@ -13,55 +12,47 @@ class Util
         return new Point(x, y);
     }
 
-    arcRandom(min, max, radius) 
-    {
+    arcRandom(min, max, radius) {
         let x, y;
-        while (true)        
-        {
+        while (true) {
 
             x = Math.floor(Math.random() * (max - min + 1)) + min;
             y = Math.floor(Math.random() * (max - min + 1)) + min;
 
-            if (x ** 2 + y ** 2 < radius ** 2) 
-            {
+            if (x ** 2 + y ** 2 < radius ** 2) {
                 return { x, y };
             }
         }
     }
 
-    random(min, max) 
-    {
+    random(min, max) {
+
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
 
-    randomColor() 
-    {
+    randomColor() {
         let colors = ["#C0392B", "#E74C3C", "#9B59B6", "#8E44AD", "#2980B9",
             "#3498DB", "#17A589", "#138D75", "#229954", "#28B463", "#D4AC0D",
             "#D68910", "#CA6F1E", "#BA4A00"];
         return colors[this.random(0, colors.length - 1)];
     }
 
-    getDistance(i, f) 
-    {
+    getDistance(i, f) {
         return Math.sqrt(
             Math.pow((f.x - i.x), 2) + Math.pow((f.y - i.y), 2));
     }
 
-    getAngle(p1, p2) 
-    {
+    getAngle(p1, p2) {
         return ((Math.atan2(p2.y - p1.y, p2.x - p1.x)));
     }
 
-    cirCollission(x1, y1, r1, x2, y2, r2) 
-    {
+    cirCollission(x1, y1, r1, x2, y2, r2) {
         return (this.getDistance(new Point(x1, y1),
             new Point(x2, y2)) < (r1 + r2));
     }
 
-    rotate(p, c, angle) 
-    {
+    rotate(p, c, angle) {
         let si = Math.sin(angle);
         let co = Math.cos(angle);
 
@@ -78,8 +69,8 @@ class Util
     }
 
 
-    color(hex, lum) 
-    {
+    color(hex, lum) {
+
         // validate hex string
         hex = String(hex).replace(/[^0-9a-f]/gi, '');
         
@@ -101,6 +92,3 @@ class Util
     }
 
 }
-
-
-

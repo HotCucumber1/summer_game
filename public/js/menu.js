@@ -2,17 +2,14 @@ const single = document.getElementById("single");
 const multi = document.getElementById("multi");
 const form = document.querySelector("menu");
 
-window.addEventListener("DOMContentLoaded", function () 
-{
+window.addEventListener("DOMContentLoaded", function () {
     document.body.classList.add("fade-in");
 
-    function handleButtonClick(targetURL) 
-    {
+    function handleButtonClick(targetURL) {
         document.body.classList.remove("fade-in");
         document.body.classList.add("fade-out");
 
-        setTimeout(function () 
-        {
+        setTimeout(function () {
             window.location.href = targetURL;
         }, 500)
     }
@@ -23,14 +20,12 @@ window.addEventListener("DOMContentLoaded", function ()
 
 })
 
-function handleOnButton(e) 
-{
+function handleOnButton(e) {
     const button = e.target;
     button.style.boxShadow = "0 0 20px rgb(161, 161, 161)";
 }
 
-function pullOfWithButton(e) 
-{
+function pullOfWithButton(e) {
     const button = e.target;
     button.style.boxShadow = "";
 }
@@ -40,5 +35,3 @@ single.addEventListener('mouseout', pullOfWithButton);
 
 multi.addEventListener('mouseover', handleOnButton);
 multi.addEventListener('mouseout', pullOfWithButton);
-
-
