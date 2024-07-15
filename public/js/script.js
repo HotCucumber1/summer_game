@@ -14,7 +14,7 @@ canvas.onmousemove = function (e) {
 }
 
 function movement() {
-    let a = ut.getAngle(game.snakes[0].arr[0], cursor);
+    let a = ut.getAngle(game.snakeUser.arr[0], cursor);
     let delta = a - d;
 
     if (delta > Math.PI) {
@@ -34,90 +34,108 @@ function movement() {
     if (d < -Math.PI) {
         d += 2 * Math.PI
     }
-    game.snakes[0].changeAngle(d);
+    game.snakeUser.changeAngle(d);
 }
 
 canvas.onmousedown = function () {
-    game.snakes[0].boost = true;
+    game.snakeUser.boost = true;
 }
 
 canvas.onmouseup = function () {
-    game.snakes[0].boost = false;
+    game.snakeUser.boost = false;
 }
 
 window.addEventListener('keydown', function (event) {
     if (event.key === ' ') {
-        game.snakes[0].boost = true;
+        game.snakeUser.boost = true;
     }
 });
 
 window.addEventListener('keyup', function (event) {
     if (event.key === ' ') {
-        game.snakes[0].boost = false;
+        game.snakeUser.boost = false;
     }
 });
 
+function start()
+{
+    conn.addEventListener("message", function (event) {
 
-let previousDelta= 0;
-let fpsLimit= 120;
+        let dataFromServer = JSON.parse(event.data);
+        console.log(JSON.stringify(dataFromServer.users[dataFromServer.users.length - 1], null, 4));
 
-
-conn.addEventListener("message", function (event) {
-    let dataFromServer = JSON.parse(event.data);
-    console.log(dataFromServer);
-
-    // обновить информацию по точкам
-    game.foods = [];
-    for (let i= 0; i < dataFromServer.points.length; i++)
-    {
-        game.foods.push(
-            new Food(
-                ctxSnake,
-                dataFromServer.points[i].x - game.snakes[0].pos.x + game.SCREEN_SIZE.x / 2,
-                dataFromServer.points[i].y - game.snakes[0].pos.y + game.SCREEN_SIZE.y / 2,
-                   dataFromServer.points[i].color
-            )
-        );
-    }
-    // новить информацию по зоне
-    game.ARENA_RADIUS = dataFromServer.wall;
-
-    // проверить, жива ли змея
-    if (Object.keys(dataFromServer.snake).length === 0)
-    {
-        console.log('hi');
-        game.snakes[0].die();
-    }
-    else
-    {
-        // обновить счет
-        game.snakes[0].score = dataFromServer.snake.score;
-
-        // движение
-        movement();
-
-        ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
-        ctxHex.clearRect(0, 0, canvas.width, canvas.height);
-
-        game.draw();
-
-        // отправить обновленные данные на бэк
-        if (counter % 2 === 0)
+        // обновить информацию по точкам
+        game.foods = [];
+        for (let i= 0; i < dataFromServer.points.length; i++)
         {
-            let data = {
-                snake: {
-                    x: game.snakes[0].pos.x,
-                    y: game.snakes[0].pos.y,
-                    radius: game.snakes[0].size,
-                    score: game.snakes[0].score,
-                    body: game.snakes[0].arr
-                }
-            };
-            conn.send(JSON.stringify(data));
+            game.foods.push(
+                new Food(
+                    ctxSnake,
+                    dataFromServer.points[i].x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2,
+                    dataFromServer.points[i].y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2,
+                    dataFromServer.points[i].color
+                )
+            );
         }
-        counter = (counter + 1) % 2;
-    }
-});
 
+        // обновить информацию по змеям
+        game.snakes = [];
+        for (let i = 0; i < dataFromServer.users.length; i++)
+        {
 
-game.init();
+        }
+
+        // обновить информацию по зоне
+        game.ARENA_RADIUS = dataFromServer.wall;
+
+        // проверить, жива ли змея
+        let mySnake;
+        for (let i = 0; i < dataFromServer.users.length; i++)
+        {
+            if (dataFromServer.users[i].name === localStorage.getItem('nickname'))
+            {
+                mySnake = dataFromServer.users[i];
+                break;
+            }
+        }
+
+        if (typeof mySnake === "undefined")
+        {
+            console.log('death');
+            game.snakeUser.die();
+        }
+        else
+        {
+            // обновить счет
+            game.snakeUser.score = mySnake.score;
+
+            // движение
+            movement();
+
+            ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
+            ctxHex.clearRect(0, 0, canvas.width, canvas.height);
+
+            game.draw();
+
+            // отправить обновленные данные на бэк
+            if (counter % 2 === 0)
+            {
+                let data = {
+                    snake: {
+                        x: game.snakeUser.pos.x,
+                        y: game.snakeUser.pos.y,
+                        radius: game.snakeUser.size,
+                        score: game.snakeUser.score,
+                        body: game.snakeUser.arr
+                    }
+                };
+                conn.send(JSON.stringify(data));
+            }
+            counter = (counter + 1) % 2;
+        }
+    });
+
+    game.init();
+}
+
+setTimeout(start, 500);

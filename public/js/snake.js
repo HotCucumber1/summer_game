@@ -311,4 +311,16 @@ class Snake
         let index = game.snakes.indexOf(this);
         game.snakes.splice(index, 1);
     }
+
+    drawYourLength() {
+        this.ctx.fillStyle = this.mainColor;
+        if (window.innerWidth > 1920)
+        {
+            this.ctx.font = "bold 24px Arial";
+            this.ctx.fillText("Your length: " + this.length, 20, window.innerHeight - 20);
+        } else {
+            this.ctx.font = "bold 12px Arial";
+            this.ctx.fillText("Your length: " + this.length, 20, window.innerHeight - 20);
+        }
+    }
 }

@@ -17,6 +17,7 @@ class WebSocketServer implements MessageComponentInterface
     protected \SplObjectStorage $clients;
     protected const INTERVAL = 0.03;
     private array $clientRooms;
+    private bool $isLoaded = false;
 
     public function __construct(private readonly LoopInterface $loop,
                                 private readonly GameInfo $gameInfo,
@@ -32,34 +33,17 @@ class WebSocketServer implements MessageComponentInterface
     public function onOpen(ConnectionInterface $conn): void
     {
         $this->clients->attach($conn);
-        //$this->gameInfo->addUserToGame($conn->resourceId, 'name');
-        //$this->gameInfo->dropGameToStart();
         echo "New connection {$conn->resourceId}\n";
     }
 
     public function onMessage(ConnectionInterface $from, $msg): void
     {
         $data = json_decode($msg, true);
-        var_dump($data);
         if (isset($data['name']))
         {
-            echo 'OK' . PHP_EOL;
             $this->gameInfo->addUserToGame($from->resourceId, $data['name']);
         }
-        /*if (isset($data['roomId']))
-        {
-            $roomId = $data['roomId'];
-            // Записать текущему клиенту код комнаты
-            $this->clientRooms[$from->resourceId] = $roomId;
 
-            $room = $this->roomRepository->getRoomByName($roomId);
-            /*if ($room === null)
-            {
-                $this->roomRepository->addRoom($roomId);
-                $room = $this->roomRepository->getRoomByName($roomId);
-            }
-            $room->setGameStatus($msg);
-        }*/
         if (isset($data['snake']))
         {
             $this->gameInfo->setGameStatus($msg, $from->resourceId);
