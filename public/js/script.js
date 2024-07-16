@@ -80,6 +80,13 @@ function canvasSize(snakeSize)
     console.log(game.snakes[0].arr[0]);
 }
 
+// function endGame() {
+//     if (game.snakes.length === 1)
+//     {
+//         fireworks.firework.start();
+//     }
+// }
+
 function start() {
     game.init();
     update();
@@ -95,6 +102,7 @@ function update(currentDelta) {
     // canvasSize(game.snakes[0].size);
     updateId = requestAnimationFrame(update);
     movement();
+    // endGame();
 
     let delta = currentDelta - previousDelta;
     if (fpsLimit && delta < 1000 / fpsLimit) return;

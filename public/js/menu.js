@@ -1,5 +1,6 @@
 const single = document.getElementById("single");
 const multi = document.getElementById("multi");
+const changeSkin = document.getElementById("change-skin");
 const form = document.querySelector("menu");
 
 window.addEventListener("DOMContentLoaded", function () {
@@ -21,6 +22,10 @@ window.addEventListener("DOMContentLoaded", function () {
     multi.addEventListener("click", function () {
         handleButtonClick("../pages/room.html");
     });
+
+    changeSkin.addEventListener("click", function () {
+        handleButtonClick("../pages/changeSkin.html");
+    });
     
 });
 
@@ -34,10 +39,23 @@ function pullOfWithButton(e) {
     button.style.boxShadow = "";
 }
 
+function handleOnImage(e) {
+    const image = e.target;
+    image.style.filter = "brightness(1)";
+};
+
+function pullOfWithImage(e) {
+    const image = e.target;
+    image.style.filter = "brightness(0.8)";
+}
+
 single.addEventListener('mouseover', handleOnButton);
 single.addEventListener('mouseout', pullOfWithButton);
 
 multi.addEventListener('mouseover', handleOnButton);
 multi.addEventListener('mouseout', pullOfWithButton);
+
+changeSkin.addEventListener('mouseover', handleOnImage);
+changeSkin.addEventListener('mouseout', pullOfWithImage);
 
 

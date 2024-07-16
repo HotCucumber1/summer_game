@@ -170,6 +170,7 @@ class Snake {
         this.drawHead();
 
         this.checkCollissionFood();
+        this.checkCollissionBonus();
         this.checkCollissionSnake()
         this.checkCollissionBorder();
         this.setSize();
@@ -227,6 +228,31 @@ class Snake {
 
                     break;
                 }
+            }
+        }
+    }
+
+    checkCollissionBonus() {
+        let x = this.arr[0].x;
+        let y = this.arr[0].y;
+
+        for (let i = 0; i < game.bonus.length; i++) {
+            if (ut.cirCollission(x, y, this.size + 3, game.bonus[i].pos.x,
+                game.bonus[i].pos.y, game.bonus[i].size)) {
+                this.addLength(game.bonus[i].size);
+                game.bonus[i].die();
+
+                if (this === game.snakes[0]) {
+
+                    let pop = new Audio("../public/audio/pop.mp3");
+                    pop.volume = 1.0;
+                    pop.muted = false;
+                    pop.play();
+
+                    break;
+
+                }
+
             }
         }
     }

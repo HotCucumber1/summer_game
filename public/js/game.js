@@ -1,5 +1,5 @@
-class Game 
-{
+    class Game
+    {
     constructor(ctxSnake, ctxHex) 
     {
         this.ctxSnake = ctxSnake;
@@ -12,13 +12,15 @@ class Game
         this.backgroundImage = new Image();
         this.backgroundImage.src = "../public/images/bg2.jpg";
         this.foods = [];
+        this.bonus = [];
     }
 
     init() 
     {
         this.generateFoods(2000);
+        this.generateBonus(100);
         this.snakes[0] = new Snake(this.ctxSnake, localStorage.getItem("nickname"));
-        for (let i = 1; i < 40; i++)
+        for (let i = 1; i <= 30; i++)
             this.addSnake(i);
     }
 
@@ -29,6 +31,11 @@ class Game
         for (let i = 0; i < this.foods.length; i++) 
         {    
             this.foods[i].draw(this.snakes[0]);
+        }
+
+
+        for (let i = 0; i < this.bonus.length; i++) {
+            this.bonus[i].move(this.snakes[0]);
         }
 
         if (this.snakes[0].state === 0)
@@ -141,11 +148,18 @@ class Game
 
     generateFoods(n) 
     {
-        for (let i = 0; i < n; i++) 
+        for (let i = 0; i < n; i++)
             {
             let pos = ut.arcRandom(this.world.x + this.WORLD_SIZE.x / 2 - this.ARENA_RADIUS, this.world.x + this.WORLD_SIZE.x / 2 + this.ARENA_RADIUS, 0.9 * this.ARENA_RADIUS);
             this.foods.push(new Food(this.ctxSnake, pos.x, pos.y));
             }
 
+    }
+
+    generateBonus(n) {
+        for (let i = 0; i < n; i++) {
+            let pos = ut.arcRandom(this.world.x + this.WORLD_SIZE.x / 2 - this.ARENA_RADIUS, this.world.x + this.WORLD_SIZE.x / 2 + this.ARENA_RADIUS, 0.9 * this.ARENA_RADIUS);
+            this.bonus.push(new Bonus(this.ctxSnake, pos.x, pos.y));
+        }
     }
 }

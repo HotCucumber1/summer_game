@@ -223,6 +223,7 @@ class SnakeBot extends Snake {
 
         super.setSize();
         super.checkCollissionFood();
+        super.checkCollissionBonus();
         this.checkCollissionBot();
         this.checkCollissionBorder();
 

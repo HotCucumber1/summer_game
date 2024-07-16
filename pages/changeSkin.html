@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+    <link
+            href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+            rel="stylesheet">
+    <title>Sspliff</title>
+    <link href="../public/css/changeSkin.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../public/images/favicon.ico" type="image/x-icon"/>
+</head>
+
+<body>
+
+<div id="game">
+    <canvas class="cnv" id="canvasSnake" width="window.innerWidth" height="window.innerHeight"></canvas>
+    <canvas class="cnv" id="canvasHex" width="window.innerWidth" height="window.innerHeight"></canvas>
+</div>
+
+<div class="skin-menu">
+    <div class="skin-menu__arrows">
+        <img class="arrows__skin-arrow" id="prevSkin" draggable="false" width="87" height="88" src="../public/images/prevSkin.png">
+        <img class="arrows__skin-arrow" id="nextSkin" draggable="false" width="87" height="88" src="../public/images/nextSkin.png">
+    </div>
+    <button class="skin-menu__button" id="save" name="save">Save</button>
+</div>
+
+<script>
+    function resizeCanvas() {
+        const canvases = document.querySelectorAll('canvas.cnv');
+        canvases.forEach(canvas => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('load', resizeCanvas);
+</script>
+
+<script src="../public/js/changeSkin.js"></script>
+<script src="../public/js/util.js"></script>
+<script src="../public/js/point.js"></script>
+<script src="../public/js/camera.js"></script>
+<script src="../public/js/snake.js"></script>
+<script src="../public/js/game.js"></script>
+<script src="../public/js/changeSkinScript.js"></script>
+
+</body>
+
+</html>
