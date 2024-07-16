@@ -8,36 +8,20 @@ window.addEventListener("DOMContentLoaded", function () {
 
     function handleButtonClick(targetURL) {
         document.body.classList.remove("fade-in");
-        document.body.classList.add("fade-out"); 
+        document.body.classList.add("fade-out");
 
         setTimeout(function () {
             window.location.href = targetURL;
         }, 500);
     }
 
-    single.addEventListener("click", function () {
-        handleButtonClick("../pages/index.html");
-    });
+    single.addEventListener("click", () => handleButtonClick("../pages/index.html"))
 
-    multi.addEventListener("click", function () {
-        handleButtonClick("../pages/room.html");
-    });
+    multi.addEventListener("click", () => handleButtonClick("../pages/index.html"))
 
-    changeSkin.addEventListener("click", function () {
-        handleButtonClick("../pages/changeSkin.html");
-    });
-    
-});
+    changeSkin.addEventListener("click", () => handleButtonClick("../pages/changeSkin.html"));
 
-function handleOnButton(e) {
-    const button = e.target;
-    button.style.boxShadow = "0 0 20px rgb(161, 161, 161)"; 
-};
-
-function pullOfWithButton(e) {
-    const button = e.target;
-    button.style.boxShadow = "";
-}
+})
 
 function handleOnImage(e) {
     const image = e.target;
@@ -49,13 +33,5 @@ function pullOfWithImage(e) {
     image.style.filter = "brightness(0.8)";
 }
 
-single.addEventListener('mouseover', handleOnButton);
-single.addEventListener('mouseout', pullOfWithButton);
-
-multi.addEventListener('mouseover', handleOnButton);
-multi.addEventListener('mouseout', pullOfWithButton);
-
 changeSkin.addEventListener('mouseover', handleOnImage);
 changeSkin.addEventListener('mouseout', pullOfWithImage);
-
-

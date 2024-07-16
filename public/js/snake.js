@@ -34,6 +34,7 @@ class Snake {
         this.intervalId = null;
 
         this.camera = new Camera(0, 0, game.SCREEN_SIZE.x, game.SCREEN_SIZE.y);
+
         this.death = new Audio("../public/audio/minecraft-death-sound.mp3");
         this.death.volume = 1.0;
         this.death.muted = false;
@@ -99,39 +100,61 @@ class Snake {
             radius = 1;
         }
 
-        let flicker = Math.sin(Date.now() / 50 - index / 5) * 10 + 20;
+        let flicker = Math.sin(Date.now() / 50 - index / (this.size / 2)) * 10 + this.size / 2;
 
-        this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20; // радиус размытия тени
-        this.ctx.shadowColor = (this.boost && this.length > 10) ? this.supportColor : `rgb(0, 0, 0, 0.3)`; // цвет свечения
-        this.ctx.shadowOffsetX = (this.boost && this.length > 10) ? 0 : 3; // смещение тени по X
-        this.ctx.shadowOffsetY = (this.boost && this.length > 10) ? 0 : 3;
+        if (radius > 30) {
+
+            flicker = Math.sin(Date.now() / 50 - index / (radius / 2)) * 20 + 2 * radius / 3;
+
+            if (index % 3 === 1) {
+
+                this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20;
+                this.ctx.shadowColor = (this.boost && this.length > 10) ? this.supportColor : `rgb(0, 0, 0, 0.3)`;
+                this.ctx.shadowOffsetX = (this.boost && this.length > 10) ? 0 : 3;
+                this.ctx.shadowOffsetY = (this.boost && this.length > 10) ? 0 : 3;
+
+            } else {
+
+                this.ctx.shadowBlur = 20;
+                this.ctx.shadowColor = `rgb(0, 0, 0, 0.3)`;
+                this.ctx.shadowOffsetX = 0;
+                this.ctx.shadowOffsetY = 0;
+            }
+
+        } else {
+
+            this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20;
+            this.ctx.shadowColor = (this.boost && this.length > 10) ? this.supportColor : `rgb(0, 0, 0, 0.3)`;
+            this.ctx.shadowOffsetX = (this.boost && this.length > 10) ? 0 : 3;
+            this.ctx.shadowOffsetY = (this.boost && this.length > 10) ? 0 : 3;
+
+        }
 
         this.ctx.beginPath();
         this.ctx.fillStyle = grd;
         this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
         this.ctx.fill();
-
     }
 
     boostMove() {
         if (this.boost && this.length > 10) {
-            this.ctx.shadowBlur = 20; // радиус размытия тени
-            this.ctx.shadowColor = this.supportColor; // цвет свечения
-            this.ctx.shadowOffsetX = 0; // смещение тени по X
-            this.ctx.shadowOffsetY = 0;
             this.speed = 8;
+
             if (this.intervalId === null) {
                 this.intervalId = setInterval(() => {
                     this.counter++;
                 }, 1000);
             }
+
             if (this.counter >= 1) {
+
+                this.counter = 0;
+                game.foods.push(new Food(this.ctx, this.arr[this.length - 1].x, this.arr[this.length - 1].y));
                 this.length--;
                 this.arr.shift();
                 this.headPath.shift();
-
-                this.counter = 0;
             }
+
         } else {
             this.ctx.shadowBlur = 0;
             this.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
@@ -181,9 +204,6 @@ class Snake {
         if (this.size > this.MAXSIZE) this.size = this.MAXSIZE;
         if (this.size < this.MINSIZE) this.size = this.MINSIZE;
     }
-
-    // canvas.width = window.innerWidth;
-    // canvas.height = window.innerHeight;
 
     addLength(size) {
         if (this.size >= 20 && this.size < 30) {
@@ -259,7 +279,7 @@ class Snake {
 
     drawYourLength() {
         this.ctx.fillStyle = this.mainColor;
-        if (window.innerWidth > 1920) 
+        if (window.innerWidth > 1920)
         {
             this.ctx.font = "bold 24px Arial";
             this.ctx.fillText("Your length: " + this.length, 20, window.innerHeight - 20);

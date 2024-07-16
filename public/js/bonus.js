@@ -155,7 +155,7 @@ class Bonus {
 
                 snakeInSight = true;
 
-                this.speed = 7;
+                this.speed = 6;
 
             }
         }
@@ -181,7 +181,7 @@ class Bonus {
 
             this.border = true;
 
-            this.speed = 7;
+            this.speed = 6;
 
             this.turn(this.pos, center);
 
