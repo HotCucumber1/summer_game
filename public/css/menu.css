@@ -131,3 +131,14 @@ body.fade-in {
     color: rgb(255, 255, 255);
     background: rgb(147, 212, 72);
 }
+
+.menu__change-skin-img
+{
+    -webkit-user-select: none;
+    user-select: none;
+    align-self: flex-start;
+    margin-top: 18.5%;
+    margin-left: 1.5%;
+    cursor: pointer;
+    filter: brightness(0.8)
+}
