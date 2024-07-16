@@ -10,7 +10,7 @@
         this.world = new Point(-20000, -10000);
         this.snakes = [];
         this.backgroundImage = new Image();
-        this.backgroundImage.src = "../public/images/bg2.jpg";
+        this.backgroundImage.src = "../public/images/background6.png";
         this.foods = [];
         this.bonus = [];
     }

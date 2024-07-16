@@ -6,6 +6,8 @@ let game = new Game(ctxSnake, ctxHex);
 let snake = new Snake(ctxSnake, 0);
 let WORLD_SIZE = new Point(40000, 20000);
 let world = new Point(-20000, -10000);
+let backgroundImage = new Image();
+backgroundImage.src = "../public/images/background6.png";
 
 function snakeInit()
 {
@@ -21,7 +23,7 @@ function snakeInit()
 
 function draw()
 {
-    ctxHex.drawImage(game.backgroundImage, world.x, world.y, WORLD_SIZE.x, WORLD_SIZE.y);
+    ctxHex.drawImage(backgroundImage, world.x, world.y, WORLD_SIZE.x, WORLD_SIZE.y);
 
     world.x -= snake.velocity.x;
     world.y -= snake.velocity.y;
