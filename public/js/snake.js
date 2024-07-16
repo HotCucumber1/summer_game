@@ -10,7 +10,7 @@ class Snake {
         this.velocity = new Point(0, 0);
         this.angle = ut.random(0, Math.PI);
 
-        this.length = 100;
+        this.length = 500;
         this.MAXSIZE = 80;
         this.MINSIZE = 15;
         this.size = 15;
@@ -105,12 +105,35 @@ class Snake {
             radius = 1;
         }
 
-        let flicker = Math.sin(Date.now() / 50 - index / (this.size / 2)) * 10 + this.size;
+        let flicker = Math.sin(Date.now() / 50 - index / (this.size / 2)) * 10 + this.size / 2;
 
-        this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20; // радиус размытия тени
-        this.ctx.shadowColor = (this.boost && this.length > 10) ? this.supportColor : `rgb(0, 0, 0, 0.3)`; // цвет свечения
-        this.ctx.shadowOffsetX = (this.boost && this.length > 10) ? 0 : 3; // смещение тени по X
-        this.ctx.shadowOffsetY = (this.boost && this.length > 10) ? 0 : 3;
+        if (radius > 30) {
+
+            flicker = Math.sin(Date.now() / 50 - index / (radius / 2)) * 20 + 2 * radius / 3;
+
+            if (index % 3 === 1) {
+
+                this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20;
+                this.ctx.shadowColor = (this.boost && this.length > 10) ? this.supportColor : `rgb(0, 0, 0, 0.3)`;
+                this.ctx.shadowOffsetX = (this.boost && this.length > 10) ? 0 : 3;
+                this.ctx.shadowOffsetY = (this.boost && this.length > 10) ? 0 : 3;
+
+            } else {
+
+                this.ctx.shadowBlur = 20;
+                this.ctx.shadowColor = `rgb(0, 0, 0, 0.3)`;
+                this.ctx.shadowOffsetX = 0;
+                this.ctx.shadowOffsetY = 0;
+            }
+
+        } else {
+
+            this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20;
+            this.ctx.shadowColor = (this.boost && this.length > 10) ? this.supportColor : `rgb(0, 0, 0, 0.3)`;
+            this.ctx.shadowOffsetX = (this.boost && this.length > 10) ? 0 : 3;
+            this.ctx.shadowOffsetY = (this.boost && this.length > 10) ? 0 : 3;
+
+        }
 
         this.ctx.beginPath();
         this.ctx.fillStyle = grd;
@@ -257,7 +280,7 @@ class Snake {
                 game.bonus[i].pos.y, game.bonus[i].size)) {
                 this.addLength(game.bonus[i].size);
                 game.bonus[i].die();
-                
+
                 if (this === game.snakes[0]) {
 
                     let pop = new Audio("../public/audio/pop.mp3");

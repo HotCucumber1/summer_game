@@ -4,6 +4,16 @@
     text-decoration: none;
 }
 
+:-webkit-autofill,
+:-webkit-autofill:hover,
+:-webkit-autofill:focus {
+    font-size: 32px;
+    border: 1px solid rgb(255, 255, 255);
+    -webkit-text-fill-color: inherit;
+    -webkit-box-shadow: 0 0 0px 100px rgb(0, 0, 0) inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 html {
     background: black;
 }
@@ -26,21 +36,86 @@ body.fade-in {
     width: 100vw;
     height: 100vh;
     display: flex;
-    align-items: center;
     flex-direction: column;
-    background-image: radial-gradient(circle, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8), rgb(0, 0, 0)),
-        url("../images/back.jpg");
+    align-items: center;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9), rgb(0, 0, 0)),
+        url("../images/background6.png");
 }
 
 .entrance__logo {
-    font-family: "Gloria Hallelujah", cursive;
-    font-weight: 400;
+    margin-top: 60px;
+    padding: 60px 20px;
+    font-family: "Balsamiq Sans", sans-serif;
+}
+
+.entrance__neon {
     font-size: 128px;
-    color: rgb(129, 188, 61);
+    font-weight: normal;
+    line-height: 50px;
+    color: rgb(255, 255, 255);
+    letter-spacing: 8px;
+}
+
+.entrance__neon span[name="span1"] {
+    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+}
+
+.entrance__neon span[name="span2"] {
+    animation: neon linear infinite 4s;
+    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+}
+
+.entrance__neon span[name="span3"] {
+    -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
+
+}
+
+@keyframes neon {
+    78% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+
+    79% {
+        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    }
+
+    80% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+
+    81% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+
+    82% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
+        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    }
+
+    83% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+
+    92% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
+        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    }
+
+    92.5% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
 }
 
 .entrance__input {
-    border: none;
+    box-shadow: 0 0 0px 100px rgb(0, 0, 0) inset;
     outline: none;
     border-radius: 25px;
     padding: 4px;
@@ -50,23 +125,41 @@ body.fade-in {
     font-size: 32px;
     font-family: "Ubuntu", sans-serif;
     font-weight: 400;
-    background-color: rgb(134, 66, 93);
     padding-inline: 20px;
+}
+
+.entrance__input[id="nickname"] {
+    border: 1px solid rgb(101, 179, 72);
+    -webkit-text-fill-color: rgb(101, 179, 72);
+}
+
+.entrance__input[id="password"] {
+    border: 1px solid rgb(187, 75, 92);
+    -webkit-text-fill-color: rgb(187, 75, 92);
 }
 
 .entrance__input::placeholder {
     opacity: 40%;
-    color: black;
+    color: rgb(236, 233, 233);
 }
 
 .entrance__button {
-    border: none;
     border-radius: 25px;
-    width: 250px;
-    height: 50px;
+    width: 300px;
+    height: 60px;
     margin-top: 30px;
     font-size: 32px;
-    font-family: "Ubuntu", sans-serif;
+    font-family: "Pixelify Sans", sans-serif;
     font-weight: 400;
-    background-color: rgb(255, 161, 110);
+    background-color: inherit;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border-color: rgb(255, 161, 110);
+    color: rgb(255, 161, 110);
+}
+
+.entrance__button:hover {
+    box-shadow: 0 0 0.5em 0em rgb(255, 161, 110);
+    color: rgb(255, 255, 255);
+    background: rgb(255, 161, 110);
 }

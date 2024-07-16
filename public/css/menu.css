@@ -28,103 +28,106 @@ body.fade-in {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-image: radial-gradient(circle, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8), rgb(0, 0, 0)),
-        url("../images/back.jpg");
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9), rgb(0, 0, 0)),
+        url("../images/background6.png");
 }
 
 .menu__logo {
-    font-family: "Gloria Hallelujah", cursive;
-    font-weight: 400;
+    margin-top: 60px;
+    padding: 60px 20px;
+    font-family: "Balsamiq Sans", sans-serif;
+}
+
+.menu__neon {
     font-size: 128px;
-    color: rgb(129, 188, 61);
+    font-weight: normal;
+    line-height: 50px;
+    color: rgb(255, 255, 255);
+    letter-spacing: 8px;
+}
+
+.menu__neon span[name="span1"] {
+    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+}
+
+.menu__neon span[name="span2"] {
+    animation: neon linear infinite 4s;
+    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+}
+
+.menu__neon span[name="span3"] {
+    -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
+
+}
+
+@keyframes neon {
+	78% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+    79%{
+        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    }
+    80% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+    81% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+    82% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
+        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    }
+    83% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+    92% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
+        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    }
+    92.5% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
 }
 
 .menu__button {
-    border: none;
     border-radius: 25px;
     width: 300px;
     height: 60px;
     margin-top: 30px;
     font-size: 32px;
-    font-family: "Ubuntu", sans-serif;
+    font-family: "Pixelify Sans", sans-serif;
     font-weight: 400;
     cursor: pointer;
+    background-color: inherit;
+    transition: all 0.25s ease;
 }
 
 .menu__button[name="single"] {
-    background-color: rgb(255, 161, 110);
+    border-color: rgb(255, 161, 110);
+    color: rgb(255, 161, 110);
+}
+
+.menu__button[name="single"]:hover {
+    box-shadow: 0 0 0.5em 0em rgb(255, 161, 110);
+    color: rgb(255, 255, 255);
+    background: rgb(255, 161, 110);
 }
 
 .menu__button[name="multi"] {
-    background-color: rgb(147, 212, 72);
+    border-color: rgb(147, 212, 72);
+    color: rgb(147, 212, 72);
 }
 
-.menu__bots {
-    display: flex;
-    flex-direction: row;
-    margin-top: 20px;
-}
-
-.menu__caption {
-    color: rgb(136, 127, 228);
-    font-size: 32px;
-    font-family: "Ubuntu", sans-serif;
-    font-weight: 400;
-    text-shadow: 1px 1px 2px black;
-    padding-right: 90px;
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-}
-
-.switch__check {
-    display: none;
-}
-
-.switch__slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgb(204, 204, 204);
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-.switch__slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: rgb(255, 255, 255);
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-.switch__check:checked+.switch__slider {
-    background-color: rgb(255, 161, 110);
-}
-
-.switch__check:focus+.switch__slider {
-    box-shadow: 0 0 1px rgb(255, 161, 110);
-}
-
-.switch__check:checked+.switch__slider:before {
-    transform: translateX(26px);
-}
-
-.switch__slider.round {
-    border-radius: 34px;
-}
-
-.switch__slider.round:before {
-    border-radius: 50%;
+.menu__button[name="multi"]:hover {
+    box-shadow: 0 0 0.5em 0em rgb(147, 212, 72);
+    color: rgb(255, 255, 255);
+    background: rgb(147, 212, 72);
 }
