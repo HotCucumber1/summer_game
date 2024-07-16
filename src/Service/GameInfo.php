@@ -72,9 +72,10 @@ class GameInfo
                                           $data['snake']['x'],
                                           $data['snake']['y'],
                                           $data['snake']['radius'],
-                                          $data['snake']['body']);
+                                          $data['snake']['body'],
+                                          $data['snake']['color']);
 
-        $this->checkBumps($snake);
+        // $this->checkBumps($snake);
         $this->updatePoints($snake);
         $this->checkSnakeDeath($snake);
         $this->compressWall();

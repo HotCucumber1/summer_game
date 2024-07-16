@@ -12,30 +12,18 @@ class Game
         this.backgroundImage = new Image();
         this.backgroundImage.src = "images/bg2.jpg";
         this.foods = [];
-        this.snakesNames = [];
     }
 
     init()
     {
-        // for (let i = 0; i < users.length; i++)
-        // {
-        //     if (users[i].name === localStorage.getItem('nickname'))
-        //     {
-                // this.snakeUser = new Snake(this.ctxSnake, users[i].name, users[i].x, users[i].y, users[i].score, 4);
         this.snakeUser = new Snake(this.ctxSnake,
-            localStorage.getItem('nickname'),
-            game.world.x + game.WORLD_SIZE.x / 2 + game.SCREEN_SIZE.x / 2,
-            game.world.y + game.WORLD_SIZE.y / 2 + game.SCREEN_SIZE.y / 2,
-            0,
-            4,
-            15,
-            ut.color(ut.randomColor(), 0.33));
-        //     }
-        //     else
-        //     {
-        //         this.snakes[users[i].name] = new Snake(this.ctxSnake, users[i].name, users[i].x, users[i].y, users[i].score, 4);
-        //     }
-        // }
+                                    localStorage.getItem('nickname'),
+                                    game.world.x + game.WORLD_SIZE.x / 2 + game.SCREEN_SIZE.x / 2,
+                                    game.world.y + game.WORLD_SIZE.y / 2 + game.SCREEN_SIZE.y / 2,
+                                    0,
+                                    4,
+                                    15,
+                                    ut.color(ut.randomColor(), 0.33));
     }
 
     draw()

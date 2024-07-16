@@ -119,7 +119,8 @@ class Snake
             this.ctx.shadowOffsetX = 0; // смещение тени по X
             this.ctx.shadowOffsetY = 0;
             this.speed = 15;
-            if (this.intervalId === null) {
+            if (this.intervalId === null)
+            {
                 this.intervalId = setInterval(() => {
                     this.counter++;
                 }, 1000);
@@ -141,7 +142,13 @@ class Snake
     drawSnake()
     {
         this.drawHead();
-        // this.drawBody();
+        let x, y;
+        for (let i = this.length - 1; i > 0; i--)
+        {
+            x = this.arr[i].x; //- game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2;
+            y = this.arr[i].y; //- game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2;
+            this.drawBody(x, y);
+        }
         this.setSize();
     }
 
@@ -169,7 +176,6 @@ class Snake
         this.pos.y += this.velocity.y;
 
         this.camera.follow(this.pos);
-
         this.drawHead();
 
         this.setSize();
@@ -277,10 +283,10 @@ class Snake
                 document.body.classList.remove("fade-in");
                 document.body.classList.add("fade-out");
 
-                // setTimeout(function () {
-                //     conn.close();
-                //     window.location.href = "/menu";
-                // }, 500);
+                setTimeout(function () {
+                    conn.close();
+                    window.location.href = "/menu";
+                }, 500);
             }
         };
         fadeEffect();
