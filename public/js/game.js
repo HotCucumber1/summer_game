@@ -16,41 +16,81 @@ class Game
 
     init()
     {
-        this.snakeUser = new Snake(this.ctxSnake, localStorage.getItem('nickname'));
-        // this.generateFoods(2000);
-        //this.snakes[0] = new Snake(this.ctxSnake, localStorage.getItem("nickname"));
-        /*for (let i = 1; i < 20; i++)
+        if (localStorage.getItem("gameMode") === "single") 
         {
-            this.addSnake(i);
-        }*/
+            this.generateFoods(2000);
+            this.snakes[0] = new Snake(this.ctxSnake, localStorage.getItem("nickname"));
+            for (let i = 1; i < 40; i++)
+                this.addSnake(i);
+        }
+        else
+        {
+            this.snakeUser = new Snake(this.ctxSnake, localStorage.getItem('nickname'));
+            // this.generateFoods(2000);
+            //this.snakes[0] = new Snake(this.ctxSnake, localStorage.getItem("nickname"));
+            /*for (let i = 1; i < 20; i++)
+            {
+                this.addSnake(i);
+            }*/
+        }
     }
 
     draw()
     {
-        this.drawWorld();
-
-        for (let i = 0; i < this.foods.length; i++)
+        if (localStorage.getItem("gameMode") === "single")
         {
-            this.foods[i].draw(this.snakeUser);
-        }
+            this.drawWorld( );
 
-        if (this.snakeUser.state === 0)
-        {
-            this.snakeUser.move();
-        }
-
-        /*for (let i = 1; i < this.snakes.length; i++)
-        {
-            if (this.snakes[i].state === 0)
-            {
-                this.snakes[i].move(this.snakes[0]);
+            for (let i = 0; i < this.foods.length; i++) 
+            {    
+                this.foods[i].draw(this.snakes[0]);
             }
-        }*/
 
-        this.snakeUser.drawYourLength();
-        // this.drawLength();
-        // this.drawSize();
-        this.drawName();
+            if (this.snakes[0].state === 0)
+            {
+                this.snakes[0].move();
+            }
+
+            for (let i = 1; i < this.snakes.length; i++)
+            {
+                if (this.snakes[i].state === 0)
+                {
+                    this.snakes[i].move(this.snakes[0]);
+                }
+            }
+
+            this.snakes[0].drawYourLength();
+            this.drawLength();
+            // this.drawSize();
+            this.drawName();
+        }
+        else
+        {
+            this.drawWorld();
+
+            for (let i = 0; i < this.foods.length; i++)
+            {
+                this.foods[i].draw(this.snakeUser);
+            }
+
+            if (this.snakeUser.state === 0)
+            {
+                this.snakeUser.move();
+            }
+
+            /*for (let i = 1; i < this.snakes.length; i++)
+            {
+                if (this.snakes[i].state === 0)
+                {
+                    this.snakes[i].move(this.snakes[0]);
+                }
+            }*/
+
+            this.snakeUser.drawYourLength();
+            // this.drawLength();
+            // this.drawSize();
+            this.drawName();
+        }
     }
 
     drawWorld()

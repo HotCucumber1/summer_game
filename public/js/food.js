@@ -4,8 +4,14 @@ class Food {
         this.pos = new Point(x, y);
         this.eaten = false;
 
-        this.size = 5; //ut.random(this.sizeMin, this.sizeMax);
-        this.mainColor = color; //ut.randomColor();
+        this.sizeMin = 5;
+        this.sizeMax = 9;
+
+        this.size = ut.random(this.sizeMin, this.sizeMax);
+
+        // this.size = 5; //ut.random(this.sizeMin, this.sizeMax);
+        // this.mainColor = color; //ut.randomColor();
+        this.mainColor = (localStorage.getItem("gameMode") === "single") ? ut.randomColor() : color;
     }
 
     draw() {

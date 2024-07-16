@@ -4,7 +4,8 @@ class Snake
         this.ctx = ctx;
         this.id = id;
         this.score = 0;
-        this.speed = 4;
+        this.defaultSpeed = 4;
+        this.speed = this.defaultSpeed;
         this.boost = false;
         this.state = 0;
 
@@ -12,12 +13,13 @@ class Snake
         this.velocity = new Point(0, 0);
         this.angle = ut.random(0, Math.PI);
 
-        this.length = 20;
-        this.MAXSIZE = 50;
+        this.length = 10;
+        this.MAXSIZE = 60;
         this.MINSIZE = 15;
         this.size = 15;
         this.MAXLENGTH = 200;
 
+        // this.mainColor = ut.randomColor();
         this.mainColor = ut.randomColor();
         this.midColor = ut.color(this.mainColor, 0.33);
         this.supportColor = ut.color(this.midColor, 0.33);
@@ -38,7 +40,7 @@ class Snake
 
         this.camera = new Camera(0, 0, game.SCREEN_SIZE.x, game.SCREEN_SIZE.y);
         this.death = new Audio("audio/minecraft-death-sound.mp3");
-        this.death.volume = 0.6;
+        this.death.volume = 1.0;
         this.death.muted = false;
         this.death.load();
 
@@ -48,142 +50,176 @@ class Snake
         // this.pop.muted = false;
     }
 
+    drawRetina(p) {
+        this.ctx.fillStyle = "black";
+        this.ctx.beginPath();
+        this.ctx.arc(p.x + Math.cos(this.angle), p.y + Math.sin(this.angle), 0.23 * this.size, 0, 2 * Math.PI);
+        this.ctx.fill();
+    }
+
+    drawEye(p) {
+        this.ctx.fillStyle = "whitesmoke";
+        this.ctx.beginPath();
+        this.ctx.arc(p.x, p.y, 0.42 * this.size, 0, 2 * Math.PI);
+        this.ctx.fill();
+    }
+
     drawHead() {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
 
         //head
-        this.ctx.fillStyle = this.color;
+        this.ctx.fillStyle = this.supportColor;
         this.ctx.beginPath();
         this.ctx.arc(x, y, this.size, 0, 2 * Math.PI);
         this.ctx.fill();
 
+        let d = this.size / 2;
 
         //eye 1
-        let d = this.size / 2;
         let p1 = new Point(x + d * Math.cos(this.angle), y + d * Math.sin(this.angle));
         p1 = ut.rotate(p1, this.arr[0], -20);
-        //eye
-        this.ctx.fillStyle = "whitesmoke";
-        this.ctx.beginPath();
-        this.ctx.arc(p1.x, p1.y, this.size / 2 - 1, 0, 2 * Math.PI);
-        this.ctx.fill();
-
-        //retina
-        this.ctx.fillStyle = "black";
-        this.ctx.beginPath();
-        this.ctx.arc(p1.x + Math.cos(this.angle), p1.y + Math.sin(this.angle), this.size / 4, 0, 2 * Math.PI);
-        this.ctx.fill();
+        this.drawEye(p1);
+        this.drawRetina(p1);
 
         //eye2
         let p2 = ut.rotate(p1, this.arr[0], 40);
-        //eye
-        this.ctx.fillStyle = "whitesmoke";
-        this.ctx.beginPath();
-        this.ctx.arc(p2.x, p2.y, this.size / 2 - 1, 0, 2 * Math.PI);
-        this.ctx.fill();
-
-        //retina
-        this.ctx.fillStyle = "black";
-        this.ctx.beginPath();
-        this.ctx.arc(p2.x + Math.cos(this.angle), p2.y + Math.sin(this.angle), this.size / 4, 0, 2 * Math.PI);
-        this.ctx.fill();
+        this.drawEye(p2)
+        this.drawRetina(p2);
     }
 
-    drawBody(x, y) {
-        let grd = this.ctx.createRadialGradient(x, y, 2, x + 4, y + 4, 10);
+    drawBody(x, y, index) {
+
+        let baseColorValue = 255 - (index % 10) * 25;
+        if (Math.floor(index / 10) % 2 === 1) {
+            baseColorValue = 255 - baseColorValue;
+        }
+
+        let baseColor = `rgb(${baseColorValue}, ${baseColorValue}, ${baseColorValue})`;
+
+        let grd = this.ctx.createRadialGradient(x, y, this.size * 0.1, x, y, this.size);
         grd.addColorStop(0, this.supportColor);
-        grd.addColorStop(1, this.midColor);
+        grd.addColorStop(0.5, baseColor);
+        grd.addColorStop(1, this.supportColor);
 
         let radius = this.size;
-        if (radius < 0)
+
+        if (radius < 0) {
             radius = 1;
+        }
+
+        let flicker = Math.sin(Date.now() / 50 - index / 5) * 10 + 20;
+
+        this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20; // радиус размытия тени
+        this.ctx.shadowColor = (this.boost && this.length > 10) ? this.supportColor : `rgb(0, 0, 0, 0.3)`; // цвет свечения
+        this.ctx.shadowOffsetX = (this.boost && this.length > 10) ? 0 : 3; // смещение тени по X
+        this.ctx.shadowOffsetY = (this.boost && this.length > 10) ? 0 : 3;
 
         this.ctx.beginPath();
-        this.ctx.fillStyle = this.mainColor;
-        this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        this.ctx.fill();
-
         this.ctx.fillStyle = grd;
-        this.ctx.beginPath();
         this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
         this.ctx.fill();
 
     }
 
     boostMove() {
-        if (this.boost && this.length > 10)
+        if (this.boost && this.length > 10) 
         {
             this.ctx.shadowBlur = 20; // радиус размытия тени
             this.ctx.shadowColor = this.supportColor; // цвет свечения
             this.ctx.shadowOffsetX = 0; // смещение тени по X
             this.ctx.shadowOffsetY = 0;
-            this.speed = 15;
-            if (this.intervalId === null) {
+            this.speed = 8;
+            if (this.intervalId === null) 
+            {
                 this.intervalId = setInterval(() => {
                     this.counter++;
                 }, 1000);
             }
-            if (this.counter >= 1)
+            if (this.counter >= 1) 
             {
                 this.length--;
+                this.arr.shift();
+                this.headPath.shift();
+
                 this.counter = 0;
             }
-        }
-        else
+        } 
+        else 
         {
             this.ctx.shadowBlur = 0;
             this.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
-            this.speed = 6;
+            this.speed = this.defaultSpeed;
         }
     }
-
-    move() {
-        this.boostMove();
-
+    
+    moveCalc() {
         this.velocity.x = this.speed * Math.cos(this.angle);
         this.velocity.y = this.speed * Math.sin(this.angle);
 
-        this.headPath.push({ x: this.pos.x, y: this.pos.y });
+        this.headPath.push({x: this.pos.x, y: this.pos.y});
 
         if (this.headPath.length > this.length) {
             this.headPath.shift();
         }
 
-        for (let i = this.length - 1; i > 0; i--)
-        {
+        for (let i = this.length - 1; i > 0; i--) {
             this.arr[i].x = this.headPath[this.headPath.length - 1 - i].x - this.camera.x;
             this.arr[i].y = this.headPath[this.headPath.length - 1 - i].y - this.camera.y;
-            this.drawBody(this.arr[i].x, this.arr[i].y);
+            this.drawBody(this.arr[i].x, this.arr[i].y, i);
         }
+
+        this.arr[0].x = this.pos.x - this.camera.x;
+        this.arr[0].y = this.pos.y - this.camera.y;
 
         this.pos.x += this.velocity.x;
         this.pos.y += this.velocity.y;
+    }
 
+    move() {
+        this.boostMove();
+
+        this.moveCalc()
         this.camera.follow(this.pos);
-
         this.drawHead();
 
-        this.setSize();
         this.checkCollissionFood();
-        //this.checkCollissionSnake()
-        //this.checkCollissionBorder();
+        this.checkCollissionSnake()
+        this.checkCollissionBorder();
+        this.setSize();
     }
 
     setSize() {
-        if (this.length % 5 === 0)
-           this.size = this.length / 5 + 13;
-        if (this.size > this.MAXSIZE)
-            this.size = this.MAXSIZE;
-        if (this.size < this.MINSIZE)
-            this.size = this.MINSIZE;
+        if (this.length % 5 === 0) this.size = (this.length / 5) / 2 + 13;
+        if (this.size > this.MAXSIZE) this.size = this.MAXSIZE;
+        if (this.size < this.MINSIZE) this.size = this.MINSIZE;
     }
 
+    // canvas.width = window.innerWidth;
+    // canvas.height = window.innerHeight;
+
     addLength(size) {
-        if (this.arr.length < this.MAXLENGTH)
-        {
-            this.length++;
-            this.arr.push(new Point(-100, -100));
+        if (this.size >= 20 && this.size < 30) {
+            size -= 1;
+        }
+
+        if (this.size >= 30 && this.size < 40) {
+            size -= 2;
+        }
+
+        if (this.size >= 40 && this.size < 50) {
+            size -= 3;
+        }
+
+        if (this.size >= 50) {
+            size -= 4;
+        }
+
+        this.length += (size - 4);
+
+        for (let i = 0; i < (size - 4); i++) {
+            this.arr.push(new Point(this.pos.x, this.pos.y));
+            this.headPath.push(new Point(this.pos.x, this.pos.y));
         }
     }
 

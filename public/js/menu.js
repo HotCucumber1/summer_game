@@ -16,10 +16,12 @@ window.addEventListener("DOMContentLoaded", function () {
 
     single.addEventListener("click", function () {
         handleButtonClick("/reset");
+        localStorage.setItem("gameMode", "single");
     });
 
     multi.addEventListener("click", function () {
         handleButtonClick("/reset");
+        localStorage.setItem("gameMode", "multi");
     });
     
 });
