@@ -88,6 +88,7 @@ class SnakeService
             'body' => $bodyData,
             'radius' => $snake->getRadius(),
             'score' => $snake->getScore(),
+            'color' => $snake->getColor(),
         ];
     }
 

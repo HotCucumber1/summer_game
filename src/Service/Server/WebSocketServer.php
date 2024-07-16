@@ -2,11 +2,8 @@
 
 namespace App\Service\Server;
 
-
 use App\Repository\RoomRepository;
-use App\Service\CookieService;
 use App\Service\GameInfo;
-use App\Service\SessionService;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use React\EventLoop\LoopInterface;
@@ -15,8 +12,8 @@ use React\EventLoop\LoopInterface;
 class WebSocketServer implements MessageComponentInterface
 {
     protected \SplObjectStorage $clients;
-    protected const INTERVAL = 0.03;
-    private array $clientRooms;
+    protected const INTERVAL = 0.02;
+    private array $clientRooms = [];
     private bool $isLoaded = false;
 
     public function __construct(private readonly LoopInterface $loop,
@@ -24,7 +21,6 @@ class WebSocketServer implements MessageComponentInterface
                                 private readonly RoomRepository $roomRepository)
     {
         $this->clients = new \SplObjectStorage;
-        $this->clientRooms = [];
         $this->loop->addPeriodicTimer(self::INTERVAL, function() {
             $this->sendData();
         });
@@ -39,6 +35,16 @@ class WebSocketServer implements MessageComponentInterface
     public function onMessage(ConnectionInterface $from, $msg): void
     {
         $data = json_decode($msg, true);
+        if (isset($data['type']) && $data['type'] === 'ping')
+        {
+            // Отправляем ответ с той же меткой времени
+            $response = json_encode([
+                'type' => 'pong',
+                'timestamp' => $data['timestamp']
+            ]);
+            $from->send($response);
+        }
+
         if (isset($data['name']))
         {
             $this->gameInfo->addUserToGame($from->resourceId, $data['name']);

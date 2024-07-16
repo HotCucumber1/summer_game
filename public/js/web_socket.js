@@ -1,9 +1,8 @@
 let conn = new WebSocket('ws://10.250.104.40:8080');
-
 // let conn = new WebSocket('ws://10.10.29.61:8080');
-// let conn = new WebSocket('ws://192.168.140.3:8080');
+// let conn = new WebSocket('ws://192.168.140.11:8080');
 
-conn.onopen = function (e) {
+conn.onopen = function () {
     console.log("Connection established!");
 
     let userData = {
@@ -16,6 +15,6 @@ conn.onerror = function (e) {
     alert(`Error ${e.data}`);
 }
 
-conn.onclose = function (e) {
+conn.onclose = function () {
     console.log('Closed');
 }

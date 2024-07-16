@@ -59,10 +59,23 @@ window.addEventListener('keyup', function (event) {
 
 function start()
 {
-    conn.addEventListener("message", function (event) {
+    function measurePing() {
+        let start = Date.now();
+        conn.send(JSON.stringify({ type: 'ping', timestamp: start }));
+    }
 
+    // Измеряем пинг каждые 2 секунды
+    setInterval(measurePing, 2000);
+
+    conn.addEventListener("message", function (event)
+    {
         let dataFromServer = JSON.parse(event.data);
-        console.log(JSON.stringify(dataFromServer.users[dataFromServer.users.length - 1], null, 4));
+
+        if (dataFromServer.type === 'pong') {
+            let end = Date.now();
+            let ping = end - dataFromServer.timestamp;
+            console.log(`Ping: ${ping}ms`);
+        }
 
         // обновить информацию по точкам
         game.foods = [];
@@ -78,30 +91,50 @@ function start()
             );
         }
 
-        // обновить информацию по змеям
-        game.snakes = [];
-        for (let i = 0; i < dataFromServer.users.length; i++)
-        {
-
-        }
-
         // обновить информацию по зоне
         game.ARENA_RADIUS = dataFromServer.wall;
 
         // проверить, жива ли змея
+        // обновить информацию по змеям
         let mySnake;
+        let currentSnake;
         for (let i = 0; i < dataFromServer.users.length; i++)
         {
-            if (dataFromServer.users[i].name === localStorage.getItem('nickname'))
+            currentSnake = dataFromServer.users[i];
+            if (currentSnake.name === localStorage.getItem('nickname'))
             {
-                mySnake = dataFromServer.users[i];
-                break;
+                mySnake = currentSnake;
+                //break;
+                // console.log('Me', game.snakeUser.arr[0]);
+            }
+            else
+            {
+                if (!(currentSnake.name in game.snakes))
+                {
+                    game.snakes[currentSnake.name] = new Snake(ctxSnake,
+                                                               currentSnake.name,
+                                                               currentSnake.x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2,
+                                                               currentSnake.y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2,
+                                                               currentSnake.score,
+                                                               4,
+                                                               currentSnake.radius,
+                                                               currentSnake.color);
+                }
+                else
+                {
+                    game.snakes[currentSnake.name].arr[0].x = currentSnake.x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2;
+                    game.snakes[currentSnake.name].arr[0].y = currentSnake.y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2;
+                    game.snakes[currentSnake.name].score = currentSnake.score;
+                    game.snakes[currentSnake.name].radius = currentSnake.radius;
+                    game.snakes[currentSnake.name].mainColor = currentSnake.color;
+                    // console.log('Other', game.snakes[currentSnake.name].arr[0]);
+                }
             }
         }
 
         if (typeof mySnake === "undefined")
         {
-            console.log('death');
+            // console.log('death');
             game.snakeUser.die();
         }
         else
@@ -118,24 +151,20 @@ function start()
             game.draw();
 
             // отправить обновленные данные на бэк
-            if (counter % 2 === 0)
-            {
-                let data = {
-                    snake: {
-                        x: game.snakeUser.pos.x,
-                        y: game.snakeUser.pos.y,
-                        radius: game.snakeUser.size,
-                        score: game.snakeUser.score,
-                        body: game.snakeUser.arr
-                    }
-                };
-                conn.send(JSON.stringify(data));
-            }
-            counter = (counter + 1) % 2;
+            let data = {
+                snake: {
+                    x: game.snakeUser.pos.x,
+                    y: game.snakeUser.pos.y,
+                    radius: game.snakeUser.size,
+                    score: game.snakeUser.score,
+                    body: game.snakeUser.arr
+                }
+            };
+            conn.send(JSON.stringify(data));
         }
     });
 
     game.init();
 }
 
-setTimeout(start, 500);
+setTimeout(start, 1000);

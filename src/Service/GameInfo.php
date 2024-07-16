@@ -108,7 +108,6 @@ class GameInfo
         }
 
         return [
-            'usersLength' => count($this->users),
             'users' => $userData,
             'points' => $pointsData,
             'wall' => $this->wallRadius,
@@ -190,7 +189,7 @@ class GameInfo
     {
         if ($this->wallRadius > 500)
         {
-            $this->wallRadius -= 2;
+            $this->wallRadius -= 1;
         }
     }
 }

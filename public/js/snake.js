@@ -1,24 +1,24 @@
 class Snake
 {
-    constructor(ctx, id) {
+    constructor(ctx, id, x, y, score, speed, radius, color) {
         this.ctx = ctx;
         this.id = id;
-        this.score = 0;
-        this.speed = 4;
+        this.score = score;
+        this.speed = speed;
         this.boost = false;
         this.state = 0;
 
-        this.pos = new Point(game.world.x + game.WORLD_SIZE.x / 2 + game.SCREEN_SIZE.x / 2, game.world.y + game.WORLD_SIZE.y / 2 + game.SCREEN_SIZE.y / 2);
+        this.pos = new Point(x, y);
         this.velocity = new Point(0, 0);
         this.angle = ut.random(0, Math.PI);
 
-        this.length = 20;
+        this.length = 20;// body.length + 1; // + head
         this.MAXSIZE = 50;
         this.MINSIZE = 15;
-        this.size = 15;
+        this.size = radius;
         this.MAXLENGTH = 200;
 
-        this.mainColor = ut.randomColor();
+        this.mainColor = color;
         this.midColor = ut.color(this.mainColor, 0.33);
         this.supportColor = ut.color(this.midColor, 0.33);
 
@@ -28,7 +28,8 @@ class Snake
         this.arr.push(new Point(this.pos.x,  this.pos.y));
         this.headPath.push(new Point(this.pos.x,  this.pos.y));
 
-        for (let i = 1; i < this.length; i++) {
+        for (let i = 1; i < this.length; i++)
+        {
             this.arr.push(new Point(this.arr[i - 1].x, this.arr[i - 1].y));
             this.headPath.push(new Point(this.headPath[i - 1].x, this.headPath[i - 1].y));
         }
@@ -53,11 +54,10 @@ class Snake
         let y = this.arr[0].y;
 
         //head
-        this.ctx.fillStyle = this.color;
+        this.ctx.fillStyle = this.supportColor;
         this.ctx.beginPath();
         this.ctx.arc(x, y, this.size, 0, 2 * Math.PI);
         this.ctx.fill();
-
 
         //eye 1
         let d = this.size / 2;
@@ -138,6 +138,13 @@ class Snake
         }
     }
 
+    drawSnake()
+    {
+        this.drawHead();
+        // this.drawBody();
+        this.setSize();
+    }
+
     move() {
         this.boostMove();
 
@@ -146,7 +153,8 @@ class Snake
 
         this.headPath.push({ x: this.pos.x, y: this.pos.y });
 
-        if (this.headPath.length > this.length) {
+        if (this.headPath.length > this.length)
+        {
             this.headPath.shift();
         }
 
@@ -179,7 +187,7 @@ class Snake
             this.size = this.MINSIZE;
     }
 
-    addLength(size) {
+    addLength() {
         if (this.arr.length < this.MAXLENGTH)
         {
             this.length++;
@@ -269,10 +277,10 @@ class Snake
                 document.body.classList.remove("fade-in");
                 document.body.classList.add("fade-out");
 
-                setTimeout(function () {
-                    conn.close();
-                    window.location.href = "/menu";
-                }, 500);
+                // setTimeout(function () {
+                //     conn.close();
+                //     window.location.href = "/menu";
+                // }, 500);
             }
         };
         fadeEffect();

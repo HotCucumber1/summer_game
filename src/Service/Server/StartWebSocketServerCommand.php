@@ -2,7 +2,6 @@
 
 namespace App\Service\Server;
 
-use App\Service\SessionService;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
@@ -30,7 +29,7 @@ class StartWebSocketServerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // $uri = '10.10.29.61:8080';
-        // $uri = '192.168.140.3';
+        // $uri = '192.168.140.11:8080';
         $uri = '10.250.104.40:8080';
         $loop = Loop::get();
 

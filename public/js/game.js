@@ -1,6 +1,6 @@
 class Game
 {
-    constructor(ctxSnake, ctxHex, )
+    constructor(ctxSnake, ctxHex)
     {
         this.ctxSnake = ctxSnake;
         this.ctxHex = ctxHex;
@@ -8,21 +8,34 @@ class Game
         this.ARENA_RADIUS = 5000;
         this.SCREEN_SIZE = new Point(window.innerWidth, window.innerHeight);
         this.world = new Point(-20000, -10000);
-        this.snakes = [];
+        this.snakes = {};
         this.backgroundImage = new Image();
         this.backgroundImage.src = "images/bg2.jpg";
         this.foods = [];
+        this.snakesNames = [];
     }
 
     init()
     {
-        this.snakeUser = new Snake(this.ctxSnake, localStorage.getItem('nickname'));
-        // this.generateFoods(2000);
-        //this.snakes[0] = new Snake(this.ctxSnake, localStorage.getItem("nickname"));
-        /*for (let i = 1; i < 20; i++)
-        {
-            this.addSnake(i);
-        }*/
+        // for (let i = 0; i < users.length; i++)
+        // {
+        //     if (users[i].name === localStorage.getItem('nickname'))
+        //     {
+                // this.snakeUser = new Snake(this.ctxSnake, users[i].name, users[i].x, users[i].y, users[i].score, 4);
+        this.snakeUser = new Snake(this.ctxSnake,
+            localStorage.getItem('nickname'),
+            game.world.x + game.WORLD_SIZE.x / 2 + game.SCREEN_SIZE.x / 2,
+            game.world.y + game.WORLD_SIZE.y / 2 + game.SCREEN_SIZE.y / 2,
+            0,
+            4,
+            15,
+            ut.color(ut.randomColor(), 0.33));
+        //     }
+        //     else
+        //     {
+        //         this.snakes[users[i].name] = new Snake(this.ctxSnake, users[i].name, users[i].x, users[i].y, users[i].score, 4);
+        //     }
+        // }
     }
 
     draw()
@@ -39,13 +52,11 @@ class Game
             this.snakeUser.move();
         }
 
-        /*for (let i = 1; i < this.snakes.length; i++)
+        for (let snake in this.snakes)
         {
-            if (this.snakes[i].state === 0)
-            {
-                this.snakes[i].move(this.snakes[0]);
-            }
-        }*/
+            // console.log('Other: ', this.snakes[snake]);
+            this.snakes[snake].drawSnake();
+        }
 
         this.snakeUser.drawYourLength();
         // this.drawLength();
@@ -85,17 +96,6 @@ class Game
         this.world.y -= this.snakeUser.velocity.y;
     }
 
-    /*drawLength() {
-        let start = new Point(20, 20);
-        for (let i = 0; i < this.snakes.length; i++)
-        {
-            this.ctxSnake.fillStyle = this.snakes[i].mainColor;
-            this.ctxSnake.font = "bold 12px Arial";
-            this.ctxSnake.fillText("Your length: " + this.snakes[i].length, // счет
-                start.x - 5, start.y + i * 15);
-        }
-    }*/
-
     drawLength()
     {
         let start = new Point(20, 20);
@@ -127,37 +127,15 @@ class Game
         }
     }
 
-    addSnake(id)
-    {
-        this.snakes.push(new SnakeBot(this.ctxSnake, "Bot" + id))
-    }
-
     drawName() {
         let start = new Point(game.SCREEN_SIZE.x / 2 + 20, game.SCREEN_SIZE.y / 2);
         this.ctxSnake.fillStyle = this.snakeUser.mainColor;
         this.ctxSnake.font = "bold 24px Arial";
-        let nickname = localStorage.getItem("nickname");
+        let nickname = this.snakeUser.name;
+        if (typeof nickname === 'undefined')
+        {
+            nickname = 'Player';
+        }
         this.ctxSnake.fillText(nickname, start.x, start.y);
-    }
-
-    drawSize()
-    {
-        let start = new Point(120, 20);
-        for (let i = 0; i < this.snakes.length; i++)
-        {
-            this.ctxSnake.fillStyle = this.snakes[i].mainColor;
-            this.ctxSnake.font = "bold 12px Arial";
-            this.ctxSnake.fillText("Your size: " + this.snakes[i].size,
-                start.x - 5, start.y + i * 15);
-        }
-    }
-
-    generateFoods(n)
-    {
-        for (let i = 0; i < n; i++)
-        {
-            let pos = ut.arcRandom(this.world.x + this.WORLD_SIZE.x / 2 - this.ARENA_RADIUS, this.world.x + this.WORLD_SIZE.x / 2 + this.ARENA_RADIUS, 0.9 * this.ARENA_RADIUS);
-            this.foods.push(new Food(this.ctxSnake, pos.x, pos.y));
-        }
     }
 }
