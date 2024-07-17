@@ -13,6 +13,16 @@ login:
     methods: POST
     controller: App\Controller\UserController::login
 
+room:
+    path: /room
+    methods: GET
+    controller: App\Controller\GameController::selectRoom
+
+lobby:
+    path: /lobby
+    methods: GET
+    controller: App\Controller\GameController::lobby
+
 menu:
     path: /menu
     methods: GET

@@ -46,7 +46,7 @@ class UserService
         return $user;
     }
     
-    public function getUserByName(string $name): User
+    public function getUserByName(string $name): ?User
     {
         $user = $this->userRepository->findUserByName($name);
         if ($user === null)

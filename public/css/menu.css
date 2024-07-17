@@ -127,7 +127,7 @@ body.fade-in {
 }
 
 .menu__button[name="multi"]:hover {
-    box-shadow: 0 0 0.5em 0em rgb(147, 212, 72);
+    box-shadow: 0 0 0.5em 0 rgb(147, 212, 72);
     color: rgb(255, 255, 255);
     background: rgb(147, 212, 72);
 }

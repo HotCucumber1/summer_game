@@ -4,16 +4,6 @@
     text-decoration: none;
 }
 
-:-webkit-autofill,
-:-webkit-autofill:hover,
-:-webkit-autofill:focus {
-    font-size: 32px;
-    border: 1px solid rgb(255, 255, 255);
-    -webkit-text-fill-color: inherit;
-    -webkit-box-shadow: 0 0 0 100px rgb(0, 0, 0) inset;
-    transition: background-color 5000s ease-in-out 0s;
-}
-
 html {
     background: black;
 }
@@ -25,14 +15,14 @@ body {
 
 body.fade-out {
     opacity: 0;
-    transition: opacity 2s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
 }
 
 body.fade-in {
     opacity: 1;
 }
 
-.entrance {
+.menu {
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -42,13 +32,13 @@ body.fade-in {
     url("../images/background.png");
 }
 
-.entrance__logo {
+.menu__logo {
     margin-top: 60px;
     padding: 60px 20px;
     font-family: "Balsamiq Sans", sans-serif;
 }
 
-.entrance__neon {
+.menu__neon {
     font-size: 128px;
     font-weight: normal;
     line-height: 50px;
@@ -56,18 +46,18 @@ body.fade-in {
     letter-spacing: 8px;
 }
 
-.entrance__neon span[name="span1"] {
+.menu__neon span[name="span1"] {
     -webkit-text-stroke: rgb(101, 179, 72) 7px;
     text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
 }
 
-.entrance__neon span[name="span2"] {
+.menu__neon span[name="span2"] {
     animation: neon linear infinite 4s;
     -webkit-text-stroke: rgb(101, 179, 72) 7px;
     text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
 }
 
-.entrance__neon span[name="span3"] {
+.menu__neon span[name="span3"] {
     -webkit-text-stroke: rgb(187, 75, 92) 7px;
     text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
 
@@ -78,90 +68,99 @@ body.fade-in {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
         -webkit-text-stroke: rgb(101, 179, 72) 7px;
     }
-
-    79% {
+    79%{
         -webkit-text-stroke: rgb(187, 75, 92) 7px;
     }
-
     80% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
         -webkit-text-stroke: rgb(101, 179, 72) 7px;
     }
-
     81% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
         -webkit-text-stroke: rgb(101, 179, 72) 7px;
     }
-
     82% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
         -webkit-text-stroke: rgb(187, 75, 92) 7px;
     }
-
     83% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
         -webkit-text-stroke: rgb(101, 179, 72) 7px;
     }
-
     92% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
         -webkit-text-stroke: rgb(187, 75, 92) 7px;
     }
-
     92.5% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
         -webkit-text-stroke: rgb(101, 179, 72) 7px;
     }
 }
 
-.entrance__input {
-    box-shadow: 0 0 0 100px rgb(0, 0, 0) inset;
-    outline: none;
+.menu__button {
     border-radius: 25px;
-    padding: 4px;
     width: 300px;
-    height: 50px;
-    margin-top: 30px;
-    font-size: 32px;
-    font-family: "Ubuntu", sans-serif;
-    font-weight: 400;
-    padding-inline: 20px;
-}
-
-.entrance__input[id="nickname"] {
-    border: 1px solid rgb(101, 179, 72);
-    -webkit-text-fill-color: rgb(101, 179, 72);
-    caret-color: rgb(101, 179, 72);
-}
-
-.entrance__input[id="password"] {
-    border: 1px solid rgb(187, 75, 92);
-    -webkit-text-fill-color: rgb(187, 75, 92);
-    caret-color: rgb(187, 75, 92);
-}
-
-.entrance__input::placeholder {
-    opacity: 40%;
-    color: rgb(236, 233, 233);
-}
-
-.entrance__button {
-    border-radius: 25px;
-    width: 340px;
     height: 60px;
     margin-top: 30px;
     font-size: 32px;
     font-family: "Pixelify Sans", sans-serif;
     font-weight: 400;
-    background-color: inherit;
     cursor: pointer;
+    background-color: inherit;
     transition: all 0.25s ease;
-    border-color: rgb(255, 161, 110);
-    color: rgb(255, 161, 110);
 }
 
-.entrance__button:hover {
-    box-shadow: 0 0 0.5em 0 rgb(255, 161, 110);
+.menu__button[name="create"] {
+    border-color: rgb(249, 50, 81);
+    color: rgb(249, 50, 81);
+}
+
+.menu__button[name="create"]:hover {
+    box-shadow: 0 0 0.5em 0 rgb(249, 50, 81);
     color: rgb(255, 255, 255);
-    background: rgb(255, 161, 110);
+    background: rgb(249, 50, 81);
+}
+
+.menu__button[name="join"] {
+    border-color: rgb(147, 212, 72);
+    color: rgb(147, 212, 72);
+}
+
+.menu__button[name="join"]:hover {
+    box-shadow: 0 0 0.5em 0 rgb(147, 212, 72);
+    color: rgb(255, 255, 255);
+    background: rgb(147, 212, 72);
+}
+
+.lobby__id {
+    box-shadow: 0 0 0 100px rgb(0, 0, 0) inset;
+    outline: none;
+    border-radius: 25px;
+    padding: 4px;
+    width: 200px;
+    height: 50px;
+    margin-top: 30px;
+    font-size: 32px;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    padding-inline: 50px;
+    text-align: center;
+}
+
+.lobby__id[id="lobbyId"] {
+    border: 1px solid rgb(101, 179, 72);
+    -webkit-text-fill-color: rgb(101, 179, 72);
+}
+
+.lobby__id::placeholder {
+    opacity: 40%;
+    color: rgb(236, 233, 233);
+    padding: 0;
+    text-align: center;
+}
+
+.lobby__label {
+    color:azure;
+    padding-top: 5px;
+    font-family: "Ubuntu", sans-serif;
 }

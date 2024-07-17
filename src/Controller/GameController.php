@@ -13,6 +13,16 @@ class GameController extends AbstractController
         return new Response('hello');
     }
 
+    public function selectRoom(): Response
+    {
+        return $this->render('select_room.html.twig');
+    }
+
+    public function lobby(): Response
+    {
+        return $this->render('lobby.html.twig');
+    }
+
     public function showMenu(): Response
     {
         return $this->render('menu.html.twig');

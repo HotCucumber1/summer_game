@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet">
+    <title>Sspliff</title>
+    <link href="{{ asset('css/room.css') }}" rel="stylesheet">
+</head>
+
+<body class="menu">
+    <div class="menu__logo">
+        <div class="menu__neon"><span name="span1">Ssp</span><span name="span2">li</span><span name="span3">ff</span>
+        </div>
+    </div>
+    <input type="text" class="lobby__id" name="lobbyId" id="lobbyId" placeholder="Enter lobby id">
+    <label class="lobby__label" name="lobbyId">Enter Lobby ID to create or join lobby</label>
+
+    <button class="menu__button" id="create" name="create">Create</button>
+    <button class="menu__button" id="join" name="join">Join</button>
+
+</body>
+<script src="{{ asset('js/room.js') }}"></script>
+</html>

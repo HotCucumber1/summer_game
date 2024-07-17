@@ -6,7 +6,6 @@ let cursor = new Point(0, 0);
 let game = new Game(ctxSnake, ctxHex);
 
 let d = -Math.PI / 2;
-let counter = 0;
 
 
 canvas.onmousemove = function (e) {
@@ -171,18 +170,18 @@ function start()
 
             // body
             let body = [];
-            for (let i = 0; i < game.snakeUser.arr.length - 1; i++)
+            for (let i = 0; i < game.snakeUser.arr.length; i++)
             {
                 body.push(
                     new Point(
                         game.snakeUser.arr[i].x + game.snakeUser.camera.x,
                         game.snakeUser.arr[i].y + game.snakeUser.camera.y,
                     )
-                )
+                );
             }
 
             // отправить обновленные данные на бэк
-            let data = {
+            let data= {
                 snake: {
                     x: game.snakeUser.pos.x,
                     y: game.snakeUser.pos.y,
@@ -203,4 +202,10 @@ function start()
     game.init();
 }
 
+
+if (localStorage.getItem('nickname') === null)
+{
+    window.location.href = '/';
+    conn.close();
+}
 setTimeout(start, 1000);

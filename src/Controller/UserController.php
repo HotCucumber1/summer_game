@@ -55,6 +55,6 @@ class UserController extends AbstractController
             }
 
         }
-        return $this->redirectToRoute('game');
+        return $this->redirectToRoute('menu');
     }
 }

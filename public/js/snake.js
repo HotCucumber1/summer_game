@@ -126,9 +126,12 @@ class Snake
 
             flicker = Math.sin(Date.now() / 50 - index / (radius / 2)) * 20 + 2 * radius / 3;
 
-            if (index % 3 === 1) {
+            if (index % 3 === 1)
+            {
                 this.drawBlur(flicker);
-            } else {
+            }
+            else
+            {
                 this.ctx.shadowBlur = 20;
                 this.ctx.shadowColor = `rgb(0, 0, 0, 0.3)`;
                 this.ctx.shadowOffsetX = 0;

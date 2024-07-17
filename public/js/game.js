@@ -125,7 +125,7 @@ class Game
         let start = new Point(game.SCREEN_SIZE.x / 2 + 20, game.SCREEN_SIZE.y / 2);
         this.ctxSnake.fillStyle = this.snakeUser.mainColor;
         this.ctxSnake.font = "bold 24px Arial";
-        let nickname = this.snakeUser.name;
+        let nickname = localStorage.getItem('nickname');
         if (typeof nickname === 'undefined')
         {
             nickname = 'Player';

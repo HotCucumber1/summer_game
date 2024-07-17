@@ -19,7 +19,7 @@ window.addEventListener("DOMContentLoaded", function () {
     });
 
     multi.addEventListener("click", function () {
-        handleButtonClick("/reset");
+        handleButtonClick("/room");
     });
     
 });
