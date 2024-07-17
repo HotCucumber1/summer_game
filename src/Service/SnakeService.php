@@ -14,7 +14,7 @@ class SnakeService
     private const START_LENGTH = 10;
     private const SPAWN_ZONE = 0.6;
 
-    public function __construct(private readonly SnakeRepositoryInterface $snakeRepository)
+    public function __construct(/*private readonly SnakeRepositoryInterface $snakeRepository*/)
     {
     }
 
@@ -59,14 +59,6 @@ class SnakeService
                                       $color);
         }
         $snake->setBodyParts($newBody);
-    }
-
-    /**
-     * @return array<int, Snake>
-     */
-    public function getSnakes(): array
-    {
-        return $this->snakeRepository->getSnakes();
     }
 
     public function getSnakeData(Snake $snake): array

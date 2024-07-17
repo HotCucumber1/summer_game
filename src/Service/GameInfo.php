@@ -75,7 +75,7 @@ class GameInfo
                                           $data['snake']['body'],
                                           $data['snake']['color']);
 
-        // $this->checkBumps($snake);
+        $this->checkBumps($snake);
         $this->updatePoints($snake);
         $this->checkSnakeDeath($snake);
         $this->compressWall();
@@ -127,7 +127,7 @@ class GameInfo
             return;
         }
         if ($this->collisionService->isWallBump($snake, $this->wallRadius) ||
-            $this->collisionService->isSnakeBump($snake))
+            $this->collisionService->isSnakeBump($snake, $this->users))
         {
             $snake->setAliveStatus(false);
         }

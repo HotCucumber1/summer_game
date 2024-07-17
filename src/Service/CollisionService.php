@@ -8,11 +8,11 @@ use App\Entity\Wall;
 
 class CollisionService
 {
-    public function __construct(private readonly SnakeService $snakeService)
+    public function __construct()
     {
     }
 
-    public function isSnakeBump(Snake $snake): bool
+    public function isSnakeBump(Snake $snake, array $players): bool
     {
         $snakeX = $snake->getHeadX();
         $snakeY = $snake->getHeadY();
@@ -21,7 +21,7 @@ class CollisionService
         $currentId = $snake->getId();
 
         // TODO: need to optimize
-        $snakes = $this->snakeService->getSnakes();
+        $snakes = $players;
         foreach ($snakes as $id => $snakeUser)
         {
             if ($id !== $currentId)

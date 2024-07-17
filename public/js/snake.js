@@ -141,14 +141,11 @@ class Snake
 
     drawSnake()
     {
-        this.drawHead();
-        let x, y;
         for (let i = this.length - 1; i > 0; i--)
         {
-            x = this.arr[i].x; //- game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2;
-            y = this.arr[i].y; //- game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2;
-            this.drawBody(x, y);
+            this.drawBody(this.arr[i].x, this.arr[i].y);
         }
+        this.drawHead();
         this.setSize();
     }
 

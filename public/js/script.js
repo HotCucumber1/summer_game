@@ -70,6 +70,7 @@ function start()
     conn.addEventListener("message", function (event)
     {
         let dataFromServer = JSON.parse(event.data);
+        console.log(dataFromServer.users);
 
         if (dataFromServer.type === 'pong') {
             let end = Date.now();
@@ -104,7 +105,6 @@ function start()
             if (currentSnake.name === localStorage.getItem('nickname'))
             {
                 mySnake = currentSnake;
-                // console.log('Me', game.snakeUser.arr[0]);
             }
             else
             {
@@ -121,6 +121,9 @@ function start()
                 }
                 else
                 {
+                    game.snakes[currentSnake.name].pos.x = currentSnake.x;
+                    game.snakes[currentSnake.name].pos.y = currentSnake.y;
+
                     game.snakes[currentSnake.name].arr = [];
                     game.snakes[currentSnake.name].arr.push(
                         new Point(
@@ -128,10 +131,6 @@ function start()
                             currentSnake.y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2
                         )
                     );
-
-
-                    // game.snakes[currentSnake.name].arr[0].x = currentSnake.x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2;
-                    // game.snakes[currentSnake.name].arr[0].y = currentSnake.y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2;
                     game.snakes[currentSnake.name].score = currentSnake.score;
                     game.snakes[currentSnake.name].size = currentSnake.radius;
                     game.snakes[currentSnake.name].mainColor = currentSnake.color;
@@ -139,8 +138,6 @@ function start()
 
                     for (let i = 0; i < currentSnake.body.length; i++)
                     {
-                        console.log(currentSnake.body[i].x, currentSnake.body[i].y);
-
                         game.snakes[currentSnake.name].arr.push(
                             new Point(
                                 currentSnake.body[i].x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2,
@@ -148,14 +145,13 @@ function start()
                             )
                         );
                     }
-                    console.log('-------')
                 }
             }
         }
 
         if (typeof mySnake === "undefined")
         {
-            // console.log('death');
+            console.log('death');
             game.snakeUser.die();
         }
         else
@@ -166,6 +162,18 @@ function start()
             // движение
             movement();
 
+            // body
+            let body = [];
+            for (let i = 0; i < game.snakeUser.arr.length; i++)
+            {
+                body.push(
+                    new Point(
+                        game.snakeUser.arr[i].x + game.snakeUser.camera.x,
+                        game.snakeUser.arr[i].y + game.snakeUser.camera.y,
+                    )
+                )
+            }
+
             // отправить обновленные данные на бэк
             let data = {
                 snake: {
@@ -173,7 +181,7 @@ function start()
                     y: game.snakeUser.pos.y,
                     radius: game.snakeUser.size,
                     score: game.snakeUser.score,
-                    body: game.snakeUser.arr,
+                    body: body,
                     color: game.snakeUser.mainColor
                 }
             };
