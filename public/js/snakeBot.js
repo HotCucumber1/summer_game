@@ -16,6 +16,11 @@ class SnakeBot extends Snake {
         this.boost = false;
         this.d = -Math.PI;
 
+
+        this.mainColor = ut.randomColor();
+        this.midColor = ut.color(this.mainColor, 0.33);
+        this.supportColor = ut.color(this.midColor, 0.33);
+
         this.arr = [];
         this.headPath = [];
 
@@ -199,7 +204,7 @@ class SnakeBot extends Snake {
             this.arr[i].x = this.headPath[this.headPath.length - 1 - i].x - player.pos.x;
             this.arr[i].y = this.headPath[this.headPath.length - 1 - i].y - player.pos.y;
 
-            this.drawBody(this.arr[i].x, this.arr[i].y, i);
+            this.drawBody(this.arr[i].x, this.arr[i].y, i, this.supportColor);
         }
 
         this.arr[0].x = this.pos.x - player.pos.x;
@@ -209,7 +214,7 @@ class SnakeBot extends Snake {
         this.pos.x += this.velocity.x;
         this.pos.y += this.velocity.y;
 
-        this.drawHead();
+        this.drawHead(this.supportColor);
 
 
         // this.ctx.beginPath();

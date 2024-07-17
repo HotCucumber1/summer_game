@@ -61,7 +61,6 @@
     {
         this.ctxHex.save();
 
-        // Заполнение области за пределами круга красным цветом
         this.ctxHex.fillStyle = "red";
         this.ctxHex.fillRect(this.world.x, this.world.y, this.WORLD_SIZE.x, this.WORLD_SIZE.y);
 

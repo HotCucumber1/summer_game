@@ -16,7 +16,7 @@ class Snake {
         this.MINSIZE = 15;
         this.size = 15;
 
-        this.mainColor = ut.randomColor();
+        this.mainColor = (localStorage.getItem("mainColor") !== null) ? localStorage.getItem("mainColor") : ut.randomColor();
         this.midColor = ut.color(this.mainColor, 0.33);
         this.supportColor = ut.color(this.midColor, 0.33);
 
@@ -56,12 +56,12 @@ class Snake {
         this.ctx.fill();
     }
 
-    drawHead() {
+    drawHead(supportColor) {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
 
         //head
-        this.ctx.fillStyle = this.supportColor;
+        this.ctx.fillStyle = supportColor;
         this.ctx.beginPath();
         this.ctx.arc(x, y, this.size, 0, 2 * Math.PI);
         this.ctx.fill();
@@ -80,7 +80,7 @@ class Snake {
         this.drawRetina(p2);
     }
 
-    drawBody(x, y, index) {
+    drawBody(x, y, index, supportColor) {
 
         let baseColorValue = 255 - (index % 10) * 25;
         if (Math.floor(index / 10) % 2 === 1) {
@@ -90,9 +90,9 @@ class Snake {
         let baseColor = `rgb(${baseColorValue}, ${baseColorValue}, ${baseColorValue})`;
 
         let grd = this.ctx.createRadialGradient(x, y, this.size * 0.1, x, y, this.size);
-        grd.addColorStop(0, this.supportColor);
+        grd.addColorStop(0, supportColor);
         grd.addColorStop(0.5, baseColor);
-        grd.addColorStop(1, this.supportColor);
+        grd.addColorStop(1, supportColor);
 
         let radius = this.size;
 
@@ -109,7 +109,7 @@ class Snake {
             if (index % 3 === 1) {
 
                 this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20;
-                this.ctx.shadowColor = (this.boost && this.length > 10) ? this.supportColor : `rgb(0, 0, 0, 0.3)`;
+                this.ctx.shadowColor = (this.boost && this.length > 10) ? supportColor : `rgb(0, 0, 0, 0.3)`;
                 this.ctx.shadowOffsetX = (this.boost && this.length > 10) ? 0 : 3;
                 this.ctx.shadowOffsetY = (this.boost && this.length > 10) ? 0 : 3;
 
@@ -124,7 +124,7 @@ class Snake {
         } else {
 
             this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20;
-            this.ctx.shadowColor = (this.boost && this.length > 10) ? this.supportColor : `rgb(0, 0, 0, 0.3)`;
+            this.ctx.shadowColor = (this.boost && this.length > 10) ? supportColor : `rgb(0, 0, 0, 0.3)`;
             this.ctx.shadowOffsetX = (this.boost && this.length > 10) ? 0 : 3;
             this.ctx.shadowOffsetY = (this.boost && this.length > 10) ? 0 : 3;
 
@@ -175,7 +175,7 @@ class Snake {
         for (let i = this.length - 1; i > 0; i--) {
             this.arr[i].x = this.headPath[this.headPath.length - 1 - i].x - this.camera.x;
             this.arr[i].y = this.headPath[this.headPath.length - 1 - i].y - this.camera.y;
-            this.drawBody(this.arr[i].x, this.arr[i].y, i);
+            this.drawBody(this.arr[i].x, this.arr[i].y, i, this.supportColor);
         }
 
         this.arr[0].x = this.pos.x - this.camera.x;
@@ -190,7 +190,7 @@ class Snake {
 
         this.moveCalc()
         this.camera.follow(this.pos);
-        this.drawHead();
+        this.drawHead(this.supportColor);
 
         this.checkCollissionFood();
         this.checkCollissionBonus();
@@ -366,6 +366,13 @@ class Snake {
 
     changeAngle(angle) {
         this.angle = angle;
+    }
+
+    changeColor(color)
+    {
+        this.mainColor = color;
+        this.midColor = ut.color(this.mainColor, 0.33);
+        this.supportColor = ut.color(this.midColor, 0.33);
     }
 
     die() {
