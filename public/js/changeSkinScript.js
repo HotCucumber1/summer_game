@@ -48,7 +48,6 @@ function hangleButtonClick(targetURL) {
 function saveSkin()
 {
     localStorage.setItem("mainColor", snakeColors[colorOrder]);
-    console.log(localStorage.getItem("mainColor"));
     hangleButtonClick("../pages/menu.html");
 }
 
