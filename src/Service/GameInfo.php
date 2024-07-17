@@ -6,7 +6,6 @@ use App\Entity\Point;
 use App\Entity\Snake;
 use App\Entity\Wall;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GameInfo
 {
@@ -76,10 +75,10 @@ class GameInfo
                                           $data['snake']['body'],
                                           $data['snake']['color']);
 
-        // $this->checkBumps($snake);
+        $this->checkBumps($snake);
         $this->updatePoints($snake);
         $this->checkSnakeDeath($snake);
-        // $this->compressWall();
+        $this->compressWall();
     }
 
     public function getData(): array
@@ -169,12 +168,12 @@ class GameInfo
         }
 
         $score = $snake->getScore();
-        /*$user = $this->userService->getUserByName($snake->getName());
+        $user = $this->userService->getUserByName($snake->getName());
 
         if ($score > $user->getScore())
         {
             $this->userService->setUserScore($user->getUserId(), $score);
-        }*/
+        }
 
         $body = $snake->getBodyParts();
         $pointsPerPart = intdiv($score, count($body) + 1);

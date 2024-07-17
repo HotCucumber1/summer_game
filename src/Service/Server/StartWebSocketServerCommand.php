@@ -30,7 +30,8 @@ class StartWebSocketServerCommand extends Command
     {
         // $uri = '192.168.20.104:8080';
         // $uri = '192.168.140.11:8080';
-        $uri = '10.250.104.40:8080';
+        // $uri = '10.250.104.40:8080';
+        $uri = '10.10.29.61:8080';
         $loop = Loop::get();
 
         $ws = new WsServer($this->webSocketServer);

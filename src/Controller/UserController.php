@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Service\SessionService;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -38,16 +37,12 @@ class UserController extends AbstractController
             {
                 return new Response('Password is incorrect', Response::HTTP_UNAUTHORIZED);
             }
-            SessionService::putUserNameInSession($name);
-            SessionService::putUserIdInSession($user->getUserId());
         }
         catch (NotFoundHttpException)
         {
             try
             {
                 $userId = $this->userService->addUser($name, $password);
-                SessionService::putUserNameInSession($name);
-                SessionService::putUserIdInSession($userId);
             }
             catch (BadRequestException $exception)
             {

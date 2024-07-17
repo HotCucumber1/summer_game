@@ -16,6 +16,7 @@ class Game
 
     init()
     {
+        // TODO: протестить
         let spawn = ut.arcRandom(
             -this.ARENA_RADIUS,
             this.ARENA_RADIUS,
@@ -40,7 +41,6 @@ class Game
         {
             this.foods[i].draw(this.snakeUser);
         }
-
         if (this.snakeUser.state === 0)
         {
             this.snakeUser.move();
@@ -48,7 +48,6 @@ class Game
 
         for (let snake in this.snakes)
         {
-            // console.log('Other: ', this.snakes[snake]);
             this.snakes[snake].drawSnake();
         }
 
@@ -97,7 +96,7 @@ class Game
         let leaderBoard = [];
         for (let i = 0; i < this.snakes.length; i++)
         {
-            leaderBoard.push(this.snakes[i])
+            leaderBoard.push(this.snakes[i]);
         }
 
         leaderBoard.sort(function (a, b)
@@ -113,7 +112,9 @@ class Game
                 this.ctxSnake.font = "bold 24px Arial";
                 this.ctxSnake.fillText("#" + (i + 1) + " " + leaderBoard[i].id + " length: " + leaderBoard[i].length,
                     start.x - 5, start.y + i * 30);
-            } else {
+            }
+            else
+            {
                 this.ctxSnake.font = "bold 12px Arial";
                 this.ctxSnake.fillText("#" + (i + 1) + " " + leaderBoard[i].id + " length: " + leaderBoard[i].length,
                     start.x - 5, start.y + i * 15);
@@ -121,7 +122,8 @@ class Game
         }
     }
 
-    drawName() {
+    drawName()
+    {
         let start = new Point(game.SCREEN_SIZE.x / 2 + 20, game.SCREEN_SIZE.y / 2);
         this.ctxSnake.fillStyle = this.snakeUser.mainColor;
         this.ctxSnake.font = "bold 24px Arial";

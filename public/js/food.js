@@ -1,14 +1,17 @@
-class Food {
-    constructor(ctx, x, y, color) {
+class Food
+{
+    constructor(ctx, x, y, color)
+    {
         this.ctx = ctx;
         this.pos = new Point(x, y);
         this.eaten = false;
 
-        this.size = 5; //ut.random(this.sizeMin, this.sizeMax);
-        this.mainColor = color; //ut.randomColor();
+        this.size = 5;
+        this.mainColor = color;
     }
 
-    draw() {
+    draw()
+    {
         this.ctx.fillStyle = this.mainColor;
 
         this.ctx.shadowBlur = 20;               // радиус размытия тени
@@ -17,14 +20,15 @@ class Food {
         this.ctx.shadowOffsetY = 0;             // смещение тени по Y
 
         this.ctx.beginPath();
-        this.ctx.arc(this.pos.x, this.pos.y, this.size, 0, 2*Math.PI);
+        this.ctx.arc(this.pos.x, this.pos.y, this.size, 0, 2 * Math.PI);
         this.ctx.fill();
 
         this.ctx.shadowBlur = 0;
         this.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
     }
 
-    die() {
+    die()
+    {
         this.eaten = true;
     }
 }

@@ -7,60 +7,80 @@ let game = new Game(ctxSnake, ctxHex);
 
 let d = -Math.PI / 2;
 
-
-canvas.onmousemove = function (e) {
+canvas.onmousemove = function (e)
+{
     cursor = ut.getMousePos(canvas, e);
 }
 
-function movement() {
-    let a = ut.getAngle(game.snakeUser.arr[0], cursor);
-    let delta = a - d;
+function movement()
+{
+    let a= ut.getAngle(game.snakeUser.arr[0], cursor);
+    let delta= a - d;
 
-    if (delta > Math.PI) {
+    if (delta > Math.PI)
+    {
         delta -= 2 * Math.PI;
     }
-    if (delta < -Math.PI) {
+    if (delta < -Math.PI)
+    {
         delta += 2 * Math.PI;
     }
-    if (delta > 0) {
+    if (delta > 0)
+    {
         d += Math.PI / 32;
-    } else if (delta < 0) {
+    }
+    else if (delta < 0)
+    {
         d -= Math.PI / 32;
     }
-    if (d > Math.PI) {
-        d -= 2 * Math.PI
+    if (d > Math.PI)
+    {
+        d -= 2 * Math.PI;
     }
-    if (d < -Math.PI) {
-        d += 2 * Math.PI
+    if (d < -Math.PI)
+    {
+        d += 2 * Math.PI;
     }
     game.snakeUser.changeAngle(d);
 }
 
-canvas.onmousedown = function () {
+canvas.onmousedown = function ()
+{
     game.snakeUser.boost = true;
 }
 
-canvas.onmouseup = function () {
+canvas.onmouseup = function ()
+{
     game.snakeUser.boost = false;
 }
 
-window.addEventListener('keydown', function (event) {
-    if (event.key === ' ') {
+window.addEventListener('keydown', function (event)
+{
+    if (event.key === ' ')
+    {
         game.snakeUser.boost = true;
     }
 });
 
-window.addEventListener('keyup', function (event) {
-    if (event.key === ' ') {
+window.addEventListener('keyup', function (event)
+{
+    if (event.key === ' ')
+    {
         game.snakeUser.boost = false;
     }
 });
 
 function start()
 {
-    function measurePing() {
+    function measurePing()
+    {
         let start = Date.now();
-        conn.send(JSON.stringify({ type: 'ping', timestamp: start }));
+        conn.send(JSON.stringify(
+            {
+                    type: 'ping',
+                    timestamp: start,
+                  }
+        ));
     }
 
     // Измеряем пинг каждые 2 секунды
@@ -70,7 +90,8 @@ function start()
     {
         let dataFromServer = JSON.parse(event.data);
 
-        if (dataFromServer.type === 'pong') {
+        if (dataFromServer.type === 'pong')
+        {
             let end = Date.now();
             let ping = end - dataFromServer.timestamp;
             console.log(`Ping: ${ping}ms`);
@@ -198,7 +219,6 @@ function start()
 
         game.draw();
     });
-
     game.init();
 }
 
@@ -208,4 +228,5 @@ if (localStorage.getItem('nickname') === null)
     window.location.href = '/';
     conn.close();
 }
+
 setTimeout(start, 1000);
