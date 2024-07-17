@@ -6,7 +6,6 @@ use App\Entity\BodyPart;
 use App\Entity\Color;
 use App\Entity\Snake;
 use App\Entity\Wall;
-use App\Repository\SnakeRepositoryInterface;
 
 class SnakeService
 {
@@ -14,15 +13,10 @@ class SnakeService
     private const START_LENGTH = 10;
     private const SPAWN_ZONE = 0.6;
 
-    public function __construct(/*private readonly SnakeRepositoryInterface $snakeRepository*/)
-    {
-    }
-
     public function createSnake(int $id, string $name): Snake
     {
         $color = Color::getRandomColor();
 
-        // $id = SessionService::takeUserIdFromSession();
         do
         {
             $headX = rand(-self::SPAWN_ZONE * Wall::START_RADIUS, self::SPAWN_ZONE * Wall::START_RADIUS);

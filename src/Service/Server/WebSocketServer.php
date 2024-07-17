@@ -14,7 +14,6 @@ class WebSocketServer implements MessageComponentInterface
     protected \SplObjectStorage $clients;
     protected const INTERVAL = 0.03;
     private array $clientRooms = [];
-    private bool $isLoaded = false;
 
     public function __construct(private readonly LoopInterface $loop,
                                 private readonly GameInfo $gameInfo,

@@ -3,7 +3,6 @@
 namespace App\Factory;
 
 use App\Repository\PointRepository;
-use App\Repository\SnakeRepository;
 use App\Repository\UserRepository;
 use App\Service\CollisionService;
 use App\Service\GameInfo;
@@ -22,17 +21,11 @@ class GameFactory
     public function createGame(): GameInfo
     {
         return new GameInfo(
-            new CollisionService(
-                new SnakeService(
-                    new SnakeRepository()
-                ),
-            ),
+            new CollisionService(),
             new PointService(
                 new PointRepository(),
             ),
-            new SnakeService(
-                new SnakeRepository(),
-            ),
+            new SnakeService(),
             new UserService(
                 new UserRepository(
                     $this->entityManager),

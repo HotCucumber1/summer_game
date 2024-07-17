@@ -8,10 +8,6 @@ use App\Entity\Wall;
 
 class CollisionService
 {
-    public function __construct()
-    {
-    }
-
     public function isSnakeBump(Snake $snake, array $players): bool
     {
         $snakeX = $snake->getHeadX();

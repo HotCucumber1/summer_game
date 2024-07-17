@@ -119,17 +119,4 @@ class Snake
     {
         $this->score += $add;
     }
-
-    public function addBodyPart(float $x, float $y, string $color): void
-    {
-        $this->bodyParts[] = new BodyPart($x, $y,
-                                          $this->getRadius(),
-                                          $color);
-    }
-
-    public function deleteLastBodyPart(): void
-    {
-        $body = $this->getBodyParts();
-        array_pop($body);
-    }
 }

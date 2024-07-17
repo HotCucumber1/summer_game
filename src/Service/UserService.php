@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class UserService
 {
@@ -21,11 +20,6 @@ class UserService
         {
             throw new BadRequestException("User data is not valid");
         }
-        /*$existingUser = $this->userRepository->findUserByName($name);
-        if ($existingUser !== null)
-        {
-            throw new UnauthorizedHttpException('User with name "' . $name . '" has already been registered');
-        }*/
         $hashPassword = $this->hasher->hash($password);
         $user = new User(
             null,
