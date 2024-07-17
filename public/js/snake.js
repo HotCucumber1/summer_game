@@ -42,10 +42,11 @@ class Snake
         this.death.volume = 0.6;
         this.death.muted = false;
         this.death.load();
+        this.soundPlayed = false;
 
-        this.pop = new Audio("audio/pop.mp3");
+        /*this.pop = new Audio("audio/pop.mp3");
         this.pop.volume = 1.0;
-        this.pop.load();
+        this.pop.load();*/
         // this.pop.muted = false;
     }
 
@@ -127,6 +128,7 @@ class Snake
             }
             if (this.counter >= 1)
             {
+                this.arr.pop();
                 this.length--;
                 this.counter = 0;
             }
@@ -201,22 +203,29 @@ class Snake
     checkCollissionFood() {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
-        for (let i = 0; i < game.foods.length; i++) {
+        for (let i = 0; i < game.foods.length; i++)
+        {
             if (!game.foods[i].eaten &&
                 ut.cirCollission(x, y, this.size + 3, game.foods[i].pos.x, game.foods[i].pos.y, game.foods[i].size))
             {
                 this.addLength(game.foods[i].size);
                 game.foods[i].die();
 
-                if (this.id === 0)
+                if (this.id === localStorage.getItem('nickname'))
                 {
-                    this.pop.pause();
                     this.pop = new Audio("audio/pop.mp3");
-                    this.pop.volume = 1.0;
-                    this.pop.play();
-                }
+                    this.pop.volume = 0.6;
+                    if (!this.soundPlayed)
+                    {
+                        this.pop.play();
+                        this.soundPlayed = true;
+                        setTimeout(() => {
+                            this.soundPlayed = false;
+                        }, 100);
+                    }
 
-                return;
+                }
+                break;
             }
         }
     }
@@ -224,9 +233,10 @@ class Snake
     checkCollissionSnake() {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
-        for (let i = 1; i < game.snakes.length; i++) {
+        for (let i = 1; i < game.snakes.length; i++)
+        {
             for (let j = 0; j < game.snakes[i].arr.length; j++)
-            if (ut.cirCollission(x, y, this.size + 3, game.snakes[i].arr[j].x,
+            if (ut.cirCollission(x, y, this.size, game.snakes[i].arr[j].x,
                 game.snakes[i].arr[j].y, game.snakes[i].size)) {
                 this.die();
             }
@@ -259,7 +269,6 @@ class Snake
                 for (let i = arr.length - 1; i >= 0; i--) {
 
                     let d = this.size / 2;
-
                     this.ctx.beginPath();
                     this.ctx.fillStyle = this.mainColor;
                     this.ctx.arc(arr[i].x, arr[i].y - d, this.size, 0, 2 * Math.PI);
@@ -274,16 +283,16 @@ class Snake
             else
             {
                 this.ctx.globalAlpha = 0; // Устанавливаем окончательно, если alpha стал отрицательным
-                let index = game.snakes.indexOf(this);
-                game.snakes.splice(index, 1);
-
-                document.body.classList.remove("fade-in");
-                document.body.classList.add("fade-out");
-
-                setTimeout(function () {
-                    conn.close();
-                    window.location.href = "/menu";
-                }, 500);
+                if (this.id === localStorage.getItem('nickname'))
+                {
+                    document.body.classList.remove("fade-in");
+                    document.body.classList.add("fade-out");
+                    setTimeout(function () {
+                        conn.close();
+                        window.location.href = "/menu";
+                    }, 1000);
+                }
+                this.ctx.globalAlpha = 1;
             }
         };
         fadeEffect();
@@ -305,7 +314,13 @@ class Snake
         let arrayBody = [];
 
         for (let i= last; i >= 1; i--) {
-            game.foods.push(new Food(game.ctxSnake, this.arr[i].x, this.arr[i].y));
+            game.foods.push(
+                new Food(
+                    game.ctxSnake,
+                    this.arr[i].x,
+                    this.arr[i].y
+                )
+            );
             arrayBody.push({
                 x: this.arr[i].x,
                 y: this.arr[i].y,
@@ -318,9 +333,7 @@ class Snake
         // cancelAnimationFrame(updateId);
 
         this.drawEffect(arrayBody);
-
-        let index = game.snakes.indexOf(this);
-        game.snakes.splice(index, 1);
+        delete game.snakes[this.id];
     }
 
     drawYourLength() {

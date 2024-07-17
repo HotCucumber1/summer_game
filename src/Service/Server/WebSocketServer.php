@@ -12,7 +12,7 @@ use React\EventLoop\LoopInterface;
 class WebSocketServer implements MessageComponentInterface
 {
     protected \SplObjectStorage $clients;
-    protected const INTERVAL = 0.02;
+    protected const INTERVAL = 0.03;
     private array $clientRooms = [];
     private bool $isLoaded = false;
 

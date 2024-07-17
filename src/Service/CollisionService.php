@@ -20,7 +20,7 @@ class CollisionService
 
         $currentId = $snake->getId();
 
-        // TODO: need to optimize
+        // TODO: need to optimize maybe
         $snakes = $players;
         foreach ($snakes as $id => $snakeUser)
         {

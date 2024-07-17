@@ -104,7 +104,7 @@ class GameInfo
         {
             if ($userSnake->getAliveStatus())
             {
-                $userData[] = $this->snakeService->getSnakeData($userSnake);
+                $userData[$userSnake->getName()] = $this->snakeService->getSnakeData($userSnake);
             }
         }
 

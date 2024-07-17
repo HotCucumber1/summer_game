@@ -70,7 +70,6 @@ function start()
     conn.addEventListener("message", function (event)
     {
         let dataFromServer = JSON.parse(event.data);
-        console.log(dataFromServer.users);
 
         if (dataFromServer.type === 'pong') {
             let end = Date.now();
@@ -97,11 +96,20 @@ function start()
 
         // проверить, жива ли змея
         // обновить информацию по змеям
+        for (let snake in game.snakes)
+        {
+            if (!(snake in dataFromServer.users))
+            {
+                console.log(game.snakes);
+                game.snakes[snake].die();
+            }
+        }
+
         let mySnake;
         let currentSnake;
-        for (let i = 0; i < dataFromServer.users.length; i++)
+        for (let user in dataFromServer.users)
         {
-            currentSnake = dataFromServer.users[i];
+            currentSnake = dataFromServer.users[user];
             if (currentSnake.name === localStorage.getItem('nickname'))
             {
                 mySnake = currentSnake;
@@ -164,7 +172,7 @@ function start()
 
             // body
             let body = [];
-            for (let i = 0; i < game.snakeUser.arr.length; i++)
+            for (let i = 0; i < game.snakeUser.arr.length - 1; i++)
             {
                 body.push(
                     new Point(
