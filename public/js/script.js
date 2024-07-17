@@ -100,7 +100,6 @@ function start()
         {
             if (!(snake in dataFromServer.users))
             {
-                console.log(game.snakes);
                 game.snakes[snake].die();
             }
         }

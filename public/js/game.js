@@ -16,6 +16,12 @@ class Game
 
     init()
     {
+        let spawn = ut.arcRandom(
+            -this.ARENA_RADIUS,
+            this.ARENA_RADIUS,
+            this.ARENA_RADIUS * 0.8
+        );
+
         this.snakeUser = new Snake(this.ctxSnake,
                                     localStorage.getItem('nickname'),
                                     game.world.x + game.WORLD_SIZE.x / 2 + game.SCREEN_SIZE.x / 2,

@@ -37,7 +37,7 @@ class Snake
         this.counter = 0;
         this.intervalId = null;
 
-        this.camera = new Camera(0, 0, game.SCREEN_SIZE.x, game.SCREEN_SIZE.y);
+        this.camera = new Camera(-game.SCREEN_SIZE.x, -game.SCREEN_SIZE.y, game.SCREEN_SIZE.x, game.SCREEN_SIZE.y);
         this.death = new Audio("audio/minecraft-death-sound.mp3");
         this.death.volume = 0.6;
         this.death.muted = false;
@@ -91,25 +91,58 @@ class Snake
         this.ctx.fill();
     }
 
-    drawBody(x, y) {
-        let grd = this.ctx.createRadialGradient(x, y, 2, x + 4, y + 4, 10);
+    drawBlur(flicker)
+    {
+        this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20;
+        this.ctx.shadowColor = (this.boost && this.length > 10) ? this.supportColor : `rgb(0, 0, 0, 0.3)`;
+        this.ctx.shadowOffsetX = (this.boost && this.length > 10) ? 0 : 3;
+        this.ctx.shadowOffsetY = (this.boost && this.length > 10) ? 0 : 3;
+    }
+
+
+    drawBody(x, y, index) {
+        let baseColorValue = 255 - (index % 10) * 25;
+        if (Math.floor(index / 10) % 2 === 1)
+        {
+            baseColorValue = 255 - baseColorValue;
+        }
+
+        let baseColor = `rgb(${baseColorValue}, ${baseColorValue}, ${baseColorValue})`;
+
+        let grd = this.ctx.createRadialGradient(x, y, this.size * 0.1, x, y, this.size);
         grd.addColorStop(0, this.supportColor);
-        grd.addColorStop(1, this.midColor);
+        grd.addColorStop(0.5, baseColor);
+        grd.addColorStop(1, this.supportColor);
 
         let radius = this.size;
-        if (radius < 0)
+
+        if (radius < 0) {
             radius = 1;
+        }
+
+        let flicker = Math.sin(Date.now() / 75 - index / (this.size / 2)) * 10 + this.size;
+
+        if (radius > 30) {
+
+            flicker = Math.sin(Date.now() / 50 - index / (radius / 2)) * 20 + 2 * radius / 3;
+
+            if (index % 3 === 1) {
+                this.drawBlur(flicker);
+            } else {
+                this.ctx.shadowBlur = 20;
+                this.ctx.shadowColor = `rgb(0, 0, 0, 0.3)`;
+                this.ctx.shadowOffsetX = 0;
+                this.ctx.shadowOffsetY = 0;
+            }
+
+        } else {
+            this.drawBlur(flicker);
+        }
 
         this.ctx.beginPath();
-        this.ctx.fillStyle = this.mainColor;
-        this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        this.ctx.fill();
-
         this.ctx.fillStyle = grd;
-        this.ctx.beginPath();
         this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
         this.ctx.fill();
-
     }
 
     boostMove() {
@@ -145,7 +178,7 @@ class Snake
     {
         for (let i = this.length - 1; i > 0; i--)
         {
-            this.drawBody(this.arr[i].x, this.arr[i].y);
+            this.drawBody(this.arr[i].x, this.arr[i].y, i);
         }
         this.drawHead();
         this.setSize();
@@ -168,7 +201,7 @@ class Snake
         {
             this.arr[i].x = this.headPath[this.headPath.length - 1 - i].x - this.camera.x;
             this.arr[i].y = this.headPath[this.headPath.length - 1 - i].y - this.camera.y;
-            this.drawBody(this.arr[i].x, this.arr[i].y);
+            this.drawBody(this.arr[i].x, this.arr[i].y, i);
         }
 
         this.pos.x += this.velocity.x;
@@ -230,18 +263,6 @@ class Snake
         }
     }
 
-    checkCollissionSnake() {
-        let x = this.arr[0].x;
-        let y = this.arr[0].y;
-        for (let i = 1; i < game.snakes.length; i++)
-        {
-            for (let j = 0; j < game.snakes[i].arr.length; j++)
-            if (ut.cirCollission(x, y, this.size, game.snakes[i].arr[j].x,
-                game.snakes[i].arr[j].y, game.snakes[i].size)) {
-                this.die();
-            }
-        }
-    }
 
     drawEffect(arr) {
         this.ctx.globalAlpha = 1;
@@ -329,7 +350,10 @@ class Snake
             this.arr.splice(i, 1);
         }
 
-        this.death.play();
+        if (this.id === localStorage.getItem('nickname'))
+        {
+            this.death.play();
+        }
         // cancelAnimationFrame(updateId);
 
         this.drawEffect(arrayBody);
