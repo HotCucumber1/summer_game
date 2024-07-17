@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
     <title>Sspliff</title>
-    <link href="../public/css/room.css" rel="stylesheet">
+    <link href="../public/css/lobby.css" rel="stylesheet">
     <link rel="shortcut icon" href="../public/images/favicon.ico" type="image/x-icon" />
 </head>
 
@@ -17,11 +17,17 @@
         <div class="menu__neon"><span name="span1">Ssp</span><span name="span2">li</span><span name="span3">ff</span>
         </div>
     </div>
-    <input type="text" class="lobby__id" name="lobbyId" id="lobbyId" placeholder="Enter lobby id">
-    <label class="lobby__label" name="lobbyId">Enter Lobby ID to create or join lobby</label>
-    <button class="menu__button" id="create" name="create">Create</button>
-    <button class="menu__button" id="join" name="join">Join</button>
-    <script src="../public/js/room.js"></script>
+    <div class="lobby">
+        <div class="lobbyId">
+            <div>
+                <h2 class="lobby__header">Lobby ID</h2>
+                <input type="text" class="lobby__id" id="lobbyId" value="Lobby ID" readonly>
+            </div>
+            <button class="menu__button" id="start" name="start">Start</button>
+        </div>
+        <div class="users" id="userId">UserID</div>
+    </div>
+    <script src="../public/js/lobby.js"></script>
     <!-- <script src="../public/js/webSocket.js"></script> -->
 </body>
 

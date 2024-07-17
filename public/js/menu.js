@@ -15,9 +15,17 @@ window.addEventListener("DOMContentLoaded", function () {
         }, 500);
     }
 
-    single.addEventListener("click", () => handleButtonClick("../pages/index.html"))
+    single.addEventListener("click", function () 
+    { 
+        handleButtonClick("../pages/index.html");
+        localStorage.setItem("gameMode", "single");
+    })
 
-    multi.addEventListener("click", () => handleButtonClick("../pages/index.html"))
+    multi.addEventListener("click", function () 
+    { 
+        handleButtonClick("../pages/room.html");
+        localStorage.setItem("gameMode", "multi");
+    })
 
     changeSkin.addEventListener("click", () => handleButtonClick("../pages/changeSkin.html"));
 

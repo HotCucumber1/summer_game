@@ -1,6 +1,7 @@
 const create = document.getElementById("create");
 const join = document.getElementById("join");
-const form = document.querySelector("room");
+// const form = document.querySelector("room");
+const lobbyId = document.getElementById("lobbyId");
 
 window.addEventListener("DOMContentLoaded", function () {
     document.body.classList.add("fade-in");
@@ -14,12 +15,24 @@ window.addEventListener("DOMContentLoaded", function () {
         }, 500);
     }
 
+    lobbyId.addEventListener("input", () => localStorage.setItem("lobbyId", lobbyId.value));
+
     create.addEventListener("click", function () {
-        handleButtonClick("../pages/index.html");
+        localStorage.setItem("role", "host");
+        let userData = {
+            'name': localStorage.getItem("nickname"),
+            'lobbyId': localStorage.getItem("lobbyId"),
+            'role': localStorage.getItem("role"),
+            'gameMode': localStorage.getItem("gameMode")
+        }
+        // conn.send(JSON.stringify(userData));  // нужно будет раскоментировать, когда будет подключение к серверу
+        console.log(userData);
+        handleButtonClick("../pages/lobby.html");
     });
 
     join.addEventListener("click", function () {
-        handleButtonClick("../pages/index.html");
+        handleButtonClick("../pages/lobby.html");
+        localStorage.setItem("role", "client");
     });
     
 });
