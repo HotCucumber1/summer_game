@@ -167,7 +167,6 @@ class Snake
                 this.arr.shift();
                 this.headPath.shift();
             }
-
         }
         else
         {

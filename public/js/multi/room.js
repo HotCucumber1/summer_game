@@ -2,9 +2,28 @@ const create = document.getElementById("create");
 const join = document.getElementById("join");
 // const form = document.querySelector("room");
 const lobbyId = document.getElementById("lobbyId");
+const userInfo = document.getElementById("userInfo");
 
-window.addEventListener("DOMContentLoaded", function ()
+window.addEventListener("DOMContentLoaded", async function ()
 {
+    let wins = 0;
+    async function checkWins(userData)
+    {
+        let response = await fetch(`/get/score/${userData}`, {
+                method: "GET",
+            });
+        if (response.ok)
+        {
+            let body = await response.json();
+            console.log(body);
+            return body['wins'];
+        }
+    }
+
+    wins = await checkWins(localStorage.getItem("nickname"));
+    userInfo.innerText = "Hi, " + localStorage.getItem("nickname") + "! You have " + wins + " wins now!"
+
+
     document.body.classList.add("fade-in");
 
     function handleButtonClick(targetURL)

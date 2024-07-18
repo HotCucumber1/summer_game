@@ -97,6 +97,20 @@ body.fade-in {
     }
 }
 
+.userInfo {
+    outline: none;
+    border-radius: 25px;
+    padding: 5px;
+    height: 50px;
+    line-height: 50px;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    padding-inline: 20px;
+    text-align: center;
+    color: white;
+    /*text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);*/
+}
+
 .menu__button {
     border-radius: 25px;
     width: 300px;
@@ -160,7 +174,7 @@ body.fade-in {
 }
 
 .lobby__label {
-    color:azure;
+    color: azure;
     padding-top: 5px;
     font-family: "Ubuntu", sans-serif;
 }
