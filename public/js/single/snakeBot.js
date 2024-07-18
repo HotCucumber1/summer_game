@@ -124,17 +124,12 @@ class SnakeBot extends Snake
 
     checkSnake()
     {
-
         if (this.border) return;
-
         let snakeInSight = false;
-
         for (let i = 0; i < game.snakes.length; i++)
         {
-
-            if (this != game.snakes[i])
+            if (this !== game.snakes[i])
             {
-
                 let x = this.arr[0].x;
                 let y = this.arr[0].y;
 
@@ -161,9 +156,8 @@ class SnakeBot extends Snake
 
     checkBorderInField()
     {
-        if (this != game.snakes[0])
+        if (this !== game.snakes[0])
         {
-
             let center = new Point(game.world.x + game.WORLD_SIZE.x / 2, game.world.y + game.WORLD_SIZE.y / 2);
 
             let distanceToBorder = ut.getDistance(this.arr[0], center);
@@ -339,7 +333,7 @@ class SnakeBot extends Snake
         let y = this.arr[0].y;
         for (let i = 0; i < game.snakes.length; i++)
         {
-            if (game.snakes[i].id != this.id)
+            if (game.snakes[i].id !== this.id)
             {
                 for (let j = 0; j < game.snakes[i].length; j++)
                 {
