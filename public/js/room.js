@@ -1,9 +1,24 @@
 const create = document.getElementById("create");
 const join = document.getElementById("join");
-// const form = document.querySelector("room");
 const lobbyId = document.getElementById("lobbyId");
+const userInfo = document.getElementById("userInfo");
 
 window.addEventListener("DOMContentLoaded", function () {
+    async function checkWins(userData)
+    {
+        let response = await fetch("/get/score", 
+            {
+                method: "GET",
+            });
+            if (response.ok)
+            {
+                let user = response.json();
+                let wins = user.wins;
+            }
+    };
+
+    checkWins(localStorage.getItem("nickname"));
+
     document.body.classList.add("fade-in");
 
     function handleButtonClick(targetURL) {
@@ -34,6 +49,8 @@ window.addEventListener("DOMContentLoaded", function () {
         handleButtonClick("../pages/lobby.html");
         localStorage.setItem("role", "client");
     });
+
+    userInfo.innerText = "Hi, " + localStorage.getItem("nickname") + "! You have " + /*wins +*/ " wins now!"
     
 });
 
