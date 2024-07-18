@@ -113,12 +113,9 @@ class Snake
 
         if (radius > 30)
         {
-
             flicker = Math.sin(Date.now() / 50 - index / (radius / 2)) * 20 + 2 * radius / 3;
-
             if (index % 3 === 1)
             {
-
                 this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20;
                 this.ctx.shadowColor = (this.boost && this.length > 10) ? supportColor : `rgb(0, 0, 0, 0.3)`;
                 this.ctx.shadowOffsetX = (this.boost && this.length > 10) ? 0 : 3;
@@ -127,7 +124,6 @@ class Snake
             }
             else
             {
-
                 this.ctx.shadowBlur = 20;
                 this.ctx.shadowColor = `rgb(0, 0, 0, 0.3)`;
                 this.ctx.shadowOffsetX = 0;
@@ -137,12 +133,10 @@ class Snake
         }
         else
         {
-
             this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20;
             this.ctx.shadowColor = (this.boost && this.length > 10) ? supportColor : `rgb(0, 0, 0, 0.3)`;
             this.ctx.shadowOffsetX = (this.boost && this.length > 10) ? 0 : 3;
             this.ctx.shadowOffsetY = (this.boost && this.length > 10) ? 0 : 3;
-
         }
 
         this.ctx.beginPath();
@@ -167,7 +161,6 @@ class Snake
 
             if (this.counter >= 1)
             {
-
                 this.counter = 0;
                 game.foods.push(new Food(this.ctx, this.arr[this.length - 1].x, this.arr[this.length - 1].y));
                 this.length--;
@@ -218,8 +211,8 @@ class Snake
         this.camera.follow(this.pos);
         this.drawHead(this.supportColor);
 
-        this.checkCollissionFood();
-        this.checkCollissionBonus();
+        this.checkCollisionFood();
+        this.checkCollisionBonus();
         this.checkCollissionSnake()
         this.checkCollissionBorder();
         this.setSize();
@@ -238,22 +231,18 @@ class Snake
         {
             size -= 1;
         }
-
         if (this.size >= 30 && this.size < 40)
         {
             size -= 2;
         }
-
         if (this.size >= 40 && this.size < 50)
         {
             size -= 3;
         }
-
         if (this.size >= 50)
         {
             size -= 4;
         }
-
         this.length += (size - 4);
 
         for (let i = 0; i < (size - 4); i++)
@@ -263,7 +252,7 @@ class Snake
         }
     }
 
-    checkCollissionFood()
+    checkCollisionFood()
     {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
@@ -277,19 +266,18 @@ class Snake
                 game.foods[i].die();
                 if (this === game.snakes[0])
                 {
-
                     let pop = new Audio("audio/pop.mp3");
-                    pop.volume = 1.0;
+                    pop.volume = 0.6;
                     pop.muted = false;
+                    pop.load();
                     pop.play();
-
                     break;
                 }
             }
         }
     }
 
-    checkCollissionBonus()
+    checkCollisionBonus()
     {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
