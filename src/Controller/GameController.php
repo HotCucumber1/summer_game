@@ -24,7 +24,12 @@ class GameController extends AbstractController
 
     public function start(): Response
     {
-        return $this->render('game.html.twig');
+        return $this->render('mp_game.html.twig');
+    }
+
+    public function single(): Response
+    {
+        return $this->render('sp_game.html.twig');
     }
 
     public function reset(): Response

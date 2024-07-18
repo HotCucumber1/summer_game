@@ -13,6 +13,9 @@ class WebSocketServer implements MessageComponentInterface
 {
     protected \SplObjectStorage $clients;
     protected const INTERVAL = 0.03;
+    /**
+     * @var array<string, string>
+     */
     private array $clientRooms = [];
 
     public function __construct(private readonly LoopInterface $loop,
@@ -48,13 +51,16 @@ class WebSocketServer implements MessageComponentInterface
         // for one room
         if (isset($data['userName']))
         {
-            $this->gameInfo->addUserToGame($from->resourceId, $data['name']);
+            $this->gameInfo->addUserToGame($from->resourceId, $data['userName']);
         }
 
         // update user info
         if (isset($data['snake']))
         {
             $this->gameInfo->setGameStatus($msg, $from->resourceId);
+//            $gameId = $this->clientRooms[$from->resourceId];
+//            $currentRoom = $this->roomRepository->getRoomById($gameId);
+//            $currentRoom->setGameStatus($msg, $from->resourceId);
         }
 
         // create room
@@ -62,6 +68,8 @@ class WebSocketServer implements MessageComponentInterface
         {
             $currentRoom = $this->roomRepository->addRoom($data['newRoom']['roomId']);
             $currentRoom->addUserToGame($from->resourceId, $data['newRoom']['userName']);
+
+            $this->clientRooms[$from->resourceId] = $data['roomId'];
         }
 
         //join room
@@ -69,14 +77,19 @@ class WebSocketServer implements MessageComponentInterface
         {
             $currentRoom = $this->roomRepository->getRoomById($data['joinRoom']['roomId']);
             $currentRoom->addUserToGame($from->resourceId, $data['joinRoom']['userName']);
+
+            $this->clientRooms[$from->resourceId] = $data['roomId'];
         }
     }
 
-    public function sendData(): void
+    private function sendData(): void
     {
         $response = json_encode($this->gameInfo->getData(), JSON_THROW_ON_ERROR | true);
         foreach ($this->clients as $client)
         {
+            // $gameId = $this->clientRooms[$client->resourceId];
+            // $room = $this->roomRepository->getRoomById($gameId);
+            // $response = json_encode($room->getData());
             $client->send($response);
         }
     }
@@ -85,6 +98,13 @@ class WebSocketServer implements MessageComponentInterface
     {
         $this->clients->detach($conn);
         $this->gameInfo->deleteUser($conn->resourceId);
+
+//        $gameId = $this->clientRooms[$conn->resourceId];
+//        $room = $this->roomRepository->getRoomById($gameId);
+//        $room->deleteUser($conn->resourceId);
+
+        unset($this->clientRooms[$conn->resourceId]);
+
         echo "Connection {$conn->resourceId} has disconnected\n";
     }
 

@@ -28,6 +28,11 @@ menu:
     methods: GET
     controller: App\Controller\GameController::showMenu
 
+single:
+    path: /single
+    methods: GET
+    controller: App\Controller\GameController::single
+
 game:
     path: /game
     methods: GET
