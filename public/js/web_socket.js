@@ -8,7 +8,7 @@ conn.onopen = function ()
     console.log("Connection established!");
 
     let userData= {
-        'name': localStorage.getItem("nickname"),
+        'userName': localStorage.getItem("nickname"),
     }
     conn.send(JSON.stringify(userData));
 }

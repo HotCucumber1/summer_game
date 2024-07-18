@@ -4,7 +4,6 @@ class Food
     {
         this.ctx = ctx;
         this.pos = new Point(x, y);
-        this.eaten = false;
 
         this.size = 5;
         this.mainColor = color;
@@ -25,10 +24,5 @@ class Food
 
         this.ctx.shadowBlur = 0;
         this.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
-    }
-
-    die()
-    {
-        this.eaten = true;
     }
 }

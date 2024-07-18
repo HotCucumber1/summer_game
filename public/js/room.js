@@ -20,10 +20,11 @@ window.addEventListener("DOMContentLoaded", function ()
     {
         localStorage.setItem("role", "host");
         let userData = {
-            'name': localStorage.getItem("nickname"),
-            'lobbyId': localStorage.getItem("lobbyId"),
-            'role': localStorage.getItem("role"),
-            'gameMode': localStorage.getItem("gameMode"),
+            newRoom: {
+                userName: localStorage.getItem("nickname"),
+                roomId: localStorage.getItem("lobbyId"),
+                userRole: localStorage.getItem("role"),
+            }
         }
         // conn.send(JSON.stringify(userData));  // нужно будет раскоментировать, когда будет подключение к серверу
         handleButtonClick("/lobby");
@@ -31,10 +32,17 @@ window.addEventListener("DOMContentLoaded", function ()
 
     join.addEventListener("click", function ()
     {
-        handleButtonClick("/lobby");
         localStorage.setItem("role", "client");
+        let userData = {
+            joinRoom: {
+                userName: localStorage.getItem("nickname"),
+                roomId: localStorage.getItem("lobbyId"),
+                userRole: localStorage.getItem("role"),
+            }
+        }
+        // conn.send(JSON.stringify(userData));
+        handleButtonClick("/lobby");
     });
-
 });
 
 

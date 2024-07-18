@@ -34,9 +34,10 @@ class WebSocketServer implements MessageComponentInterface
     public function onMessage(ConnectionInterface $from, $msg): void
     {
         $data = json_decode($msg, true);
+
+        // ping
         if (isset($data['type']) && $data['type'] === 'ping')
         {
-            // Отправляем ответ с той же меткой времени
             $response = json_encode([
                 'type' => 'pong',
                 'timestamp' => $data['timestamp']
@@ -44,14 +45,30 @@ class WebSocketServer implements MessageComponentInterface
             $from->send($response);
         }
 
-        if (isset($data['name']))
+        // for one room
+        if (isset($data['userName']))
         {
             $this->gameInfo->addUserToGame($from->resourceId, $data['name']);
         }
 
+        // update user info
         if (isset($data['snake']))
         {
             $this->gameInfo->setGameStatus($msg, $from->resourceId);
+        }
+
+        // create room
+        if (isset($data['newRoom']))
+        {
+            $currentRoom = $this->roomRepository->addRoom($data['newRoom']['roomId']);
+            $currentRoom->addUserToGame($from->resourceId, $data['newRoom']['userName']);
+        }
+
+        //join room
+        if (isset($data['joinRoom']))
+        {
+            $currentRoom = $this->roomRepository->getRoomById($data['joinRoom']['roomId']);
+            $currentRoom->addUserToGame($from->resourceId, $data['joinRoom']['userName']);
         }
     }
 

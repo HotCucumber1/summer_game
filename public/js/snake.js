@@ -274,7 +274,7 @@ class Snake
                 ut.cirCollision(x, y, this.size + 3, game.foods[i].pos.x, game.foods[i].pos.y, game.foods[i].size))
             {
                 this.addLength(game.foods[i].size);
-                game.foods[i].die();
+                game.foods.splice(i, 1);
 
                 if (this.id === localStorage.getItem('nickname'))
                 {

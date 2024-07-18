@@ -8,22 +8,27 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class RoomRepository
 {
+
+    /**
+     * @var array<string, GameInfo>
+     */
     private array $rooms = [];
 
-    public function __construct(private GameFactory $factory)
+    public function __construct(private readonly GameFactory $factory)
     {
     }
 
-    public function addRoom(string $name): void
+    public function addRoom(string $name): GameInfo
     {
         if (isset($this->rooms[$name]))
         {
             throw new BadRequestException('Room already exists');
         }
         $this->rooms[$name] = $this->factory->createGame();
+        return $this->rooms[$name];
     }
 
-    public function getRoomByName(string $name): ?GameInfo
+    public function getRoomById(string $name): ?GameInfo
     {
         return $this->rooms[$name] ?? null;
     }
