@@ -51,3 +51,8 @@ move:
     path: /snake/move
     methods: POST
     controller: App\Controller\GameController::setSnakeDirection
+
+score:
+    path: /get/score
+    methods: GET
+    controller: App\Controller\UserController::getScore
