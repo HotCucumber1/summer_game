@@ -14,8 +14,8 @@ canvas.onmousemove = function (e)
 
 function movement()
 {
-    let a= ut.getAngle(game.snakeUser.arr[0], cursor);
-    let delta= a - d;
+    let a = ut.getAngle(game.snakeUser.arr[0], cursor);
+    let delta = a - d;
 
     if (delta > Math.PI)
     {
@@ -77,9 +77,9 @@ function start()
         let start = Date.now();
         conn.send(JSON.stringify(
             {
-                    type: 'ping',
-                    timestamp: start,
-                  }
+                type: 'ping',
+                timestamp: start,
+            }
         ));
     }
 
@@ -99,7 +99,7 @@ function start()
 
         // обновить информацию по точкам
         game.foods = [];
-        for (let i= 0; i < dataFromServer.points.length; i++)
+        for (let i = 0; i < dataFromServer.points.length; i++)
         {
             game.foods.push(
                 new Food(
@@ -138,13 +138,13 @@ function start()
                 if (!(currentSnake.name in game.snakes))
                 {
                     game.snakes[currentSnake.name] = new Snake(ctxSnake,
-                                                               currentSnake.name,
-                                                               currentSnake.x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2,
-                                                               currentSnake.y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2,
-                                                               currentSnake.score,
-                                                               4,
-                                                               currentSnake.radius,
-                                                               currentSnake.color);
+                        currentSnake.name,
+                        currentSnake.x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2,
+                        currentSnake.y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2,
+                        currentSnake.score,
+                        4,
+                        currentSnake.radius,
+                        currentSnake.color);
                 }
                 else
                 {
@@ -202,7 +202,7 @@ function start()
             }
 
             // отправить обновленные данные на бэк
-            let data= {
+            let data = {
                 snake: {
                     x: game.snakeUser.pos.x,
                     y: game.snakeUser.pos.y,
@@ -228,5 +228,4 @@ if (localStorage.getItem('nickname') === null)
     window.location.href = '/';
     conn.close();
 }
-
 setTimeout(start, 1000);

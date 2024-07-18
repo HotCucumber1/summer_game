@@ -25,8 +25,8 @@ class Game
 
         this.snakeUser = new Snake(this.ctxSnake,
                                     localStorage.getItem('nickname'),
-                                    game.world.x + game.WORLD_SIZE.x / 2 + game.SCREEN_SIZE.x / 2,
-                                    game.world.y + game.WORLD_SIZE.y / 2 + game.SCREEN_SIZE.y / 2,
+                                    this.world.x + this.WORLD_SIZE.x / 2 + this.SCREEN_SIZE.x / 2,
+                                    this.world.y + this.WORLD_SIZE.y / 2 + this.SCREEN_SIZE.y / 2,
                                     0,
                                     4,
                                     15,
