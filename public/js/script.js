@@ -112,6 +112,19 @@ function update(currentDelta) {
     ctxHex.clearRect(0, 0, canvas.width, canvas.height);
 
     game.draw();
+
+    // при победе в multi 
+    // if (Object.keys(snakes).length === 1 && snakes.name === localStorage.getItem("nickname")) 
+    // {
+    //     setTimeout(() => {
+    //         console.log("you win!");
+    //     }, 3000);
+
+    //     setTimeout(function () {
+    //         window.location.href = "menu.html";
+    //     }, 7000);
+
+    // }
 }
 
 start();

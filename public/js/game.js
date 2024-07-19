@@ -92,7 +92,10 @@
     drawLength() 
     {
         let start = new Point(20, 20);
-        const maxInTop = 10;
+        let maxInTop = 10;
+        if (this.snakes.length < maxInTop) {
+            maxInTop = this.snakes.length
+        }
         let leaderBoard = [];
         for (let i = 0; i < this.snakes.length; i++) 
         {
