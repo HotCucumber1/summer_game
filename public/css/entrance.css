@@ -131,6 +131,7 @@ body.fade-in {
 .entrance__input[id="nickname"] {
     border: 1px solid rgb(101, 179, 72);
     -webkit-text-fill-color: rgb(101, 179, 72);
+    margin-top: 10vh;
 }
 
 .entrance__input[id="password"] {
