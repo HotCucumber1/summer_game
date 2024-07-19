@@ -1,0 +1,301 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.fade-out {
+    animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+html {
+    background: black;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 2s;
+}
+
+body.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+body.fade-in {
+    opacity: 1;
+}
+
+.game {
+    display: none;
+}
+
+#game {
+    position: relative;
+    margin: 0 auto;
+}
+
+.cnv {
+    position: absolute;
+    border-style: solid;
+}
+
+#canvasHex {
+    background-color: black;
+    z-index: 1;
+}
+
+#canvasSnake {
+    background-color: transparent;
+    z-index: 2;
+}
+
+.room {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8), rgb(0, 0, 0)),
+        url("../images/back.jpg");
+}
+
+.room.fade-out {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.room__logo {
+    font-family: "Gloria Hallelujah", cursive;
+    font-weight: 400;
+    font-size: 128px;
+    color: rgb(129, 188, 61);
+}
+
+.room__button {
+    border: none;
+    border-radius: 25px;
+    width: 300px;
+    height: 60px;
+    margin-top: 30px;
+    font-size: 32px;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.room__button[name="create"] {
+    background-color: rgb(255, 161, 110);
+}
+
+.room__button[name="join"] {
+    background-color: rgb(147, 212, 72);
+}
+
+.menu {
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9), rgb(0, 0, 0)),
+        url("../images/background.png");
+}
+
+.menu.fade-in {
+    display: flex;
+} 
+
+.menu.fade-out {
+    display: none;
+}
+
+
+.menu__logo {
+    margin-top: 60px;
+    padding: 60px 20px;
+    font-family: "Balsamiq Sans", sans-serif;
+}
+
+.menu__neon {
+    font-size: 128px;
+    font-weight: normal;
+    line-height: 50px;
+    color: rgb(255, 255, 255);
+    letter-spacing: 8px;
+}
+
+.menu__neon span[name="span1"] {
+    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+}
+
+.menu__neon span[name="span2"] {
+    animation: neon linear infinite 4s;
+    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+}
+
+.menu__neon span[name="span3"] {
+    -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
+
+}
+
+@keyframes neon {
+    78% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+
+    79% {
+        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    }
+
+    80% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+
+    81% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+
+    82% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
+        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    }
+
+    83% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+
+    92% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
+        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    }
+
+    92.5% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+}
+
+.menu__button {
+    border-radius: 25px;
+    width: 300px;
+    height: 60px;
+    font-size: 32px;
+    font-family: "Pixelify Sans", sans-serif;
+    font-weight: 400;
+    cursor: pointer;
+    background-color: inherit;
+    transition: all 0.25s ease;
+}
+
+.menu__button[name="start"] {
+    border-color: rgb(249, 50, 81);
+    color: rgb(249, 50, 81);
+}
+
+.menu__button[name="start"]:hover {
+    box-shadow: 0 0 0.5em 0 rgb(249, 50, 81);
+    color: rgb(255, 255, 255);
+    background: rgb(249, 50, 81);
+}
+
+.lobby {
+    max-width: 80vw;
+    height: 50vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.lobbyId {
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.lobby__id {
+    box-shadow: 0 0 0 100px rgb(0, 0, 0) inset;
+    outline: none;
+    border-radius: 25px;
+    padding: 4px;
+    width: 150px;
+    height: 50px;
+    margin-top: 10px;
+    font-size: 32px;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    padding-inline: 50px;
+    text-align: center;
+}
+
+.lobby__id[id="lobbyId"] {
+    border: 1px solid rgb(101, 179, 72);
+    -webkit-text-fill-color: rgb(101, 179, 72);
+}
+
+.lobby__id::placeholder {
+    opacity: 40%;
+    color: rgb(236, 233, 233);
+    padding: 0;
+    text-align: center;
+}
+
+.lobby__header {
+    margin-top: 10px;
+    font-size: 32px;
+    font-family: "Pixelify Sans", sans-serif;
+    font-weight: 400;
+    color: white;
+    text-align: center;
+}
+
+.users {
+    border: 2px solid rgb(187, 75, 92);
+    border-radius: 25px;
+    width: 50vw;
+    background-color: rgb(0, 0, 0);
+    font-size: 32px;
+    font-family: "Pixelify Sans", sans-serif;
+    font-weight: 400;
+    color: white;
+    text-align: center;
+}

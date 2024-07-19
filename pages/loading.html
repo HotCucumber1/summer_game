@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <meta charset="utf-8"/>
+    <title>Sspliff</title>
+    <link rel="stylesheet" type="text/css" href="../public/css/style.css">
+    <link rel="shortcut icon" href="../public/images/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+<div id="game">
+    <canvas class="cnv" id="canvasSnake"></canvas>
+    <canvas class="cnv" id="canvasHex"></canvas>
+</div>
+
+<script>
+    function resizeCanvas() {
+        const canvases = document.querySelectorAll('canvas.cnv');
+        canvases.forEach(canvas => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('load', resizeCanvas);
+</script>
+
+
+<script src="../public/js/util.js"></script>
+<script src="../public/js/point.js"></script>
+<script src="../public/js/cameraLoad.js"></script>
+<script src="../public/js/snakeLoad.js"></script>
+<script src="../public/js/gameLoad.js"></script>
+<script src="../public/js/scriptLoad.js"></script>
+
+</body>
+</html>

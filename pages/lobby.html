@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+    <title>Sspliff</title>
+    <link href="../public/css/lobby.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="menu" id="lobby">
+        <div class="menu__logo">
+            <div class="menu__neon"><span name="span1">Ssp</span><span name="span2">li</span><span
+                    name="span3">ff</span>
+            </div>
+        </div>
+        <div class="lobby">
+            <div class="lobbyId">
+                <div>
+                    <h2 class="lobby__header">Lobby ID</h2>
+                    <input type="text" class="lobby__id" id="lobbyId" value="Lobby ID" readonly>
+                </div>
+                <button class="menu__button" id="start" name="start">Start</button>
+            </div>
+            <div class="users" id="userId">UserID</div>
+        </div>
+        <script src="../public/js/lobby.js"></script>
+    </div>
+    <div class="room" id="room">
+        <h1 class="room__logo">Sspliff</h1>
+        <button class="room__button" id="create" name="create">Create</button>
+        <button class="room__button" id="join" name="join">Join</button>
+    </div>
+    <div class="game" id="gameCont">
+        <div id="game">
+            <canvas class="cnv" id="canvasSnake"></canvas>
+            <canvas class="cnv" id="canvasHex"></canvas>
+        </div>
+
+        <script>
+            function resizeCanvas() {
+                const canvases = document.querySelectorAll('canvas.cnv');
+                canvases.forEach(canvas => {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                });
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+            window.addEventListener('load', resizeCanvas);
+        </script>
+
+        <script src="../public/js/util.js"></script>
+        <script src="../public/js/point.js"></script>
+        <script src="../public/js/camera.js"></script>
+        <script src="../public/js/snake.js"></script>
+        <script src="../public/js/snakeBot.js"></script>
+        <script src="../public/js/movingDot.js"></script>
+        <script src="../public/js/dangerDot.js"></script>
+        <script src="../public/js/food.js"></script>
+        <script src="../public/js/game.js"></script>
+        <script src="../public/js/script.js"></script>
+    </div>
+</body>
+
+</html>
