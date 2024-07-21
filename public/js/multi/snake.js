@@ -340,7 +340,7 @@ class Snake
                     setTimeout(() =>
                     {
                         conn.close();
-                        window.location.href = "/menu";
+                        // window.location.href = "/menu";
                     }, 1000);
                 }
                 this.ctx.globalAlpha = 1;

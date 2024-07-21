@@ -1,9 +1,11 @@
-const start = document.getElementById("start");
-const lobbyId = document.getElementById("lobbyId");
-const userId = document.getElementById("userId");
-
 window.addEventListener("DOMContentLoaded", function ()
 {
+    const start = document.getElementById("start");
+    const lobbyId = document.getElementById("lobbyId");
+    const userId = document.getElementById("userId");
+    const room = document.getElementById("room");
+    const create = document.getElementById("create");
+    const lobby = document.getElementById("lobby");
     document.body.classList.add("fade-in");
     function handleButtonClick(targetURL)
     {
@@ -24,6 +26,27 @@ window.addEventListener("DOMContentLoaded", function ()
         start.setAttribute("disabled", "");
     }
     start.addEventListener("click", ()=> handleButtonClick("/game"));
+
+    if (userId)
+    {
+        userId.innerText = localStorage.getItem("nickname");
+    }
+
+    if (lobbyId)
+    {
+        lobbyId.value = localStorage.getItem("lobbyId");
+    }
+
+    if (create)
+    {
+        create.addEventListener("click", function ()
+        {
+            room.classList.add("fade-out2");
+            room.classList.add("fade-out");
+            lobby.classList.add("fade-in2");
+            lobby.classList.add("fade-in");
+        });
+    }
 });
 
 function handleOnButton(e)

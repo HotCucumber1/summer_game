@@ -2,6 +2,37 @@
     margin: 0;
     padding: 0;
     text-decoration: none;
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none;
+}
+
+.fade-out {
+    animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 html {
@@ -9,6 +40,8 @@ html {
 }
 
 body {
+    margin: 0;
+    overflow: hidden;
     opacity: 0;
     transition: opacity 2s;
 }
@@ -22,15 +55,91 @@ body.fade-in {
     opacity: 1;
 }
 
-.menu {
+.game {
+    display: none;
+}
+
+#game {
+    position: relative;
+    margin: 0 auto;
+}
+
+.cnv {
+    position: absolute;
+    border-style: solid;
+}
+
+#canvasHex {
+    background-color: black;
+    z-index: 1;
+}
+
+#canvasSnake {
+    background-color: transparent;
+    z-index: 2;
+}
+
+.room {
     width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8), rgb(0, 0, 0)),
+    url("../images/back.jpg");
+}
+
+.room.fade-out {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.room__logo {
+    font-family: "Gloria Hallelujah", cursive;
+    font-weight: 400;
+    font-size: 128px;
+    color: rgb(129, 188, 61);
+}
+
+.room__button {
+    border: none;
+    border-radius: 25px;
+    width: 300px;
+    height: 60px;
+    margin-top: 30px;
+    font-size: 32px;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.room__button[name="create"] {
+    background-color: rgb(255, 161, 110);
+}
+
+.room__button[name="join"] {
+    background-color: rgb(147, 212, 72);
+}
+
+.menu {
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    flex-direction: column;
+    align-items: center;
     background-image: radial-gradient(circle, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9), rgb(0, 0, 0)),
     url("../images/background.png");
 }
+
+.menu.fade-in {
+    display: flex;
+}
+
+.menu.fade-out {
+    display: none;
+}
+
 
 .menu__logo {
     margin-top: 60px;

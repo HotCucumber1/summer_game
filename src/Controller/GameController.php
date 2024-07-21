@@ -9,7 +9,7 @@ class GameController extends AbstractController
 {
     public function selectRoom(): Response
     {
-        return $this->render('select_room.html.twig');
+        return $this->render('mp_rooms_game.html.twig');
     }
 
     public function lobby(): Response

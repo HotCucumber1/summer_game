@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <meta charset="utf-8"/>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+            rel="stylesheet">
+    <title>Sspliff</title>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/room.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/lobby.css')}}">
+</head>
+<body>
+
+<div class="room" id="room">
+    <div class="menu__logo">
+        <div class="menu__neon"><span name="span1">Ssp</span><span name="span2">li</span><span name="span3">ff</span>
+        </div>
+    </div>
+    <input type="text" class="lobby__id" name="lobbyId" id="lobbyId" placeholder="Enter lobby id">
+    <label class="lobby__label" name="lobbyId">Enter Lobby ID to create or join lobby</label>
+
+    <button class="menu__button" id="create" name="create">Create</button>
+    <button class="menu__button" id="join" name="join">Join</button>
+    <div class="userInfo" id="userInfo"></div>
+</div>
+
+
+<div class="menu" id="lobby">
+    <div class="menu__logo">
+        <div class="menu__neon">
+            <span name="span1">Ssp</span><span name="span2">li</span><span name="span3">ff</span>
+        </div>
+    </div>
+
+    <div class="lobby">
+        <div class="lobbyId">
+            <div>
+                <h2 class="lobby__header">Lobby ID</h2>
+                <input type="text" class="lobby__id" id="lobbyId" value="Lobby ID" readonly>
+            </div>
+            <button class="menu__button" id="start" name="start">Start</button>
+        </div>
+        <div class="users" id="userId">UserID</div>
+    </div>
+    <script src="{{ asset('js/multi/lobby.js') }}"></script>
+</div>
+
+<div class="game" id="gameCont">
+    <div id="game">
+        <canvas class="cnv" id="canvasSnake"></canvas>
+        <canvas class="cnv" id="canvasHex"></canvas>
+    </div>
+
+    <script>
+        function resizeCanvas() {
+            const canvases = document.querySelectorAll('canvas.cnv');
+            canvases.forEach(canvas => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('load', resizeCanvas);
+    </script>
+
+    <!--<script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.11/pako.min.js') }}"></script>
+    <script src="{{ asset('js/multi/web_socket.js') }}" type="application/javascript" defer></script>
+    <script src="{{ asset('js/util.js') }}" type="application/javascript" defer></script>
+    <script src="{{ asset('js/multi/point.js') }}" type="application/javascript" defer></script>
+    <script src="{{ asset('js/camera.js') }}" type="application/javascript" defer></script>
+    <script src="{{ asset('js/multi/snake.js') }}" type="application/javascript" defer></script>
+    <script src="{{ asset('js/multi/food.js') }}" type="application/javascript" defer></script>
+    <script src="{{ asset('js/multi/game.js') }}" type="application/javascript" defer></script>
+    <script src="{{ asset('js/multi/script.js') }}" type="application/javascript" defer></script>-->
+</div>
+
+</body>
+</html>
