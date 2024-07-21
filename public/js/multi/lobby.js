@@ -7,11 +7,20 @@ window.addEventListener("DOMContentLoaded", function ()
     const create = document.getElementById("create");
     const lobby = document.getElementById("lobby");
     const gameCont = document.getElementById('gameCont');
-
     document.body.classList.add("fade-in");
 
-    userId.innerText = localStorage.getItem("nickname");
-    lobbyId.value = this.localStorage.getItem("lobbyId");
+
+    function handleOnButton(e)
+    {
+        const button = e.target;
+        button.style.boxShadow = "0 0 20px rgb(161, 161, 161)";
+    }
+
+    function pullOfWithButton(e)
+    {
+        const button = e.target;
+        button.style.boxShadow = "";
+    }
 
     if (localStorage.getItem("role") === "host")
     {
@@ -21,6 +30,7 @@ window.addEventListener("DOMContentLoaded", function ()
     {
         start.setAttribute("disabled", "");
     }
+
     start.addEventListener("click", function ()
     {
         lobby.classList.remove("fade-in");
@@ -41,19 +51,9 @@ window.addEventListener("DOMContentLoaded", function ()
         lobby.classList.add("fade-in2");
         lobby.classList.add("fade-in");
     });
+
+    start.addEventListener('mouseover', handleOnButton);
+    start.addEventListener('mouseout', pullOfWithButton);
 });
 
-function handleOnButton(e)
-{
-    const button = e.target;
-    button.style.boxShadow = "0 0 20px rgb(161, 161, 161)";
-}
 
-function pullOfWithButton(e)
-{
-    const button = e.target;
-    button.style.boxShadow = "";
-}
-
-start.addEventListener('mouseover', handleOnButton);
-start.addEventListener('mouseout', pullOfWithButton);

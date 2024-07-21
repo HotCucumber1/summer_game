@@ -110,6 +110,10 @@ body.fade-in {
     transition: all 0.25s ease;
 }
 
+.menu__button:active {
+    transform: scale(0.96);
+}
+
 .menu__button[name="single"] {
     border-color: rgb(249, 50, 81);
     color: rgb(249, 50, 81);

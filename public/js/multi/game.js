@@ -24,13 +24,53 @@ class Game
         );
 
         this.snakeUser = new Snake(this.ctxSnake,
-                                    localStorage.getItem('nickname'),
-                                    this.world.x + this.WORLD_SIZE.x / 2 + this.SCREEN_SIZE.x / 2,
-                                    this.world.y + this.WORLD_SIZE.y / 2 + this.SCREEN_SIZE.y / 2,
-                                    0,
-                                    4,
-                                    15,
-                                    ut.color(ut.randomColor(), 0.33));
+                                   localStorage.getItem('nickname'),
+                                   this.world.x + this.WORLD_SIZE.x / 2 + this.SCREEN_SIZE.x / 2,
+                                   this.world.y + this.WORLD_SIZE.y / 2 + this.SCREEN_SIZE.y / 2,
+                                   0,
+                                   4,
+                                   15,
+                                   ut.color(ut.randomColor(), 0.33));
+    }
+
+    addSnakeFromData(snakeData)
+    {
+        this.snakes[snakeData.name] = new Snake(ctxSnake,
+            snakeData.name,
+            snakeData.x - this.snakeUser.pos.x + this.SCREEN_SIZE.x / 2,
+            snakeData.y - this.snakeUser.pos.y + this.SCREEN_SIZE.y / 2,
+            snakeData.score,
+            4,
+            snakeData.radius,
+            snakeData.color);
+    }
+
+    updateSnakeData(snakeData)
+    {
+        this.snakes[snakeData.name].pos.x = snakeData.x;
+        this.snakes[snakeData.name].pos.y = snakeData.y;
+
+        this.snakes[snakeData.name].arr = [];
+        this.snakes[snakeData.name].arr.push(
+            new Point(
+                snakeData.x - this.snakeUser.pos.x + this.SCREEN_SIZE.x / 2,
+                snakeData.y - this.snakeUser.pos.y + this.SCREEN_SIZE.y / 2
+            )
+        );
+        this.snakes[snakeData.name].score = snakeData.score;
+        this.snakes[snakeData.name].size = snakeData.radius;
+        this.snakes[snakeData.name].mainColor = snakeData.color;
+        this.snakes[snakeData.name].length = snakeData.body.length;
+
+        for (let i = 0; i < snakeData.body.length; i++)
+        {
+            this.snakes[snakeData.name].arr.push(
+                new Point(
+                    snakeData.body[i].x - this.snakeUser.pos.x + this.SCREEN_SIZE.x / 2,
+                    snakeData.body[i].y - this.snakeUser.pos.y + this.SCREEN_SIZE.y / 2
+                )
+            );
+        }
     }
 
     draw()

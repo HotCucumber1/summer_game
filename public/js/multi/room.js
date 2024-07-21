@@ -1,10 +1,23 @@
-const create = document.getElementById("create");
-const join = document.getElementById("join");
-const lobbyId = document.getElementById("roomId");
-const userInfo = document.getElementById("userInfo");
-
 window.addEventListener("DOMContentLoaded", async function ()
 {
+    const create = document.getElementById("create");
+    const join = document.getElementById("join");
+    const lobbyId = document.getElementById("roomId");
+    const userInfo = document.getElementById("userInfo");
+    document.body.classList.add("fade-in");
+
+    function handleOnButton(e)
+    {
+        const button = e.target;
+        button.style.boxShadow = "0 0 20px rgb(161, 161, 161)";
+    }
+
+    function pullOfWithButton(e)
+    {
+        const button = e.target;
+        button.style.boxShadow = "";
+    }
+
     async function checkVictories(userData)
     {
         let response = await fetch(`/get/score/${userData}`, {
@@ -18,20 +31,11 @@ window.addEventListener("DOMContentLoaded", async function ()
         }
     }
 
+
     let wins = await checkVictories(localStorage.getItem("nickname"));
-    userInfo.innerText = "Hi, " + localStorage.getItem("nickname") + "! You have " + wins + " wins now!"
-
-    document.body.classList.add("fade-in");
-
-    function handleButtonClick(targetURL)
-    {
-        document.body.classList.remove("fade-in");
-        document.body.classList.add("fade-out");
-        setTimeout(()=> {window.location.href = targetURL}, 500);
-    }
+    userInfo.innerText = "Hi, " + localStorage.getItem("nickname") + "! You have " + wins + " wins now!";
 
     lobbyId.addEventListener("input", ()=> localStorage.setItem("lobbyId", lobbyId.value));
-
     create.addEventListener("click", function ()
     {
         localStorage.setItem("role", "host");
@@ -41,13 +45,11 @@ window.addEventListener("DOMContentLoaded", async function ()
                 roomId: localStorage.getItem("lobbyId"),
                 userRole: localStorage.getItem("role"),
             }
-        }
+        };
         conn.send(
             JSON.stringify(userData)
         );
-        //handleButtonClick("/lobby");
     });
-
     join.addEventListener("click", function ()
     {
         localStorage.setItem("role", "client");
@@ -57,29 +59,17 @@ window.addEventListener("DOMContentLoaded", async function ()
                 roomId: localStorage.getItem("lobbyId"),
                 userRole: localStorage.getItem("role"),
             }
-        }
+        };
         conn.send(
             JSON.stringify(userData)
         );
-        // handleButtonClick("/lobby");
     });
+
+    create.addEventListener('mouseover', handleOnButton);
+    create.addEventListener('mouseout', pullOfWithButton);
+
+    join.addEventListener('mouseover', handleOnButton);
+    join.addEventListener('mouseout', pullOfWithButton);
 });
 
 
-function handleOnButton(e)
-{
-    const button = e.target;
-    button.style.boxShadow = "0 0 20px rgb(161, 161, 161)";
-}
-
-function pullOfWithButton(e)
-{
-    const button = e.target;
-    button.style.boxShadow = "";
-}
-
-create.addEventListener('mouseover', handleOnButton);
-create.addEventListener('mouseout', pullOfWithButton);
-
-join.addEventListener('mouseover', handleOnButton);
-join.addEventListener('mouseout', pullOfWithButton);

@@ -397,4 +397,19 @@ class Snake
         }
         this.ctx.fillText("Your length: " + this.length, 20, window.innerHeight - 20);
     }
+
+    getBodyData()
+    {
+        let body = [];
+        for (let i = 0; i < this.arr.length; i++)
+        {
+            body.push(
+                new Point(
+                    this.arr[i].x + this.camera.x,
+                    this.arr[i].y + this.camera.y,
+                )
+            );
+        }
+        return body;
+    }
 }
