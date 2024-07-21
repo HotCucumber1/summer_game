@@ -4,6 +4,14 @@ let ctxHex = document.getElementById("canvasHex").getContext("2d");
 let ut = new Util();
 let cursor = new Point(0, 0);
 let game = new Game(ctxSnake, ctxHex);
+let isStarted = false;
+
+if (localStorage.getItem('nickname') === null)
+{
+    window.location.href = '/';
+    conn.close();
+}
+
 
 let d = -Math.PI / 2;
 
@@ -70,176 +78,172 @@ window.addEventListener('keyup', function (event)
     }
 });
 
-function start()
+function measurePing()
 {
-    function measurePing()
+    let start = Date.now();
+    conn.send(JSON.stringify(
+        {
+            type: 'ping',
+            timestamp: start,
+        }
+    ));
+}
+
+// Измеряем пинг каждые 2 секунды
+setInterval(measurePing, 2000);
+
+setTimeout(() => { isStarted = true }, 1000);
+conn.addEventListener("message", function (event)
+{
+    if (!isStarted)
     {
-        let start = Date.now();
-        conn.send(JSON.stringify(
-            {
-                type: 'ping',
-                timestamp: start,
-            }
-        ));
+        return;
+    }
+    // const decompressData = pako.inflate(event.data, { to: 'string'});
+    const dataFromServer = JSON.parse(event.data);
+
+    if (dataFromServer.type === 'pong')
+    {
+        let end = Date.now();
+        let ping = end - dataFromServer.timestamp;
+        console.log(`Ping: ${ping}ms`);
+        return;
     }
 
-    // Измеряем пинг каждые 2 секунды
-    setInterval(measurePing, 2000);
-
-    conn.addEventListener("message", function (event)
+    // обновить информацию по точкам
+    if (dataFromServer.points)
     {
-        // const decompressData = pako.inflate(event.data, { to: 'string'});
-        const dataFromServer = JSON.parse(event.data);
-
-        if (dataFromServer.type === 'pong')
+        console.log('Get it ');
+        game.foods = [];
+        for (let i = 0; i < dataFromServer.points.length; i++)
         {
-            let end = Date.now();
-            let ping = end - dataFromServer.timestamp;
-            console.log(`Ping: ${ping}ms`);
-            return;
-        }
-
-        // обновить информацию по точкам
-        if (dataFromServer.points)
-        {
-            console.log('Get it ');
-            game.foods = [];
-            for (let i = 0; i < dataFromServer.points.length; i++)
-            {
-                game.foods.push(
-                    new Food(
-                        ctxSnake,
-                        dataFromServer.points[i].x + game.SCREEN_SIZE.x / 2,
-                        dataFromServer.points[i].y + game.SCREEN_SIZE.y / 2,
-                        dataFromServer.points[i].color
-                    )
-                );
-            }
-            conn.send(
-                JSON.stringify({
-                    points: true
-                })
+            game.foods.push(
+                new Food(
+                    ctxSnake,
+                    dataFromServer.points[i].x + game.SCREEN_SIZE.x / 2,
+                    dataFromServer.points[i].y + game.SCREEN_SIZE.y / 2,
+                    dataFromServer.points[i].color
+                )
             );
         }
+        console.log('POINTS');
+        conn.send(
+            JSON.stringify({
+                points: true
+            })
+        );
+    }
 
-        game.updatePoints();
+    game.updatePoints();
 
-        // обновить информацию по зоне
-        game.ARENA_RADIUS = dataFromServer.wall;
+    // обновить информацию по зоне
+    game.ARENA_RADIUS = dataFromServer.wall;
 
-        // проверить, жива ли змея
-        // обновить информацию по змеям
-        for (let snake in game.snakes)
+    // проверить, жива ли змея
+    // обновить информацию по змеям
+    for (let snake in game.snakes)
+    {
+        if (!(snake in dataFromServer.users))
         {
-            if (!(snake in dataFromServer.users))
-            {
-                game.snakes[snake].die();
-            }
+            game.snakes[snake].die();
         }
+    }
 
-        let mySnake;
-        let currentSnake;
-        for (let user in dataFromServer.users)
+    let mySnake;
+    let currentSnake;
+    for (let user in dataFromServer.users)
+    {
+        currentSnake = dataFromServer.users[user];
+        if (currentSnake.name === localStorage.getItem('nickname'))
         {
-            currentSnake = dataFromServer.users[user];
-            if (currentSnake.name === localStorage.getItem('nickname'))
-            {
-                mySnake = currentSnake;
-            }
-            else
-            {
-                if (!(currentSnake.name in game.snakes))
-                {
-                    game.snakes[currentSnake.name] = new Snake(ctxSnake,
-                        currentSnake.name,
-                        currentSnake.x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2,
-                        currentSnake.y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2,
-                        currentSnake.score,
-                        4,
-                        currentSnake.radius,
-                        currentSnake.color);
-                }
-                else
-                {
-                    game.snakes[currentSnake.name].pos.x = currentSnake.x;
-                    game.snakes[currentSnake.name].pos.y = currentSnake.y;
-
-                    game.snakes[currentSnake.name].arr = [];
-                    game.snakes[currentSnake.name].arr.push(
-                        new Point(
-                            currentSnake.x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2,
-                            currentSnake.y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2
-                        )
-                    );
-                    game.snakes[currentSnake.name].score = currentSnake.score;
-                    game.snakes[currentSnake.name].size = currentSnake.radius;
-                    game.snakes[currentSnake.name].mainColor = currentSnake.color;
-                    game.snakes[currentSnake.name].length = currentSnake.body.length;
-
-                    for (let i = 0; i < currentSnake.body.length; i++)
-                    {
-                        game.snakes[currentSnake.name].arr.push(
-                            new Point(
-                                currentSnake.body[i].x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2,
-                                currentSnake.body[i].y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2
-                            )
-                        );
-                    }
-                }
-            }
-        }
-
-        if (typeof mySnake === "undefined")
-        {
-            console.log('death');
-            game.snakeUser.die();
+            mySnake = currentSnake;
         }
         else
         {
-            // обновить счет
-            game.snakeUser.score = mySnake.score;
-
-            // движение
-            movement();
-
-            // body
-            let body = [];
-            for (let i = 0; i < game.snakeUser.arr.length; i++)
+            if (!(currentSnake.name in game.snakes))
             {
-                body.push(
+                game.snakes[currentSnake.name] = new Snake(ctxSnake,
+                    currentSnake.name,
+                    currentSnake.x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2,
+                    currentSnake.y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2,
+                    currentSnake.score,
+                    4,
+                    currentSnake.radius,
+                    currentSnake.color);
+            }
+            else
+            {
+                game.snakes[currentSnake.name].pos.x = currentSnake.x;
+                game.snakes[currentSnake.name].pos.y = currentSnake.y;
+
+                game.snakes[currentSnake.name].arr = [];
+                game.snakes[currentSnake.name].arr.push(
                     new Point(
-                        game.snakeUser.arr[i].x + game.snakeUser.camera.x,
-                        game.snakeUser.arr[i].y + game.snakeUser.camera.y,
+                        currentSnake.x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2,
+                        currentSnake.y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2
                     )
                 );
-            }
+                game.snakes[currentSnake.name].score = currentSnake.score;
+                game.snakes[currentSnake.name].size = currentSnake.radius;
+                game.snakes[currentSnake.name].mainColor = currentSnake.color;
+                game.snakes[currentSnake.name].length = currentSnake.body.length;
 
-            // отправить обновленные данные на бэк
-            let data = {
-                snake: {
-                    x: game.snakeUser.pos.x,
-                    y: game.snakeUser.pos.y,
-                    radius: game.snakeUser.size,
-                    score: game.snakeUser.score,
-                    body: body,
-                    color: game.snakeUser.mainColor
+                for (let i = 0; i < currentSnake.body.length; i++)
+                {
+                    game.snakes[currentSnake.name].arr.push(
+                        new Point(
+                            currentSnake.body[i].x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2,
+                            currentSnake.body[i].y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2
+                        )
+                    );
                 }
-            };
-            // let cData = pako.deflate();
-            conn.send(JSON.stringify(data));
+            }
         }
-        ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
-        ctxHex.clearRect(0, 0, canvas.width, canvas.height);
-        game.draw();
-    });
+    }
 
-    game.init();
-}
+    if (typeof mySnake === "undefined")
+    {
+        console.log('death');
+        game.snakeUser.die();
+    }
+    else
+    {
+        // обновить счет
+        game.snakeUser.score = mySnake.score;
 
+        // движение
+        movement();
 
-if (localStorage.getItem('nickname') === null)
-{
-    window.location.href = '/';
-    conn.close();
-}
-setTimeout(start, 1000);
+        // body
+        let body = [];
+        for (let i = 0; i < game.snakeUser.arr.length; i++)
+        {
+            body.push(
+                new Point(
+                    game.snakeUser.arr[i].x + game.snakeUser.camera.x,
+                    game.snakeUser.arr[i].y + game.snakeUser.camera.y,
+                )
+            );
+        }
+
+        // отправить обновленные данные на бэк
+        let data = {
+            snake: {
+                x: game.snakeUser.pos.x,
+                y: game.snakeUser.pos.y,
+                radius: game.snakeUser.size,
+                score: game.snakeUser.score,
+                body: body,
+                color: game.snakeUser.mainColor
+            }
+        };
+        // let cData = pako.deflate();
+        conn.send(JSON.stringify(data));
+    }
+    ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
+    ctxHex.clearRect(0, 0, canvas.width, canvas.height);
+    game.draw();
+});
+
+game.init();
+

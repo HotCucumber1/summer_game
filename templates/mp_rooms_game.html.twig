@@ -19,12 +19,13 @@
         <div class="menu__neon"><span name="span1">Ssp</span><span name="span2">li</span><span name="span3">ff</span>
         </div>
     </div>
-    <input type="text" class="lobby__id" name="lobbyId" id="lobbyId" placeholder="Enter lobby id">
+    <input type="text" class="room__id" name="roomId" id="roomId" placeholder="Enter lobby id">
     <label class="lobby__label" name="lobbyId">Enter Lobby ID to create or join lobby</label>
 
     <button class="menu__button" id="create" name="create">Create</button>
     <button class="menu__button" id="join" name="join">Join</button>
     <div class="userInfo" id="userInfo"></div>
+    <script src="{{ asset('js/multi/room.js') }}"></script>
 </div>
 
 
@@ -67,16 +68,15 @@
         window.addEventListener('load', resizeCanvas);
     </script>
 
-    <!--<script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.11/pako.min.js') }}"></script>
-    <script src="{{ asset('js/multi/web_socket.js') }}" type="application/javascript" defer></script>
     <script src="{{ asset('js/util.js') }}" type="application/javascript" defer></script>
     <script src="{{ asset('js/multi/point.js') }}" type="application/javascript" defer></script>
     <script src="{{ asset('js/camera.js') }}" type="application/javascript" defer></script>
     <script src="{{ asset('js/multi/snake.js') }}" type="application/javascript" defer></script>
     <script src="{{ asset('js/multi/food.js') }}" type="application/javascript" defer></script>
     <script src="{{ asset('js/multi/game.js') }}" type="application/javascript" defer></script>
-    <script src="{{ asset('js/multi/script.js') }}" type="application/javascript" defer></script>-->
+    <script src="{{ asset('js/multi/script.js') }}" type="application/javascript" defer></script>
 </div>
+<script src="{{ asset('js/multi/web_socket.js') }}" type="application/javascript" defer></script>
 
 </body>
 </html>

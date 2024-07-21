@@ -25,7 +25,13 @@ window.addEventListener("DOMContentLoaded", function ()
     {
         start.setAttribute("disabled", "");
     }
-    start.addEventListener("click", ()=> handleButtonClick("/game"));
+    start.addEventListener("click", function ()
+    {
+        conn.send(
+            JSON.stringify({ start: true })
+        )
+        handleButtonClick("/game")
+    });
 
     if (userId)
     {

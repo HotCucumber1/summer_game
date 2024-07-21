@@ -1,7 +1,7 @@
 const create = document.getElementById("create");
 const join = document.getElementById("join");
 // const form = document.querySelector("room");
-const lobbyId = document.getElementById("lobbyId");
+const lobbyId = document.getElementById("roomId");
 const userInfo = document.getElementById("userInfo");
 
 window.addEventListener("DOMContentLoaded", async function ()
@@ -45,7 +45,7 @@ window.addEventListener("DOMContentLoaded", async function ()
             }
         }
         // conn.send(JSON.stringify(userData));  // нужно будет раскоментировать, когда будет подключение к серверу
-        handleButtonClick("/lobby");
+        //handleButtonClick("/lobby");
     });
 
     join.addEventListener("click", function ()
@@ -59,7 +59,7 @@ window.addEventListener("DOMContentLoaded", async function ()
             }
         }
         // conn.send(JSON.stringify(userData));
-        handleButtonClick("/lobby");
+        // handleButtonClick("/lobby");
     });
 });
 

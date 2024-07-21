@@ -23,9 +23,6 @@ class WebSocketServer implements MessageComponentInterface
                                 private readonly RoomRepository $roomRepository)
     {
         $this->clients = new \SplObjectStorage;
-        $this->loop->addPeriodicTimer(self::INTERVAL, function() {
-            $this->sendData();
-        });
     }
 
     public function onOpen(ConnectionInterface $conn): void
@@ -47,6 +44,14 @@ class WebSocketServer implements MessageComponentInterface
                 'timestamp' => $data['timestamp']
             ]);
             $from->send($response);
+        }
+
+        if (isset($data['start']))
+        {
+            $this->loop->addPeriodicTimer(self::INTERVAL, function()
+            {
+                $this->sendData();
+            });
         }
 
         if (isset($data['points']))
