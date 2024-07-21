@@ -36,6 +36,7 @@ class WebSocketServer implements MessageComponentInterface
 
     public function onMessage(ConnectionInterface $from, $msg): void
     {
+        // $msg = gzuncompress($msg);
         $data = json_decode($msg, true);
 
         // ping
@@ -46,6 +47,11 @@ class WebSocketServer implements MessageComponentInterface
                 'timestamp' => $data['timestamp']
             ]);
             $from->send($response);
+        }
+
+        if (isset($data['points']))
+        {
+            $this->gameInfo->isStart = false;
         }
 
         // for one room
@@ -85,6 +91,7 @@ class WebSocketServer implements MessageComponentInterface
     private function sendData(): void
     {
         $response = json_encode($this->gameInfo->getData(), JSON_THROW_ON_ERROR | true);
+        // $msg = gzcompress($response); // to binary
         foreach ($this->clients as $client)
         {
             // $gameId = $this->clientRooms[$client->resourceId];

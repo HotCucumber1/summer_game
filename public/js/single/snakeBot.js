@@ -249,27 +249,24 @@ class SnakeBot extends Snake
 
         this.drawHead(this.supportColor);
 
-
         // this.ctx.beginPath();
         // this.ctx.globalAlpha = 0.5;
         // this.ctx.fillStyle = "white";
-        // if (this.inDanger) this.ctx.fillStyle = "red";
+        // if (this.inDanger)
+        //      this.ctx.fillStyle = "red";
         // this.ctx.arc(this.pos.x, this.pos.y, this.shield, 0, 2 * Math.PI);
         // this.ctx.fill();
         // this.ctx.globalAlpha = 1;
-
 
         super.setSize();
         super.checkCollisionFood();
         super.checkCollisionBonus();
         this.checkCollissionBot();
         this.checkCollissionBorder();
-
     }
 
     drawEffect(arr)
     {
-
         this.ctx.globalAlpha = 1;
         this.ctx.shadowBlur = 0; // радиус размытия тени
         this.ctx.shadowColor = this.supportColor; // цвет свечения

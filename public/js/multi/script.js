@@ -88,28 +88,41 @@ function start()
 
     conn.addEventListener("message", function (event)
     {
-        let dataFromServer = JSON.parse(event.data);
+        // const decompressData = pako.inflate(event.data, { to: 'string'});
+        const dataFromServer = JSON.parse(event.data);
 
         if (dataFromServer.type === 'pong')
         {
             let end = Date.now();
             let ping = end - dataFromServer.timestamp;
             console.log(`Ping: ${ping}ms`);
+            return;
         }
 
         // обновить информацию по точкам
-        game.foods = [];
-        for (let i = 0; i < dataFromServer.points.length; i++)
+        if (dataFromServer.points)
         {
-            game.foods.push(
-                new Food(
-                    ctxSnake,
-                    dataFromServer.points[i].x - game.snakeUser.pos.x + game.SCREEN_SIZE.x / 2,
-                    dataFromServer.points[i].y - game.snakeUser.pos.y + game.SCREEN_SIZE.y / 2,
-                    dataFromServer.points[i].color
-                )
+            console.log('Get it ');
+            game.foods = [];
+            for (let i = 0; i < dataFromServer.points.length; i++)
+            {
+                game.foods.push(
+                    new Food(
+                        ctxSnake,
+                        dataFromServer.points[i].x + game.SCREEN_SIZE.x / 2,
+                        dataFromServer.points[i].y + game.SCREEN_SIZE.y / 2,
+                        dataFromServer.points[i].color
+                    )
+                );
+            }
+            conn.send(
+                JSON.stringify({
+                    points: true
+                })
             );
         }
+
+        game.updatePoints();
 
         // обновить информацию по зоне
         game.ARENA_RADIUS = dataFromServer.wall;
@@ -212,13 +225,14 @@ function start()
                     color: game.snakeUser.mainColor
                 }
             };
+            // let cData = pako.deflate();
             conn.send(JSON.stringify(data));
         }
         ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
         ctxHex.clearRect(0, 0, canvas.width, canvas.height);
-
         game.draw();
     });
+
     game.init();
 }
 

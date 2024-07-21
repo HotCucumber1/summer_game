@@ -24,7 +24,8 @@
         "symfony/twig-bundle": "5.4.*",
         "symfony/yaml": "5.4.*",
         "twig/twig": "^3.10",
-        "zircote/swagger-php": "^4.10"
+        "zircote/swagger-php": "^4.10",
+      "ext-zlib": "*"
     },
     "config": {
         "allow-plugins": {

@@ -134,4 +134,13 @@ class Game
         }
         this.ctxSnake.fillText(nickname, start.x, start.y);
     }
+
+    updatePoints()
+    {
+        for (let i = 0; i < this.foods.length; i++)
+        {
+            this.foods[i].pos.x -= this.snakeUser.velocity.x;
+            this.foods[i].pos.y -= this.snakeUser.velocity.y;
+        }
+    }
 }

@@ -15,6 +15,7 @@ class GameInfo
      */
     public array $users = [];
     private int $wallRadius = Wall::START_RADIUS;
+    public bool $isStart = true;
 
     public function __construct(private readonly CollisionService $collisionService,
                                 private readonly PointService     $pointService,
@@ -83,21 +84,6 @@ class GameInfo
 
     public function getData(): array
     {
-        // Информация по точкам
-        $points = $this->pointService->allPoints();
-        $pointsData = [];
-        foreach ($points as $point)
-        {
-            if ($point->getStatus())
-            {
-                $pointsData[] = [
-                    'x' => $point->getX(),
-                    'y' => $point->getY(),
-                    'color' => $point->getColor()
-                ];
-            }
-        }
-
         // информация по другим игроквм
         $userData = [];
         foreach ($this->users as $user => $userSnake)
@@ -108,9 +94,30 @@ class GameInfo
             }
         }
 
+        if ($this->isStart)
+        {
+            // Информация по точкам
+            $pointsData = [];
+            $points = $this->pointService->allPoints();
+            foreach ($points as $point)
+            {
+                if ($point->getStatus())
+                {
+                    $pointsData[] = [
+                        'x' => $point->getX(),
+                        'y' => $point->getY(),
+                        'color' => $point->getColor()
+                    ];
+                }
+            }
+            return [
+                'users' => $userData,
+                'points' => $pointsData,
+                'wall' => $this->wallRadius,
+            ];
+        }
         return [
             'users' => $userData,
-            'points' => $pointsData,
             'wall' => $this->wallRadius,
         ];
     }
@@ -145,19 +152,20 @@ class GameInfo
             if (abs($snake->getHeadX() - $point->getX()) < 20 &&
                 abs($snake->getHeadY() - $point->getY()) < 20)
             {
-                if ($this->collisionService->isPointEaten($snake, $point))
+                if ($point->getStatus() && $this->collisionService->isPointEaten($snake, $point))
                 {
                     $this->pointService->clearPoint($point);
                     $snake->increaseScore(Point::PRICE);
                 }
             }
 
-            if ($point->getX() ** 2 + $point->getY() ** 2 >= $this->wallRadius ** 2)
+            if ($point->getStatus() &&
+                $point->getX() ** 2 + $point->getY() ** 2 >= $this->wallRadius ** 2)
             {
                 $this->pointService->clearPoint($point);
             }
         }
-        $this->pointService->clearEatenPoints();
+        // $this->pointService->clearEatenPoints();
     }
 
     private function checkSnakeDeath(Snake $snake): void

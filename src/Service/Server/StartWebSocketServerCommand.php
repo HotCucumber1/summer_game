@@ -15,6 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class StartWebSocketServerCommand extends Command
 {
     protected static $defaultName = 'app:start-websocket-server';
+    private string $host = '10.10.24.132';
+    private string $port = '8085';
 
     public function __construct(private readonly WebSocketServer $webSocketServer)
     {
@@ -29,13 +31,8 @@ class StartWebSocketServerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $loop = Loop::get();
-
-        // $host = '192.168.20.104';
-        // $host = '192.168.140.11';
-        // $host = '10.10.29.61';
-        $host = '10.250.104.40';
-        $port = '8085';
-        $uri = $host . ':' . $port;
+        //$host = '10.250.104.40';
+        $uri = $this->host . ':' . $this->port;
 
         $ws = new WsServer($this->webSocketServer);
         $http = new HttpServer($ws);
@@ -43,7 +40,7 @@ class StartWebSocketServerCommand extends Command
         $server = new IoServer($http, $socket, $loop);
 
 
-        $output->writeln("WebSocket server started on port {$port}");
+        $output->writeln("WebSocket server started on port {$this->port}");
         $loop->run();
 
         return Command::SUCCESS;
