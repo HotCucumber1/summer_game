@@ -6,13 +6,9 @@ window.addEventListener("DOMContentLoaded", function ()
     const room = document.getElementById("room");
     const create = document.getElementById("create");
     const lobby = document.getElementById("lobby");
+    const gameCont = document.getElementById('gameCont');
+
     document.body.classList.add("fade-in");
-    function handleButtonClick(targetURL)
-    {
-        document.body.classList.remove("fade-in");
-        document.body.classList.add("fade-out");
-        setTimeout(()=> {window.location.href = targetURL}, 500);
-    }
 
     userId.innerText = localStorage.getItem("nickname");
     lobbyId.value = this.localStorage.getItem("lobbyId");
@@ -27,32 +23,24 @@ window.addEventListener("DOMContentLoaded", function ()
     }
     start.addEventListener("click", function ()
     {
-        conn.send(
-            JSON.stringify({ start: true })
-        )
-        handleButtonClick("/game")
+        lobby.classList.remove("fade-in");
+        lobby.classList.add("fade-out");
+        gameCont.style.display = "block";
+        gameCont.classList.add("fade-in");
+        const startEvent = new CustomEvent('startEvent');
+        document.dispatchEvent(startEvent);
     });
 
-    if (userId)
-    {
-        userId.innerText = localStorage.getItem("nickname");
-    }
+    userId.innerText = localStorage.getItem("nickname");
+    lobbyId.value = localStorage.getItem("lobbyId");
 
-    if (lobbyId)
+    create.addEventListener("click", function ()
     {
-        lobbyId.value = localStorage.getItem("lobbyId");
-    }
-
-    if (create)
-    {
-        create.addEventListener("click", function ()
-        {
-            room.classList.add("fade-out2");
-            room.classList.add("fade-out");
-            lobby.classList.add("fade-in2");
-            lobby.classList.add("fade-in");
-        });
-    }
+        room.classList.add("fade-out2");
+        room.classList.add("fade-out");
+        lobby.classList.add("fade-in2");
+        lobby.classList.add("fade-in");
+    });
 });
 
 function handleOnButton(e)

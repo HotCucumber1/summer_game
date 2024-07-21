@@ -1,12 +1,11 @@
 const create = document.getElementById("create");
 const join = document.getElementById("join");
-// const form = document.querySelector("room");
 const lobbyId = document.getElementById("roomId");
 const userInfo = document.getElementById("userInfo");
 
 window.addEventListener("DOMContentLoaded", async function ()
 {
-    async function checkWins(userData)
+    async function checkVictories(userData)
     {
         let response = await fetch(`/get/score/${userData}`, {
                 method: "GET",
@@ -19,9 +18,8 @@ window.addEventListener("DOMContentLoaded", async function ()
         }
     }
 
-    let wins = await checkWins(localStorage.getItem("nickname"));
+    let wins = await checkVictories(localStorage.getItem("nickname"));
     userInfo.innerText = "Hi, " + localStorage.getItem("nickname") + "! You have " + wins + " wins now!"
-
 
     document.body.classList.add("fade-in");
 
@@ -44,7 +42,9 @@ window.addEventListener("DOMContentLoaded", async function ()
                 userRole: localStorage.getItem("role"),
             }
         }
-        // conn.send(JSON.stringify(userData));  // нужно будет раскоментировать, когда будет подключение к серверу
+        conn.send(
+            JSON.stringify(userData)
+        );
         //handleButtonClick("/lobby");
     });
 
@@ -58,7 +58,9 @@ window.addEventListener("DOMContentLoaded", async function ()
                 userRole: localStorage.getItem("role"),
             }
         }
-        // conn.send(JSON.stringify(userData));
+        conn.send(
+            JSON.stringify(userData)
+        );
         // handleButtonClick("/lobby");
     });
 });

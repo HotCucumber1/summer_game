@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
             rel="stylesheet">
+    <script src="{{ asset('js/multi/web_socket.js') }}" type="application/javascript" defer></script>
     <title>Sspliff</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/room.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/lobby.css')}}">
@@ -25,7 +26,7 @@
     <button class="menu__button" id="create" name="create">Create</button>
     <button class="menu__button" id="join" name="join">Join</button>
     <div class="userInfo" id="userInfo"></div>
-    <script src="{{ asset('js/multi/room.js') }}"></script>
+    <script src="{{ asset('js/multi/room.js') }}" defer></script>
 </div>
 
 
@@ -46,7 +47,7 @@
         </div>
         <div class="users" id="userId">UserID</div>
     </div>
-    <script src="{{ asset('js/multi/lobby.js') }}"></script>
+    <script src="{{ asset('js/multi/lobby.js') }}" defer></script>
 </div>
 
 <div class="game" id="gameCont">
@@ -76,7 +77,5 @@
     <script src="{{ asset('js/multi/game.js') }}" type="application/javascript" defer></script>
     <script src="{{ asset('js/multi/script.js') }}" type="application/javascript" defer></script>
 </div>
-<script src="{{ asset('js/multi/web_socket.js') }}" type="application/javascript" defer></script>
-
 </body>
 </html>

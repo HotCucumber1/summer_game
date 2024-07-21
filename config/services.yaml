@@ -22,7 +22,6 @@ services:
     App\Service\Server\WebSocketServer:
         arguments:
             $loop: '@React\EventLoop\LoopInterface'
-            $gameInfo: '@App\Service\GameInfo'
             $roomRepository: '@App\Repository\RoomRepository'
     App\Service\Server\StartWebSocketServerCommand:
         arguments:

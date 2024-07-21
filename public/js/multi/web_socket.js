@@ -9,10 +9,10 @@ conn.onopen = function ()
 {
     console.log("Connection established!");
 
-    let userData= {
-        'userName': localStorage.getItem("nickname"),
-    }
-    conn.send(JSON.stringify(userData));
+    // let userData= {
+    //     'userName': localStorage.getItem("nickname"),
+    // }
+    // conn.send(JSON.stringify(userData));
 }
 
 conn.onerror = function (error)
@@ -23,4 +23,5 @@ conn.onerror = function (error)
 conn.onclose = function ()
 {
     console.log('Closed');
+    window.location.href = "/menu";
 }
