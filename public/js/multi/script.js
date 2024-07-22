@@ -139,6 +139,7 @@ document.addEventListener('startEvent', function()
                 continue;
             }
             game.updateSnakeData(currentSnake);
+            game.snakes[currentSnake.name].checkCollisionFood();
         }
 
         if (typeof mySnake === "undefined")
@@ -159,8 +160,8 @@ document.addEventListener('startEvent', function()
         // отправить обновленные данные на бэк
         let data = {
             snake: {
-                x: game.snakeUser.pos.x,
-                y: game.snakeUser.pos.y,
+                x: Math.round(game.snakeUser.pos.x),
+                y: Math.round(game.snakeUser.pos.y),
                 radius: game.snakeUser.size,
                 score: game.snakeUser.score,
                 body: game.snakeUser.getBodyData(),

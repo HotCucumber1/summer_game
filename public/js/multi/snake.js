@@ -274,6 +274,8 @@ class Snake
                 ut.cirCollision(x, y, this.size + 3, game.foods[i].pos.x, game.foods[i].pos.y, game.foods[i].size))
             {
                 this.addLength(game.foods[i].size);
+
+                console.log(this.id, 'Eat it');
                 game.foods.splice(i, 1);
 
                 if (this.id === localStorage.getItem('nickname'))
@@ -405,8 +407,8 @@ class Snake
         {
             body.push(
                 new Point(
-                    this.arr[i].x + this.camera.x,
-                    this.arr[i].y + this.camera.y,
+                    Math.round(this.arr[i].x + this.camera.x),
+                    Math.round(this.arr[i].y + this.camera.y),
                 )
             );
         }
