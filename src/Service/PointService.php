@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Color;
 use App\Entity\Point;
 use App\Repository\PointRepositoryInterface;
 
@@ -15,7 +16,14 @@ class PointService
     public function addPoint(int $x1, int $y1,
                              int $x2, int $y2): void
     {
-        $this->pointRepository->addPoint($x1, $y1, $x2, $y2);
+        do
+        {
+            $x = rand($x1, $x2);
+            $y = rand($y1, $y2);
+        }
+        while ($x ** 2 + $y ** 2 >= $y2 ** 2);
+        $point = new Point($x, $y, Color::getRandomColor());
+        $this->pointRepository->addPoint($point);
     }
 
     public function clearPoint(Point $point): void

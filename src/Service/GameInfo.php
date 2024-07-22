@@ -41,25 +41,13 @@ class GameInfo
         }
     }
 
-    public function setGameStatus(string $jsonData, int $id): void
+    public function setGameStatus(array $data, int $id): void
     {
-        // Вытащить наружу
         $snake = $this->snakes[$id];
         if (!$snake->getAliveStatus())
         {
             return;
         }
-        $data = json_decode($jsonData, true);
-        if (!isset($data['snake']) ||
-            !isset($data['snake']['x']) ||
-            !isset($data['snake']['y']) ||
-            !isset($data['snake']['radius']) ||
-            !isset($data['snake']['score']) ||
-            !isset($data['snake']['body']))
-        {
-            throw new BadRequestException("Not enough information about snake");
-        }
-
         $this->snakeService->setSnakeData($snake,
                                           $data['snake']['x'],
                                           $data['snake']['y'],

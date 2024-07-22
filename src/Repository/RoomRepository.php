@@ -2,20 +2,15 @@
 
 namespace App\Repository;
 
-use App\Factory\GameFactory;
 use App\Service\GameInfo;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class RoomRepository
+class RoomRepository implements RoomRepositoryInterface
 {
     /**
      * @var array<string, GameInfo>
      */
     private array $rooms = [];
-
-    public function __construct(private readonly GameFactory $factory)
-    {
-    }
 
     public function addRoom(string $name, GameInfo $room): GameInfo
     {

@@ -6,8 +6,7 @@ use App\Entity\Point;
 
 interface PointRepositoryInterface
 {
-    public function addPoint(int $minX, int $minY,
-                             int $maxX, int $maxY): void;
+    public function addPoint(Point $point): void;
 
     /**
      * @return Point[]

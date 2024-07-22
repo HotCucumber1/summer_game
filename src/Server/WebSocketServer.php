@@ -2,7 +2,8 @@
 
 namespace App\Server;
 
-use App\Repository\RoomRepository;
+use App\Repository\RoomRepositoryInterface;
+use App\Service\GameInfo;
 use App\Service\RoomService;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
@@ -21,7 +22,7 @@ class WebSocketServer implements MessageComponentInterface
 
     public function __construct(private readonly LoopInterface $loop,
                                 private readonly RoomService $roomService,
-                                private readonly RoomRepository $roomRepository)
+                                private readonly RoomRepositoryInterface $roomRepository)
     {
         $this->clients = new \SplObjectStorage;
         $this->loop->addPeriodicTimer(self::INTERVAL, function()
@@ -45,27 +46,31 @@ class WebSocketServer implements MessageComponentInterface
         {
             $response = json_encode([
                 'type' => 'pong',
-                'timestamp' => $data['timestamp']
+                'timestamp' => $data['timestamp'],
             ]);
             $from->send($response);
         }
 
         if (isset($data['points']))
         {
-            $gameId = $this->clientRooms[$from->resourceId];
-            $currentRoom = $this->roomRepository->getRoomById($gameId);
+            $currentRoom = $this->getUserRoom($from->resourceId);
             $currentRoom->isStart = false;
         }
 
         // update user info
         if (isset($data['snake']))
         {
-            $gameId = $this->clientRooms[$from->resourceId];
-            $currentRoom = $this->roomRepository->getRoomById($gameId);
+            $currentRoom = $this->getUserRoom($from->resourceId);
 
-            // Добавить парсинг данных и сущность Input
-
-            $currentRoom->setGameStatus($msg, $from->resourceId);
+            if (!isset($data['snake']['x']) ||
+                !isset($data['snake']['y']) ||
+                !isset($data['snake']['radius']) ||
+                !isset($data['snake']['score']) ||
+                !isset($data['snake']['body']))
+            {
+                throw new BadRequestException("Not enough information about snake");
+            }
+            $currentRoom->setGameStatus($data, $from->resourceId);
         }
 
         // create room
@@ -73,8 +78,7 @@ class WebSocketServer implements MessageComponentInterface
         {
             try
             {
-                $newRoom = $this->roomService->createRoom();
-                $currentRoom = $this->roomRepository->addRoom($data['newRoom']['roomId'], $newRoom);
+                $currentRoom = $this->roomService->addRoom($data['newRoom']['roomId']);
                 $currentRoom->addUserToGame($from->resourceId, $data['newRoom']['userName']);
 
                 $this->clientRooms[$from->resourceId] = $data['newRoom']['roomId'];
@@ -113,30 +117,13 @@ class WebSocketServer implements MessageComponentInterface
         }
     }
 
-    private function sendData(): void
-    {
-        foreach ($this->clients as $client)
-        {
-            if (isset($this->clientRooms[$client->resourceId]))
-            {
-                $gameId = $this->clientRooms[$client->resourceId];
-                $room = $this->roomRepository->getRoomById($gameId);
-                $response = json_encode($room->getData());
-                $client->send($response);
-            }
-        }
-    }
-
     public function onClose(ConnectionInterface $conn): void
     {
         $this->clients->detach($conn);
-
-        $gameId = $this->clientRooms[$conn->resourceId];
-        $room = $this->roomRepository->getRoomById($gameId);
+        $room = $this->getUserRoom($conn->resourceId);
         $room->deleteUser($conn->resourceId);
 
         unset($this->clientRooms[$conn->resourceId]);
-
         echo "Connection {$conn->resourceId} has disconnected\n";
     }
 
@@ -144,5 +131,24 @@ class WebSocketServer implements MessageComponentInterface
     {
         echo "An error has occurred: {$e->getMessage()}\n";
         $conn->close();
+    }
+
+    private function sendData(): void
+    {
+        foreach ($this->clients as $client)
+        {
+            if (isset($this->clientRooms[$client->resourceId]))
+            {
+                $room = $this->getUserRoom($client->resourceId);
+                $response = json_encode($room->getData());
+                $client->send($response);
+            }
+        }
+    }
+
+    private function getUserRoom(string $userId): GameInfo
+    {
+        $gameId = $this->clientRooms[$userId];
+        return $this->roomRepository->getRoomById($gameId);
     }
 }

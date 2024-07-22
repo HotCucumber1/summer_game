@@ -5,7 +5,6 @@ window.addEventListener("DOMContentLoaded", async function ()
     const roomId = document.getElementById("roomId");
     const userInfo = document.getElementById("userInfo");
     const errorLabel = document.getElementById("errorLabel");
-
     document.body.classList.add("fade-in");
 
     function handleOnButton(e)

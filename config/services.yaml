@@ -23,7 +23,7 @@ services:
         arguments:
             $loop: '@React\EventLoop\LoopInterface'
             $roomService: '@App\Service\RoomService'
-            $roomRepository: '@App\Repository\RoomRepository'
+            $roomRepository: '@App\Repository\RoomRepositoryInterface'
     App\Server\StartWebSocketServerCommand:
         arguments:
             $webSocketServer: '@App\Server\WebSocketServer'

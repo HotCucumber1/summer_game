@@ -3,15 +3,18 @@
 namespace App\Service;
 
 use App\Factory\GameFactory;
+use App\Repository\RoomRepositoryInterface;
 
 class RoomService
 {
-    public function __construct(private readonly GameFactory $gameFactory)
+    public function __construct(private readonly GameFactory $gameFactory,
+                                private readonly RoomRepositoryInterface $roomRepository)
     {
     }
 
-    public function createRoom(): GameInfo
+    public function addRoom(string $name): GameInfo
     {
-        return $this->gameFactory->createGame();
+        $newRoom = $this->gameFactory->createGame();
+        return $this->roomRepository->addRoom($name, $newRoom);
     }
 }
