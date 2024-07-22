@@ -5,6 +5,7 @@ window.addEventListener("DOMContentLoaded", async function ()
     const roomId = document.getElementById("roomId");
     const userInfo = document.getElementById("userInfo");
     const errorLabel = document.getElementById("errorLabel");
+    const userId = document.getElementById("userId");
     const room = document.getElementById("room");
     const lobby = document.getElementById("lobby");
 
@@ -41,7 +42,7 @@ window.addEventListener("DOMContentLoaded", async function ()
 
     roomId.addEventListener("input",  function ()
     {
-        localStorage.setItem("lobbyId", lobbyId.value);
+        localStorage.setItem("lobbyId", roomId.value);
         errorLabel.classList.add("hidden");
     });
 
@@ -58,6 +59,9 @@ window.addEventListener("DOMContentLoaded", async function ()
         conn.send(
             JSON.stringify(userData)
         );
+        room.classList.add("fade-out");
+        lobby.classList.add("fade-in");
+        lobbyId.value = localStorage.getItem("lobbyId");
     });
 
     join.addEventListener("click", function ()
@@ -78,12 +82,29 @@ window.addEventListener("DOMContentLoaded", async function ()
     conn.addEventListener("message", function (event)
     {
         const dataFromServer = JSON.parse(event.data);
-        if (dataFromServer.roomExist) {
+        if (dataFromServer.roomExist) 
+        {
             errorLabel.classList.remove("hidden");
-            errorLabel.innerText = "А lobby with this ID already exists!";
-            room.classList.add("fade-in");
-            lobby.classList.add("fade-out");
-        };
+            errorLabel.innerText = "А lobby with this ID exists!";
+            create.setAttribute("disabled", "");
+        } else 
+        {
+            create.setAttribute("enabled", "");
+        }
+
+        if (dataFromServer.joinRoom)
+        {
+            room.classList.add("fade-out");
+            lobby.classList.add("fade-in");
+            userId.innerHTML = "";
+            for (i = 0; i < dataFromServer.joinRoom.length; i++)
+            {
+                let newUser = document.createElement("div");
+                newUser.className = "user";
+                newUser.innerText = dataFromServer.joinRoom[i];
+                userId.appendChild(newUser);
+            }
+        }
     })
 
     create.addEventListener('mouseover', handleOnButton);
