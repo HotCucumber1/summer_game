@@ -19,13 +19,14 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    App\Service\Server\WebSocketServer:
+    App\Server\WebSocketServer:
         arguments:
             $loop: '@React\EventLoop\LoopInterface'
+            $roomService: '@App\Service\RoomService'
             $roomRepository: '@App\Repository\RoomRepository'
-    App\Service\Server\StartWebSocketServerCommand:
+    App\Server\StartWebSocketServerCommand:
         arguments:
-            $webSocketServer: '@App\Service\Server\WebSocketServer'
+            $webSocketServer: '@App\Server\WebSocketServer'
         tags: [ 'console.command' ]
 
 

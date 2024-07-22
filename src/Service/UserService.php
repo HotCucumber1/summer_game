@@ -9,6 +9,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserService
 {
+    private const MIN_PASSWORD_LEN = 6;
+    private const MIN_NAME_LEN = 3;
     public function __construct(private readonly UserRepositoryInterface $userRepository,
                                 private readonly PasswordHasher $hasher)
     {
@@ -20,12 +22,11 @@ class UserService
         {
             throw new BadRequestException("User data is not valid");
         }
-        $hashPassword = $this->hasher->hash($password);
+        $hashedPassword = $this->hasher->hash($password);
         $user = new User(
             null,
             $name,
-            $hashPassword,
-            0
+            $hashedPassword
         );
         return $this->userRepository->store($user);
     }
@@ -68,6 +69,6 @@ class UserService
 
     private function isValid(string $name, string $password): bool
     {
-        return !(strlen($name) < 3 || strlen($password) < 6);
+        return !(strlen($name) < self::MIN_NAME_LEN || strlen($password) < self::MIN_PASSWORD_LEN);
     }
 }

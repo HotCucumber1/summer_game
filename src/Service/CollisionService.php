@@ -8,7 +8,7 @@ use App\Entity\Wall;
 
 class CollisionService
 {
-    public function isSnakeBump(Snake $snake, array $players): bool
+    public function isSnakeBump(Snake $snake, array $snakes): bool
     {
         $snakeX = $snake->getHeadX();
         $snakeY = $snake->getHeadY();
@@ -17,20 +17,20 @@ class CollisionService
         $currentId = $snake->getId();
 
         // TODO: need to optimize maybe
-        $snakes = $players;
         foreach ($snakes as $id => $snakeUser)
         {
-            if ($id !== $currentId)
+            if ($id === $currentId)
             {
-                foreach ($snakeUser->getBodyParts() as $bodyPart)
+                continue;
+            }
+            foreach ($snakeUser->getBodyParts() as $bodyPart)
+            {
+                $bodyX = $bodyPart->getX();
+                $bodyY = $bodyPart->getY();
+                $sqrDistance = ($snakeX - $bodyX) ** 2 + ($snakeY - $bodyY) ** 2;
+                if ($sqrDistance <= ($snakeRadius + $bodyPart->getRadius()) ** 2)
                 {
-                    $bodyX = $bodyPart->getX();
-                    $bodyY = $bodyPart->getY();
-                    $sqrDistance = ($snakeX - $bodyX) ** 2 + ($snakeY - $bodyY) ** 2;
-                    if ($sqrDistance <= ($snakeRadius + $bodyPart->getRadius()) ** 2)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
         }

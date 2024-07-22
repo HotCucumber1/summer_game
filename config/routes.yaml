@@ -13,44 +13,20 @@ login:
     methods: POST
     controller: App\Controller\UserController::login
 
-room:
-    path: /room
-    methods: GET
-    controller: App\Controller\GameController::selectRoom
-
-lobby:
-    path: /lobby
-    methods: GET
-    controller: App\Controller\GameController::lobby
-
 menu:
     path: /menu
     methods: GET
     controller: App\Controller\GameController::showMenu
 
+room:
+    path: /room
+    methods: GET
+    controller: App\Controller\GameController::multiplayer
+
 single:
     path: /single
     methods: GET
     controller: App\Controller\GameController::single
-
-game:
-    path: /game
-    methods: GET
-    controller: App\Controller\GameController::start
-
-reset:
-    path: /reset
-    methods: GET
-    controller: App\Controller\GameController::reset
-
-info:
-    path: /game/info
-    controller: App\Controller\GameController::getGameInfo
-
-move:
-    path: /snake/move
-    methods: POST
-    controller: App\Controller\GameController::setSnakeDirection
 
 score:
     path: /get/score/{name}
