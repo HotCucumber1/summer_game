@@ -63,7 +63,7 @@ class GameInfo
 
     public function getData(): array
     {
-        // информация по другим игроквм
+        // информация по другим игрокам
         $userData = [];
         foreach ($this->snakes as $user => $userSnake)
         {

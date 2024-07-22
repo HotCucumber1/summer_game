@@ -12,8 +12,8 @@ class Snake
 
     public function __construct(private ?int    $id,
                                 private string $name,
-                                private float  $headX,
-                                private float  $headY,
+                                private int  $headX,
+                                private int  $headY,
                                 private array  $bodyParts,
                                 private bool   $isAlive=true)
     {
@@ -32,12 +32,12 @@ class Snake
         return $this->name;
     }
 
-    public function getHeadX(): float
+    public function getHeadX(): int
     {
         return $this->headX;
     }
 
-    public function getHeadY(): float
+    public function getHeadY(): int
     {
         return $this->headY;
     }
@@ -70,11 +70,6 @@ class Snake
         return $this->isAlive;
     }
 
-    public function getLength(): int
-    {
-        return count($this->bodyParts) + 1; // + head
-    }
-
     public function setId(int $id): void
     {
         $this->id = $id;
@@ -85,12 +80,12 @@ class Snake
         $this->name = $name;
     }
 
-    public function setHeadX(float $headX): void
+    public function setHeadX(int $headX): void
     {
         $this->headX = $headX;
     }
 
-    public function setHeadY(float $headY): void
+    public function setHeadY(int $headY): void
     {
         $this->headY = $headY;
     }

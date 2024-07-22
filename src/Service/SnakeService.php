@@ -80,7 +80,7 @@ class SnakeService
         ];
     }
 
-    private function createBody(string $color, float $x, float $y): array
+    private function createBody(string $color, int $x, int $y): array
     {
         $body = [];
         for ($i = 0; $i < self::START_LENGTH; $i++)
