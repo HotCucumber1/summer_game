@@ -45,9 +45,8 @@ window.addEventListener("DOMContentLoaded", async function ()
         localStorage.setItem("lobbyId", roomId.value);
         errorLabel.classList.add("hidden");
         let roomData = {
-            checkRoom: {
-                roomId: roomId.value
-            }
+            type: 'checkRoom',
+            roomId: roomId.value,
         };
         conn.send(
             JSON.stringify(roomData)
@@ -59,6 +58,7 @@ window.addEventListener("DOMContentLoaded", async function ()
     {
         localStorage.setItem("role", "host");
         let userData = {
+            type: 'createRoom',
             newRoom: {
                 userName: localStorage.getItem("nickname"),
                 roomId: localStorage.getItem("lobbyId"),
@@ -77,6 +77,7 @@ window.addEventListener("DOMContentLoaded", async function ()
     {
         localStorage.setItem("role", "client");
         let userData = {
+            type: 'joinRoom',
             joinRoom: {
                 userName: localStorage.getItem("nickname"),
                 roomId: localStorage.getItem("lobbyId"),

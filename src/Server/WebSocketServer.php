@@ -40,101 +40,33 @@ class WebSocketServer implements MessageComponentInterface
     public function onMessage(ConnectionInterface $from, $msg): void
     {
         $data = json_decode($msg, true);
-
-        // ping
-        if (isset($data['type']) && $data['type'] === 'ping')
+        if (!isset($data['type']))
         {
-            $response = json_encode([
-                'type' => 'pong',
-                'timestamp' => $data['timestamp'],
-            ]);
-            $from->send($response);
+            throw new BadRequestException('Not enough data');
         }
-
-        if (isset($data['points']))
+        switch ($data['type'])
         {
-            $currentRoom = $this->getUserRoom($from->resourceId);
-            $currentRoom->isStart = false;
-        }
-
-        // update user info
-        if (isset($data['snake']))
-        {
-            $currentRoom = $this->getUserRoom($from->resourceId);
-
-            if (!isset($data['snake']['x']) ||
-                !isset($data['snake']['y']) ||
-                !isset($data['snake']['radius']) ||
-                !isset($data['snake']['score']) ||
-                !isset($data['snake']['body']) ||
-                !isset($data['snake']['boost']))
-            {
-                throw new BadRequestException("Not enough information about snake");
-            }
-            $currentRoom->setGameStatus($data, $from->resourceId);
-        }
-
-        // create room
-        if (isset($data['newRoom']))
-        {
-            try
-            {
-                $currentRoom = $this->roomService->addRoom($data['newRoom']['roomId']);
-                $currentRoom->addUserToGame($from->resourceId, $data['newRoom']['userName']);
-
-                $this->clientRoomsId[$from->resourceId] = $data['newRoom']['roomId'];
-            }
-            catch (BadRequestException $exception)
-            {
-                $errorMessage = [
-                    'roomExist' => $exception->getMessage(),
-                ];
-                $from->send(json_encode($errorMessage));
-            }
-        }
-
-        //join room
-        if (isset($data['joinRoom']))
-        {
-            $currentRoom = $this->roomRepository->getRoomById($data['joinRoom']['roomId']);
-            if ($currentRoom !== null)
-            {
-                $currentRoom->addUserToGame($from->resourceId, $data['joinRoom']['userName']);
-                $this->clientRoomsId[$from->resourceId] = $data['joinRoom']['roomId'];
-            }
-        }
-
-        // check room
-        if (isset($data['checkRoom']))
-        {
-            $roomId = $data['checkRoom']['roomId'];
-            if ($this->roomRepository->getRoomById($roomId) !== null)
-            {
-                $message = [
-                    'roomExist' => true,
-                ];
-            }
-            else
-            {
-                $message = [
-                    'roomOk' => true,
-                ];
-            }
-            $from->send(json_encode($message));
-        }
-
-        if (isset($data['start']))
-        {
-            $roomId = $this->clientRoomsId[$from->resourceId];
-            $room = $this->roomRepository->getRoomById($roomId);
-            $room->isStart = true;
-            foreach ($this->clients as $client)
-            {
-                if ($this->clientRoomsId[$client->resourceId] === $roomId)
-                {
-                    $client->send(json_encode(['start' => true]));
-                }
-            }
+            case 'ping':
+                $this->handlePing($from, $data);
+                break;
+            case 'points':
+                $this->handlePoints($from);
+                break;
+            case 'updateSnake':
+                $this->handleSnakeUpdate($from, $data);
+                break;
+            case 'createRoom':
+                $this->handleNewRoom($from, $data);
+                break;
+            case 'joinRoom':
+                $this->handleJoinRoom($from, $data);
+                break;
+            case 'checkRoom':
+                $this->handleCheckRoom($from, $data);
+                break;
+            case 'start';
+                $this->handleStart($from);
+                break;
         }
     }
 
@@ -171,5 +103,96 @@ class WebSocketServer implements MessageComponentInterface
     {
         $gameId = $this->clientRoomsId[$userId];
         return $this->roomRepository->getRoomById($gameId);
+    }
+
+    private function handlePing(ConnectionInterface $from, array $data): void
+    {
+        $response = json_encode([
+            'type' => 'pong',
+            'timestamp' => $data['timestamp'],
+        ]);
+        $from->send($response);
+    }
+
+    private function handlePoints(ConnectionInterface $from): void
+    {
+        $currentRoom = $this->getUserRoom($from->resourceId);
+        $currentRoom->isStart = false;
+    }
+
+    private function handleSnakeUpdate(ConnectionInterface $from, array $data): void
+    {
+        $currentRoom = $this->getUserRoom($from->resourceId);
+
+        if (!isset($data['snake']['x']) ||
+            !isset($data['snake']['y']) ||
+            !isset($data['snake']['radius']) ||
+            !isset($data['snake']['score']) ||
+            !isset($data['snake']['body']) ||
+            !isset($data['snake']['boost']))
+        {
+            throw new BadRequestException("Not enough information about snake");
+        }
+        $currentRoom->setGameStatus($data, $from->resourceId);
+    }
+
+    private function handleNewRoom(ConnectionInterface $from, array $data): void
+    {
+        try
+        {
+            $currentRoom = $this->roomService->addRoom($data['newRoom']['roomId']);
+            $currentRoom->addUserToGame($from->resourceId, $data['newRoom']['userName']);
+
+            $this->clientRoomsId[$from->resourceId] = $data['newRoom']['roomId'];
+        }
+        catch (BadRequestException $exception)
+        {
+            $errorMessage = [
+                'roomExist' => $exception->getMessage(),
+            ];
+            $from->send(json_encode($errorMessage));
+        }
+    }
+
+    private function handleJoinRoom(ConnectionInterface $from, array $data): void
+    {
+        $currentRoom = $this->roomRepository->getRoomById($data['joinRoom']['roomId']);
+        if ($currentRoom !== null)
+        {
+            $currentRoom->addUserToGame($from->resourceId, $data['joinRoom']['userName']);
+            $this->clientRoomsId[$from->resourceId] = $data['joinRoom']['roomId'];
+        }
+    }
+
+    private function handleCheckRoom(ConnectionInterface $from, array $data): void
+    {
+        $roomId = $data['roomId'];
+        if ($this->roomRepository->getRoomById($roomId) !== null)
+        {
+            $message = [
+                'roomExist' => true,
+            ];
+        }
+        else
+        {
+            $message = [
+                'roomOk' => true,
+            ];
+        }
+        $from->send(json_encode($message));
+    }
+
+    private function handleStart(ConnectionInterface $from): void
+    {
+        $roomId = $this->clientRoomsId[$from->resourceId];
+        $room = $this->roomRepository->getRoomById($roomId);
+        $room->isStart = true;
+        foreach ($this->clients as $client)
+        {
+            if ($this->clientRoomsId[$client->resourceId] === $roomId)
+            {
+                $client->send(json_encode(['start' => true]));
+            }
+        }
     }
 }

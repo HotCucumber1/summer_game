@@ -5,7 +5,7 @@ let ut = new Util();
 let cursor = new Point(0, 0);
 let game = new Game(ctxSnake, ctxHex);
 let isStarted = false;
-let d = -Math.PI / 2;
+let d = - Math.PI / 2;
 let isDie = false;
 
 
@@ -103,7 +103,7 @@ document.addEventListener('startEvent', function()
             }
             conn.send(
                 JSON.stringify({
-                    points: true
+                    type: 'points',
                 })
             );
         }
@@ -159,6 +159,7 @@ document.addEventListener('startEvent', function()
 
         // отправить обновленные данные на бэк
         let data = {
+            type: 'updateSnake',
             snake: {
                 x: Math.round(game.snakeUser.pos.x),
                 y: Math.round(game.snakeUser.pos.y),

@@ -30,7 +30,7 @@ window.addEventListener("DOMContentLoaded", function ()
     start.addEventListener("click", function ()
     {
         conn.send(
-            JSON.stringify({ start: true })
+            JSON.stringify({ type: 'start' })
         );
     });
 
