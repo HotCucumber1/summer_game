@@ -5,6 +5,10 @@ window.addEventListener("DOMContentLoaded", async function ()
     const roomId = document.getElementById("roomId");
     const userInfo = document.getElementById("userInfo");
     const errorLabel = document.getElementById("errorLabel");
+    const userId = document.getElementById("userId");
+    const room = document.getElementById("room");
+    const lobby = document.getElementById("lobby");
+    const lobbyId = document.getElementById('lobbyId');
     document.body.classList.add("fade-in");
 
     function handleOnButton(e)
@@ -64,6 +68,9 @@ window.addEventListener("DOMContentLoaded", async function ()
         conn.send(
             JSON.stringify(userData)
         );
+        room.classList.add("fade-out");
+        lobby.classList.add("fade-in");
+        lobbyId.value = localStorage.getItem("lobbyId");
     });
 
     join.addEventListener("click", function ()
@@ -84,9 +91,29 @@ window.addEventListener("DOMContentLoaded", async function ()
     conn.addEventListener("message", function (event)
     {
         const dataFromServer = JSON.parse(event.data);
-        if (dataFromServer.roomExist) {
+        if (dataFromServer.roomExist)
+        {
             errorLabel.classList.remove("hidden");
             errorLabel.innerText = "А lobby with this ID exists!";
+            create.setAttribute("disabled", "");
+        }
+        else
+        {
+            create.setAttribute("enabled", "");
+        }
+
+        if (dataFromServer.users)
+        {
+            room.classList.add("fade-out");
+            lobby.classList.add("fade-in");
+            userId.innerHTML = "";
+            for (let user in dataFromServer.users)
+            {
+                let newUser = document.createElement("div");
+                newUser.className = "user";
+                newUser.innerText = user;
+                userId.appendChild(newUser);
+            }
         }
     });
 

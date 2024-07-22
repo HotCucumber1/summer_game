@@ -41,17 +41,6 @@ function movement()
     game.snakeUser.changeAngle(d);
 }
 
-function measurePing()
-{
-    let start = Date.now();
-    conn.send(JSON.stringify(
-        {
-            type: 'ping',
-            timestamp: start,
-        }
-    ));
-}
-
 
 if (localStorage.getItem('nickname') === null)
 {
@@ -80,13 +69,8 @@ window.addEventListener('keyup', function (event)
 });
 
 
-// Измеряем пинг каждые 2 секунды
-setInterval(measurePing, 2000);
 document.addEventListener('startEvent', function()
 {
-    conn.send(
-        JSON.stringify({start: true})
-    );
     game.init();
     setTimeout(() => isStarted = true, 1000);
 
@@ -97,12 +81,8 @@ document.addEventListener('startEvent', function()
             return;
         }
         const dataFromServer = JSON.parse(event.data);
-
         if (dataFromServer.type === 'pong')
         {
-            let end = Date.now();
-            let ping = end - dataFromServer.timestamp;
-            console.log(`Ping: ${ping}ms`);
             return;
         }
 

@@ -1,10 +1,6 @@
 window.addEventListener("DOMContentLoaded", function ()
 {
     const start = document.getElementById("start");
-    const lobbyId = document.getElementById("lobbyId");
-    const userId = document.getElementById("userId");
-    const room = document.getElementById("room");
-    const create = document.getElementById("create");
     const lobby = document.getElementById("lobby");
     const gameCont = document.getElementById('gameCont');
     document.body.classList.add("fade-in");
@@ -33,24 +29,28 @@ window.addEventListener("DOMContentLoaded", function ()
 
     start.addEventListener("click", function ()
     {
-        lobby.classList.remove("fade-in");
-        lobby.classList.add("fade-out");
-        gameCont.style.display = "block";
-        gameCont.classList.add("fade-in");
-        const startEvent = new CustomEvent('startEvent');
-        document.dispatchEvent(startEvent);
+        conn.send(
+            JSON.stringify({ start: true })
+        );
     });
 
-    userId.innerText = localStorage.getItem("nickname");
-
-
-    create.addEventListener("click", function ()
+    conn.addEventListener('message', function (event)
     {
-        room.classList.add("fade-out2");
-        room.classList.add("fade-out");
-        lobby.classList.add("fade-in2");
-        lobby.classList.add("fade-in");
-        lobbyId.value = localStorage.getItem("lobbyId");
+        let data = JSON.parse(event.data);
+        if (data.type === 'ping')
+        {
+            return;
+        }
+
+        if (data.start)
+        {
+            lobby.classList.remove("fade-in");
+            lobby.classList.add("fade-out");
+            gameCont.style.display = "block";
+            gameCont.classList.add("fade-in");
+            const startEvent = new CustomEvent('startEvent');
+            document.dispatchEvent(startEvent);
+        }
     });
 
     start.addEventListener('mouseover', handleOnButton);

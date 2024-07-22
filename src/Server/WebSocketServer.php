@@ -115,6 +115,20 @@ class WebSocketServer implements MessageComponentInterface
                 $from->send(json_encode($errorMessage));
             }
         }
+
+        if (isset($data['start']))
+        {
+            $roomId = $this->clientRooms[$from->resourceId];
+            $room = $this->roomRepository->getRoomById($roomId);
+            $room->isStart = true;
+            foreach ($this->clients as $client)
+            {
+                if ($this->clientRooms[$client->resourceId] === $roomId)
+                {
+                    $client->send(json_encode(['start' => true]));
+                }
+            }
+        }
     }
 
     public function onClose(ConnectionInterface $conn): void

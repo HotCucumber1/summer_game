@@ -18,7 +18,7 @@ class GameInfo
      */
     public array $snakes = [];
     private int $wallRadius = Wall::START_RADIUS;
-    public bool $isStart = true;
+    public bool $isStart = false;
 
     public function __construct(private readonly CollisionService $collisionService,
                                 private readonly PointService     $pointService,
