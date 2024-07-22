@@ -42,7 +42,7 @@ window.addEventListener("DOMContentLoaded", function ()
     });
 
     userId.innerText = localStorage.getItem("nickname");
-    lobbyId.value = localStorage.getItem("lobbyId");
+
 
     create.addEventListener("click", function ()
     {
@@ -50,6 +50,7 @@ window.addEventListener("DOMContentLoaded", function ()
         room.classList.add("fade-out");
         lobby.classList.add("fade-in2");
         lobby.classList.add("fade-in");
+        lobbyId.value = localStorage.getItem("lobbyId");
     });
 
     start.addEventListener('mouseover', handleOnButton);

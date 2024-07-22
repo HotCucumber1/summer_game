@@ -146,12 +146,12 @@ body.fade-in {
     background: rgb(147, 212, 72);
 }
 
-.lobby__id {
+.room__id {
     box-shadow: 0 0 0 100px rgb(0, 0, 0) inset;
     outline: none;
     border-radius: 25px;
     padding: 4px;
-    width: 200px;
+    width: 300px;
     height: 50px;
     margin-top: 30px;
     font-size: 32px;
@@ -161,20 +161,31 @@ body.fade-in {
     text-align: center;
 }
 
-.lobby__id[id="lobbyId"] {
+.room__id[id="roomId"] {
     border: 1px solid rgb(101, 179, 72);
     -webkit-text-fill-color: rgb(101, 179, 72);
 }
 
-.lobby__id::placeholder {
+.room__id::placeholder {
     opacity: 40%;
     color: rgb(236, 233, 233);
     padding: 0;
     text-align: center;
 }
 
-.lobby__label {
+.room__label {
     color: azure;
     padding-top: 5px;
     font-family: "Ubuntu", sans-serif;
+}
+
+.room__label[id="errorLabel"] {
+    color: rgb(255, 0, 0);
+    padding-top: 5px;
+    font-family: "Ubuntu", sans-serif;
+}
+
+.hidden {
+    visibility: hidden;
+    display: none;
 }

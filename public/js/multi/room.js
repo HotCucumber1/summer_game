@@ -2,8 +2,12 @@ window.addEventListener("DOMContentLoaded", async function ()
 {
     const create = document.getElementById("create");
     const join = document.getElementById("join");
-    const lobbyId = document.getElementById("roomId");
+    const roomId = document.getElementById("roomId");
     const userInfo = document.getElementById("userInfo");
+    const errorLabel = document.getElementById("errorLabel");
+    const room = document.getElementById("room");
+    const lobby = document.getElementById("lobby");
+
     document.body.classList.add("fade-in");
 
     function handleOnButton(e)
@@ -35,7 +39,12 @@ window.addEventListener("DOMContentLoaded", async function ()
     let wins = await checkVictories(localStorage.getItem("nickname"));
     userInfo.innerText = "Hi, " + localStorage.getItem("nickname") + "! You have " + wins + " wins now!";
 
-    lobbyId.addEventListener("input", ()=> localStorage.setItem("lobbyId", lobbyId.value));
+    roomId.addEventListener("input",  function ()
+    {
+        localStorage.setItem("lobbyId", lobbyId.value);
+        errorLabel.classList.add("hidden");
+    });
+
     create.addEventListener("click", function ()
     {
         localStorage.setItem("role", "host");
@@ -50,6 +59,7 @@ window.addEventListener("DOMContentLoaded", async function ()
             JSON.stringify(userData)
         );
     });
+
     join.addEventListener("click", function ()
     {
         localStorage.setItem("role", "client");
@@ -64,6 +74,17 @@ window.addEventListener("DOMContentLoaded", async function ()
             JSON.stringify(userData)
         );
     });
+
+    conn.addEventListener("message", function (event)
+    {
+        const dataFromServer = JSON.parse(event.data);
+        if (dataFromServer.roomExist) {
+            errorLabel.classList.remove("hidden");
+            errorLabel.innerText = "А lobby with this ID already exists!";
+            room.classList.add("fade-in");
+            lobby.classList.add("fade-out");
+        };
+    })
 
     create.addEventListener('mouseover', handleOnButton);
     create.addEventListener('mouseout', pullOfWithButton);
