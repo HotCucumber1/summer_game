@@ -66,7 +66,8 @@ class WebSocketServer implements MessageComponentInterface
                 !isset($data['snake']['y']) ||
                 !isset($data['snake']['radius']) ||
                 !isset($data['snake']['score']) ||
-                !isset($data['snake']['body']))
+                !isset($data['snake']['body']) ||
+                !isset($data['snake']['boost']))
             {
                 throw new BadRequestException("Not enough information about snake");
             }

@@ -15,7 +15,8 @@ class Snake
                                 private int  $headX,
                                 private int  $headY,
                                 private array  $bodyParts,
-                                private bool   $isAlive=true)
+                                private bool   $isAlive=true,
+                                private bool   $boost=false)
     {
         $this->radius = self::START_RADIUS;
         $this->score = self::START_SCORE;
@@ -70,6 +71,11 @@ class Snake
         return $this->isAlive;
     }
 
+    public function getBoost(): bool
+    {
+        return $this->boost;
+    }
+
     public function setId(int $id): void
     {
         $this->id = $id;
@@ -108,6 +114,11 @@ class Snake
     public function setAliveStatus(bool $isAlive): void
     {
         $this->isAlive = $isAlive;
+    }
+
+    public function setBoost(bool $boost): void
+    {
+        $this->boost = $boost;
     }
 
     public function increaseScore(int $add): void

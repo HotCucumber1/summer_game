@@ -37,12 +37,14 @@ class SnakeService
                                  int $y,
                                  int $radius,
                                  array $oldSnakeBody,
-                                 string $color): void
+                                 string $color,
+                                 bool $boost): void
     {
         $snake->setHeadX($x);
         $snake->setHeadY($y);
         $snake->setRadius($radius);
         $snake->setColor($color);
+        $snake->setBoost($boost);
 
         $newBody = [];
         foreach ($oldSnakeBody as $bodyPart)
@@ -77,6 +79,7 @@ class SnakeService
             'radius' => $snake->getRadius(),
             'score' => $snake->getScore(),
             'color' => $snake->getColor(),
+            'boost' => $snake->getBoost(),
         ];
     }
 

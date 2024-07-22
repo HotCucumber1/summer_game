@@ -165,7 +165,8 @@ document.addEventListener('startEvent', function()
                 radius: game.snakeUser.size,
                 score: game.snakeUser.score,
                 body: game.snakeUser.getBodyData(),
-                color: game.snakeUser.mainColor
+                color: game.snakeUser.mainColor,
+                boost: game.snakeUser.boost
             }
         };
         conn.send(JSON.stringify(data));

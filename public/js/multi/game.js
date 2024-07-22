@@ -49,6 +49,7 @@ class Game
     {
         this.snakes[snakeData.name].pos.x = snakeData.x;
         this.snakes[snakeData.name].pos.y = snakeData.y;
+        this.snakes[snakeData.name].boost = snakeData.boost;
 
         this.snakes[snakeData.name].arr = [];
         this.snakes[snakeData.name].arr.push(

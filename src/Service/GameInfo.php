@@ -53,7 +53,8 @@ class GameInfo
                                           $data['snake']['y'],
                                           $data['snake']['radius'],
                                           $data['snake']['body'],
-                                          $data['snake']['color']);
+                                          $data['snake']['color'],
+                                          $data['snake']['boost']);
 
         $this->checkBumps($snake);
         $this->updatePoints($snake);
