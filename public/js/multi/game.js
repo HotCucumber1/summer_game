@@ -17,7 +17,7 @@ class Game
     init()
     {
         // TODO: протестить
-        let spawn = ut.arcRandom(
+        let spawn= ut.arcRandom(
             -this.ARENA_RADIUS,
             this.ARENA_RADIUS,
             this.ARENA_RADIUS * 0.8
@@ -36,13 +36,13 @@ class Game
     addSnakeFromData(snakeData)
     {
         this.snakes[snakeData.name] = new Snake(ctxSnake,
-            snakeData.name,
-            snakeData.x - this.snakeUser.pos.x + this.SCREEN_SIZE.x / 2,
-            snakeData.y - this.snakeUser.pos.y + this.SCREEN_SIZE.y / 2,
-            snakeData.score,
-            4,
-            snakeData.radius,
-            snakeData.color);
+                                                snakeData.name,
+                                                snakeData.x - this.snakeUser.pos.x + this.SCREEN_SIZE.x / 2,
+                                                snakeData.y - this.snakeUser.pos.y + this.SCREEN_SIZE.y / 2,
+                                                snakeData.score,
+                                                4,
+                                                snakeData.radius,
+                                                snakeData.color);
     }
 
     updateSnakeData(snakeData)
@@ -92,7 +92,7 @@ class Game
         }
 
         this.snakeUser.drawYourLength();
-        // this.drawLength();
+        this.drawScoreTable();
         // this.drawSize();
         this.drawName();
     }
@@ -129,23 +129,29 @@ class Game
         this.world.y -= this.snakeUser.velocity.y;
     }
 
-    drawLength()
+    drawScoreTable()
     {
         let start = new Point(20, 20);
         const maxInTop = 10;
         let leaderBoard = [];
-        for (let i = 0; i < this.snakes.length; i++)
+
+        for (let snake in this.snakes)
         {
-            leaderBoard.push(this.snakes[i]);
+            leaderBoard.push(this.snakes[snake]);
         }
+        leaderBoard.push(this.snakeUser);
 
         leaderBoard.sort(function (a, b)
         {
             return b.arr.length - a.arr.length;
         });
 
-        for (let i = 0; i < maxInTop; i++)
+        for (let i = 0; i < leaderBoard.length; i++)
         {
+            if (i === maxInTop)
+            {
+                break;
+            }
             this.ctxSnake.fillStyle = leaderBoard[i].mainColor;
             if (window.innerWidth > 1920)
             {

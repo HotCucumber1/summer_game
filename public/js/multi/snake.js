@@ -2,6 +2,11 @@ class Snake
 {
     constructor(ctx, id, x, y, score, speed, radius, color)
     {
+        this.camera = new Camera(
+            -game.SCREEN_SIZE.x, -game.SCREEN_SIZE.y,
+             game.SCREEN_SIZE.x,  game.SCREEN_SIZE.y
+        );
+
         this.ctx = ctx;
         this.id = id;
         this.score = score;
@@ -20,8 +25,8 @@ class Snake
         this.MAXLENGTH = 200;
 
         this.mainColor = color;
-        this.midColor = ut.color(this.mainColor, 0.33);
-        this.supportColor = ut.color(this.midColor, 0.33);
+        this.midColor = color; //ut.color(this.mainColor, 0.33);
+        this.supportColor = color; //= ut.color(this.midColor, 0.33);
 
         this.arr = [];
         this.headPath = [];
@@ -57,11 +62,6 @@ class Snake
 
         this.counter = 0;
         this.intervalId = null;
-
-        this.camera = new Camera(
-            -game.SCREEN_SIZE.x, -game.SCREEN_SIZE.y,
-             game.SCREEN_SIZE.x,  game.SCREEN_SIZE.y
-        );
         this.death = new Audio("audio/minecraft-death-sound.mp3");
         this.death.volume = 0.6;
         this.death.muted = false;
@@ -275,7 +275,6 @@ class Snake
             {
                 this.addLength(game.foods[i].size);
 
-                console.log(this.id, 'Eat it');
                 game.foods.splice(i, 1);
 
                 if (this.id === localStorage.getItem('nickname'))
