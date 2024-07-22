@@ -7,11 +7,12 @@ namespace App\Entity;
  */
 class User
 {
+    private int $score;
     public function __construct(private ?int    $userId,
                                 private string  $name, // unique
-                                private ?string $password,
-                                private int     $score)
+                                private ?string $password)
     {
+        $this->score = 0;
     }
 
     public function getUserId(): int

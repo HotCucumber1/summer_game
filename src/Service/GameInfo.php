@@ -10,10 +10,13 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 class GameInfo
 {
     private const START_POINTS_AMOUNT = 2000;
+    private const MIN_WALL_RADIUS = 500;
+    private const COMPRESSION = 1;
+    private const POINT_CHECK_DISTANCE = 20;
     /**
      * @var Snake[]
      */
-    public array $users = [];
+    public array $snakes = [];
     private int $wallRadius = Wall::START_RADIUS;
     public bool $isStart = true;
 
@@ -31,29 +34,17 @@ class GameInfo
 
     public function addUserToGame(string $id, string $name): void
     {
-        if (!isset($this->users[$id]))
+        if (!isset($this->snakes[$id]))
         {
-            $this->users[$id] = $this->snakeService->createSnake($id, $name);
+            $this->snakes[$id] = $this->snakeService->createSnake($id, $name);
             echo "Create {$id} snake" . PHP_EOL;
-        }
-    }
-
-    public function dropGameToStart(): void
-    {
-        $this->users = [];
-        $this->wallRadius = Wall::START_RADIUS;
-        $this->pointService->clearAllPoints();
-
-        for ($i = 0; $i < self::START_POINTS_AMOUNT; $i++)
-        {
-            $this->pointService->addPoint(-$this->wallRadius, -$this->wallRadius,
-                $this->wallRadius,  $this->wallRadius);
         }
     }
 
     public function setGameStatus(string $jsonData, int $id): void
     {
-        $snake = $this->users[$id];
+        // Вытащить наружу
+        $snake = $this->snakes[$id];
         if (!$snake->getAliveStatus())
         {
             return;
@@ -86,7 +77,7 @@ class GameInfo
     {
         // информация по другим игроквм
         $userData = [];
-        foreach ($this->users as $user => $userSnake)
+        foreach ($this->snakes as $user => $userSnake)
         {
             if ($userSnake->getAliveStatus())
             {
@@ -94,37 +85,39 @@ class GameInfo
             }
         }
 
-        if ($this->isStart)
+        if (!$this->isStart)
         {
-            // Информация по точкам
-            $pointsData = [];
-            $points = $this->pointService->allPoints();
-            foreach ($points as $point)
-            {
-                if ($point->getStatus())
-                {
-                    $pointsData[] = [
-                        'x' => $point->getX(),
-                        'y' => $point->getY(),
-                        'color' => $point->getColor()
-                    ];
-                }
-            }
             return [
                 'users' => $userData,
-                'points' => $pointsData,
                 'wall' => $this->wallRadius,
             ];
+
+        }
+        // Информация по точкам
+        $pointsData = [];
+        $points = $this->pointService->allPoints();
+        foreach ($points as $point)
+        {
+            if ($point->getStatus())
+            {
+                $pointsData[] = [
+                    'x' => $point->getX(),
+                    'y' => $point->getY(),
+                    'color' => $point->getColor()
+                ];
+            }
         }
         return [
             'users' => $userData,
+            'points' => $pointsData,
             'wall' => $this->wallRadius,
         ];
+
     }
 
     public function deleteUser(int $id): void
     {
-        unset($this->users[$id]);
+        unset($this->snakes[$id]);
     }
 
     private function checkBumps(Snake $snake): void
@@ -134,7 +127,7 @@ class GameInfo
             return;
         }
         if ($this->collisionService->isWallBump($snake, $this->wallRadius) ||
-            $this->collisionService->isSnakeBump($snake, $this->users))
+            $this->collisionService->isSnakeBump($snake, $this->snakes))
         {
             $snake->setAliveStatus(false);
         }
@@ -149,8 +142,8 @@ class GameInfo
         $points = $this->pointService->allPoints();
         foreach ($points as $point)
         {
-            if (abs($snake->getHeadX() - $point->getX()) < 20 &&
-                abs($snake->getHeadY() - $point->getY()) < 20)
+            if (abs($snake->getHeadX() - $point->getX()) < self::POINT_CHECK_DISTANCE &&
+                abs($snake->getHeadY() - $point->getY()) < self::POINT_CHECK_DISTANCE)
             {
                 if ($point->getStatus() && $this->collisionService->isPointEaten($snake, $point))
                 {
@@ -203,9 +196,9 @@ class GameInfo
 
     private function compressWall(): void
     {
-        if ($this->wallRadius > 500)
+        if ($this->wallRadius > self::MIN_WALL_RADIUS)
         {
-            $this->wallRadius -= 1;
+            $this->wallRadius -= self::COMPRESSION;
         }
     }
 }
