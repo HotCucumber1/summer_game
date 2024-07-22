@@ -110,11 +110,17 @@ class WebSocketServer implements MessageComponentInterface
             $roomId = $data['checkRoom']['roomId'];
             if ($this->roomRepository->getRoomById($roomId) !== null)
             {
-                $errorMessage = [
+                $message = [
                     'roomExist' => true,
                 ];
-                $from->send(json_encode($errorMessage));
             }
+            else
+            {
+                $message = [
+                    'roomOk' => true,
+                ];
+            }
+            $from->send(json_encode($message));
         }
 
         if (isset($data['start']))

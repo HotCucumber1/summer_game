@@ -97,9 +97,9 @@ window.addEventListener("DOMContentLoaded", async function ()
             errorLabel.innerText = "А lobby with this ID exists!";
             create.setAttribute("disabled", "");
         }
-        else
+        else if (dataFromServer.roomOk)
         {
-            create.setAttribute("enabled", "");
+            create.removeAttribute("disabled");
         }
 
         if (dataFromServer.users)
