@@ -7,6 +7,7 @@ use App\Service\RoomService;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use React\EventLoop\LoopInterface;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 
 class WebSocketServer implements MessageComponentInterface
@@ -70,11 +71,21 @@ class WebSocketServer implements MessageComponentInterface
         // create room
         if (isset($data['newRoom']))
         {
-            $newRoom = $this->roomService->createRoom();
-            $currentRoom = $this->roomRepository->addRoom($data['newRoom']['roomId'], $newRoom);
-            $currentRoom->addUserToGame($from->resourceId, $data['newRoom']['userName']);
+            try
+            {
+                $newRoom = $this->roomService->createRoom();
+                $currentRoom = $this->roomRepository->addRoom($data['newRoom']['roomId'], $newRoom);
+                $currentRoom->addUserToGame($from->resourceId, $data['newRoom']['userName']);
 
-            $this->clientRooms[$from->resourceId] = $data['newRoom']['roomId'];
+                $this->clientRooms[$from->resourceId] = $data['newRoom']['roomId'];
+            }
+            catch (BadRequestException $exception)
+            {
+                $errorMessage = [
+                    'roomExist' => $exception->getMessage(),
+                ];
+                $from->send(json_encode($errorMessage));
+            }
         }
 
         //join room
@@ -85,6 +96,19 @@ class WebSocketServer implements MessageComponentInterface
             {
                 $currentRoom->addUserToGame($from->resourceId, $data['joinRoom']['userName']);
                 $this->clientRooms[$from->resourceId] = $data['joinRoom']['roomId'];
+            }
+        }
+
+        // check room
+        if (isset($data['checkRoom']))
+        {
+            $roomId = $data['checkRoom']['roomId'];
+            if ($this->roomRepository->getRoomById($roomId) !== null)
+            {
+                $errorMessage = [
+                    'roomExist' => true,
+                ];
+                $from->send(json_encode($errorMessage));
             }
         }
     }

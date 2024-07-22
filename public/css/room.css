@@ -159,6 +159,7 @@ body.fade-in {
     font-weight: 400;
     padding-inline: 50px;
     text-align: center;
+    caret-color: rgb(101, 179, 72);
 }
 
 .room__id[id="roomId"] {

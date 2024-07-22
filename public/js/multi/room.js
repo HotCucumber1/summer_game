@@ -41,9 +41,18 @@ window.addEventListener("DOMContentLoaded", async function ()
 
     roomId.addEventListener("input",  function ()
     {
-        localStorage.setItem("lobbyId", lobbyId.value);
+        localStorage.setItem("lobbyId", roomId.value);
         errorLabel.classList.add("hidden");
+        let roomData = {
+            checkRoom: {
+                roomId: roomId.value
+            }
+        };
+        conn.send(
+            JSON.stringify(roomData)
+        );
     });
+
 
     create.addEventListener("click", function ()
     {
@@ -80,11 +89,9 @@ window.addEventListener("DOMContentLoaded", async function ()
         const dataFromServer = JSON.parse(event.data);
         if (dataFromServer.roomExist) {
             errorLabel.classList.remove("hidden");
-            errorLabel.innerText = "А lobby with this ID already exists!";
-            room.classList.add("fade-in");
-            lobby.classList.add("fade-out");
-        };
-    })
+            errorLabel.innerText = "А lobby with this ID exists!";
+        }
+    });
 
     create.addEventListener('mouseover', handleOnButton);
     create.addEventListener('mouseout', pullOfWithButton);
