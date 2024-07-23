@@ -96,10 +96,19 @@ window.addEventListener("DOMContentLoaded", async function ()
             errorLabel.classList.remove("hidden");
             errorLabel.innerText = "А lobby with this ID exists!";
             create.setAttribute("disabled", "");
+            join.removeAttribute("disabled");
+        }
+        else if (dataFromServer.isStarted)
+        {
+            errorLabel.classList.remove("hidden");
+            errorLabel.innerText = "Game started!";
+            create.setAttribute("disabled", "");
+            join.setAttribute("disabled", "");
         }
         else if (dataFromServer.roomOk)
         {
             create.removeAttribute("disabled");
+            join.removeAttribute("disabled");
         }
 
 
