@@ -150,14 +150,13 @@ body.fade-in {
     box-shadow: 0 0 0 100px rgb(0, 0, 0) inset;
     outline: none;
     border-radius: 25px;
-    padding: 4px;
+    padding: 4px 45px;
     width: 300px;
     height: 50px;
     margin-top: 30px;
     font-size: 32px;
     font-family: "Ubuntu", sans-serif;
     font-weight: 400;
-    padding-inline: 50px;
     text-align: center;
     caret-color: rgb(101, 179, 72);
 }

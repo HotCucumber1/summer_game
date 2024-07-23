@@ -1,5 +1,7 @@
 window.addEventListener("DOMContentLoaded", async function ()
 {
+    localStorage.removeItem('lobbyId');
+
     const create = document.getElementById("create");
     const join = document.getElementById("join");
     const roomId = document.getElementById("roomId");
@@ -101,7 +103,7 @@ window.addEventListener("DOMContentLoaded", async function ()
         else if (dataFromServer.isStarted)
         {
             errorLabel.classList.remove("hidden");
-            errorLabel.innerText = "Game started!";
+            errorLabel.innerText = "Game has already started!";
             create.setAttribute("disabled", "");
             join.setAttribute("disabled", "");
         }
