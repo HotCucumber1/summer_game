@@ -28,8 +28,9 @@ class UserController extends AbstractController
 
     public function login(Request $request): Response
     {
-        $name = $request->get('name');
-        $password = $request->get('password');
+        $data = json_decode($request->getContent());
+        $name = $data['name'];
+        $password = $data['password'];
 
         try
         {
