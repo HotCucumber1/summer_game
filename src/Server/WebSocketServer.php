@@ -167,18 +167,21 @@ class WebSocketServer implements MessageComponentInterface
 
     private function handleCheckRoom(ConnectionInterface $from, array $data): void
     {
-        $roomId = $data['roomId'];
-        if ($this->roomRepository->getRoomById($roomId) !== null)
+        $room = $this->roomRepository->getRoomById($data['roomId']);
+        if ($room !== null)
         {
-            $message = [
-                'roomExist' => true,
-            ];
+            if ($room->inGame)
+            {
+                $message = ['isStarted' => true];
+            }
+            else
+            {
+                $message = ['roomExist' => true];
+            }
         }
         else
         {
-            $message = [
-                'roomOk' => true,
-            ];
+            $message = ['roomOk' => true];
         }
         $from->send(json_encode($message));
     }
@@ -188,6 +191,7 @@ class WebSocketServer implements MessageComponentInterface
         $roomId = $this->clientRoomsId[$from->resourceId];
         $room = $this->roomRepository->getRoomById($roomId);
         $room->isStart = true;
+        $room->inGame = true;
         foreach ($this->clients as $client)
         {
             if ($this->clientRoomsId[$client->resourceId] === $roomId)

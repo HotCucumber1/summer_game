@@ -9,16 +9,18 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class GameInfo
 {
-    private const START_POINTS_AMOUNT = 2000;
-    private const MIN_WALL_RADIUS = 500;
-    private const COMPRESSION = 1;
-    private const POINT_CHECK_DISTANCE = 20;
+    public bool $isStart = false;
+    public bool $inGame = false;
     /**
      * @var Snake[]
      */
     public array $snakes = [];
+    private const START_POINTS_AMOUNT = 2000;
+    private const MIN_WALL_RADIUS = 500;
+    private const COMPRESSION = 1;
+    private const POINT_CHECK_DISTANCE = 20;
     private int $wallRadius = Wall::START_RADIUS;
-    public bool $isStart = false;
+
 
     public function __construct(private readonly CollisionService $collisionService,
                                 private readonly PointService     $pointService,
