@@ -18,14 +18,6 @@ window.addEventListener("DOMContentLoaded", function ()
         button.style.boxShadow = "";
     }
 
-    if (localStorage.getItem("role") === "host")
-    {
-        start.removeAttribute("disabled");
-    }
-    else
-    {
-        start.setAttribute("disabled", "");
-    }
 
     start.addEventListener("click", function ()
     {
