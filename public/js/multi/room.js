@@ -73,6 +73,18 @@ window.addEventListener("DOMContentLoaded", async function ()
         }
     });
 
+    function checkRole() 
+    {
+        if (localStorage.getItem("role") === "host")
+        {
+            start.removeAttribute("disabled");
+        }
+        else
+        {
+            start.setAttribute("disabled", "");
+        }
+    }
+    
     create.addEventListener("click", function ()
     {
         if (validateLobbyId())
@@ -90,6 +102,7 @@ window.addEventListener("DOMContentLoaded", async function ()
                 JSON.stringify(userData)
             );
             lobbyId.value = localStorage.getItem("lobbyId");
+            checkRole();
         }
     });
 
@@ -110,6 +123,7 @@ window.addEventListener("DOMContentLoaded", async function ()
                 JSON.stringify(userData)
             );
             lobbyId.value = localStorage.getItem("lobbyId");
+            checkRole();
         }
     });
 
