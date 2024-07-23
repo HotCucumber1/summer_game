@@ -7,6 +7,7 @@ class Food
 
         this.size = 5;
         this.mainColor = color;
+        this.isEaten = false;
     }
 
     draw()

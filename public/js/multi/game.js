@@ -80,8 +80,12 @@ class Game
 
         for (let i = 0; i < this.foods.length; i++)
         {
-            this.foods[i].draw(this.snakeUser);
+            if (!this.foods[i].isEaten)
+            {
+                this.foods[i].draw(this.snakeUser);
+            }
         }
+
         if (this.snakeUser.state === 0)
         {
             this.snakeUser.move();
@@ -188,6 +192,10 @@ class Game
         {
             this.foods[i].pos.x -= this.snakeUser.velocity.x;
             this.foods[i].pos.y -= this.snakeUser.velocity.y;
+            /*if (this.foods[i].pos.x ** 2 + this.foods[i].pos.y ** 2 >= this.ARENA_RADIUS  ** 2)
+            {
+                this.foods[i].isEaten = true;
+            }*/
         }
     }
 }
