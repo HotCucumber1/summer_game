@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Color;
 use App\Entity\Point;
+use App\Entity\Wall;
 use App\Repository\PointRepositoryInterface;
 
 
@@ -21,7 +22,7 @@ class PointService
             $x = rand($x1, $x2);
             $y = rand($y1, $y2);
         }
-        while ($x ** 2 + $y ** 2 >= $y2 ** 2);
+        while ($x ** 2 + $y ** 2 >= Wall::START_RADIUS ** 2);
         $point = new Point($x, $y, Color::getRandomColor());
         $this->pointRepository->addPoint($point);
     }

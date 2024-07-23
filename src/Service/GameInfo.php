@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Entity\Point;
 use App\Entity\Snake;
 use App\Entity\Wall;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class GameInfo
 {
