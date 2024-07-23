@@ -40,52 +40,77 @@ window.addEventListener("DOMContentLoaded", async function ()
     let wins = await checkVictories(localStorage.getItem("nickname"));
     userInfo.innerText = "Hi, " + localStorage.getItem("nickname") + "! You have " + wins + " wins now!";
 
+    
+    function validateLobbyId()
+    {
+        if (roomId.value === "") 
+        {
+            create.setAttribute("disabled", "");
+            join.setAttribute("disabled", "");
+            return false;
+        }
+        else
+        {
+            create.removeAttribute("disabled");
+            join.removeAttribute("disabled");
+            return true;
+        };
+    }
+
     roomId.addEventListener("input",  function ()
     {
-        localStorage.setItem("lobbyId", roomId.value);
-        errorLabel.classList.add("hidden");
-        let roomData = {
-            type: 'checkRoom',
-            roomId: roomId.value,
-        };
-        conn.send(
-            JSON.stringify(roomData)
-        );
+        if (validateLobbyId())
+        { 
+            localStorage.setItem("lobbyId", roomId.value);
+            errorLabel.classList.add("hidden");
+            let roomData = {
+                type: 'checkRoom',
+                roomId: roomId.value,
+            };
+            conn.send(
+                JSON.stringify(roomData)
+            );
+        }
     });
-
 
     create.addEventListener("click", function ()
     {
-        localStorage.setItem("role", "host");
-        let userData = {
-            type: 'createRoom',
-            newRoom: {
-                userName: localStorage.getItem("nickname"),
-                roomId: localStorage.getItem("lobbyId"),
-                userRole: localStorage.getItem("role"),
-            }
-        };
-        conn.send(
-            JSON.stringify(userData)
-        );
-        lobbyId.value = localStorage.getItem("lobbyId");
+        if (validateLobbyId())
+        { 
+            localStorage.setItem("role", "host");
+            let userData = {
+                type: 'createRoom',
+                newRoom: {
+                    userName: localStorage.getItem("nickname"),
+                    roomId: localStorage.getItem("lobbyId"),
+                    userRole: localStorage.getItem("role"),
+                }
+            };
+            conn.send(
+                JSON.stringify(userData)
+            );
+            lobbyId.value = localStorage.getItem("lobbyId");
+        }
     });
 
     join.addEventListener("click", function ()
     {
-        localStorage.setItem("role", "client");
-        let userData = {
-            type: 'joinRoom',
-            joinRoom: {
-                userName: localStorage.getItem("nickname"),
-                roomId: localStorage.getItem("lobbyId"),
-                userRole: localStorage.getItem("role"),
-            }
-        };
-        conn.send(
-            JSON.stringify(userData)
-        );
-        lobbyId.value = localStorage.getItem("lobbyId");
+        if (validateLobbyId())
+        { 
+            localStorage.setItem("role", "client");
+            let userData = {
+                type: 'joinRoom',
+                joinRoom: {
+                    userName: localStorage.getItem("nickname"),
+                    roomId: localStorage.getItem("lobbyId"),
+                    userRole: localStorage.getItem("role"),
+                }
+            };
+            conn.send(
+                JSON.stringify(userData)
+            );
+            lobbyId.value = localStorage.getItem("lobbyId");
+        }
     });
 
     conn.addEventListener("message", function (event)
