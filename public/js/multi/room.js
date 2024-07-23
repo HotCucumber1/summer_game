@@ -45,25 +45,22 @@ window.addEventListener("DOMContentLoaded", async function ()
     
     function validateLobbyId()
     {
-        if (roomId.value === "") 
+        if (roomId.value.trim() === "")
         {
             create.setAttribute("disabled", "");
             join.setAttribute("disabled", "");
             return false;
         }
-        else
-        {
-            create.removeAttribute("disabled");
-            join.removeAttribute("disabled");
-            return true;
-        };
+        create.removeAttribute("disabled");
+        join.removeAttribute("disabled");
+        return true;
     }
 
     roomId.addEventListener("input",  function ()
     {
         if (validateLobbyId())
         { 
-            localStorage.setItem("lobbyId", roomId.value);
+            localStorage.setItem("lobbyId", roomId.value.trim());
             errorLabel.classList.add("hidden");
             let roomData = {
                 type: 'checkRoom',

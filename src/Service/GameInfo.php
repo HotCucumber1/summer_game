@@ -150,12 +150,11 @@ class GameInfo
                 $this->pointService->clearPoint($point);
             }
         }
-        // $this->pointService->clearEatenPoints();
     }
 
     private function checkSnakeDeath(Snake $snake): void
     {
-        if (!$snake->getAliveStatus())
+        if ($snake->getAliveStatus())
         {
             return;
         }
@@ -184,6 +183,7 @@ class GameInfo
                 $this->pointService->addPoint($x1, $y1, $x2, $y2);
             }
         }
+        unset($this->snakes[$snake->getId()]);
     }
 
     private function compressWall(): void
