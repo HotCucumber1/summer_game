@@ -20,7 +20,7 @@ window.addEventListener("DOMContentLoaded", function ()
 
     if (localStorage.getItem("role") === "host")
     {
-        start.setAttribute("enabled", "");
+        start.removeAttribute("disabled");
     }
     else
     {

@@ -16,7 +16,7 @@ class Snake
 
         this.pos = new Point(x, y);
         this.velocity = new Point(0, 0);
-        this.angle = ut.random(0, Math.PI);
+        this.angle = Math.PI / 2; // ut.random(0, Math.PI);
 
         this.length = 20; // body.length + 1; // + head
         this.MAXSIZE = 50;
@@ -25,8 +25,6 @@ class Snake
         this.MAXLENGTH = 200;
 
         this.mainColor = color;
-        this.midColor = color; //ut.color(this.mainColor, 0.33);
-        this.supportColor = color; //= ut.color(this.midColor, 0.33);
 
         this.arr = [];
         this.headPath = [];
@@ -91,7 +89,7 @@ class Snake
         let y = this.arr[0].y;
 
         //head
-        this.ctx.fillStyle = this.supportColor;
+        this.ctx.fillStyle = this.mainColor;
         this.ctx.beginPath();
         this.ctx.arc(x, y, this.size, 0, 2 * Math.PI);
         this.ctx.fill();
@@ -115,7 +113,7 @@ class Snake
     drawBlur(flicker)
     {
         this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20;
-        this.ctx.shadowColor = (this.boost && this.length > 10) ? this.supportColor : `rgb(0, 0, 0, 0.3)`;
+        this.ctx.shadowColor = (this.boost && this.length > 10) ? this.mainColor : `rgb(0, 0, 0, 0.3)`;
         this.ctx.shadowOffsetX = (this.boost && this.length > 10) ? 0 : 3;
         this.ctx.shadowOffsetY = (this.boost && this.length > 10) ? 0 : 3;
     }
@@ -131,9 +129,9 @@ class Snake
         let baseColor = `rgb(${baseColorValue}, ${baseColorValue}, ${baseColorValue})`;
 
         let grd = this.ctx.createRadialGradient(x, y, this.size * 0.1, x, y, this.size);
-        grd.addColorStop(0, this.supportColor);
+        grd.addColorStop(0, this.mainColor);
         grd.addColorStop(0.5, baseColor);
-        grd.addColorStop(1, this.supportColor);
+        grd.addColorStop(1, this.mainColor);
 
         let radius = this.size;
         if (radius < 0)
@@ -298,7 +296,7 @@ class Snake
     {
         this.ctx.globalAlpha = 1;
         this.ctx.shadowBlur = 0; // радиус размытия тени
-        this.ctx.shadowColor = this.supportColor; // цвет свечения
+        this.ctx.shadowColor = this.mainColor; // цвет свечения
         this.ctx.shadowOffsetX = 0; // смещение тени по X
         this.ctx.shadowOffsetY = 0;
 

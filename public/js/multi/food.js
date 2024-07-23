@@ -8,6 +8,7 @@ class Food
         this.size = 5;
         this.mainColor = color;
         this.isEaten = false;
+        this.realPos = new Point(x, y);
     }
 
     draw()

@@ -157,6 +157,7 @@ document.addEventListener('startEvent', function()
         ctxHex.clearRect(0, 0, canvas.width, canvas.height);
         game.draw();
 
+
         // отправить обновленные данные на бэк
         let data = {
             type: 'updateSnake',
@@ -167,7 +168,8 @@ document.addEventListener('startEvent', function()
                 score: game.snakeUser.score,
                 body: game.snakeUser.getBodyData(),
                 color: game.snakeUser.mainColor,
-                boost: game.snakeUser.boost
+                boost: game.snakeUser.boost,
+                angle: game.snakeUser.angle,
             }
         };
         conn.send(JSON.stringify(data));

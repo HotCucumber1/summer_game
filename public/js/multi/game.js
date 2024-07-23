@@ -17,11 +17,11 @@ class Game
     init()
     {
         // TODO: протестить
-        let spawn= ut.arcRandom(
-            -this.ARENA_RADIUS,
-            this.ARENA_RADIUS,
-            this.ARENA_RADIUS * 0.8
-        );
+        // let spawn= ut.arcRandom(
+        //     -this.ARENA_RADIUS,
+        //     this.ARENA_RADIUS,
+        //     this.ARENA_RADIUS * 0.8
+        // );
 
         this.snakeUser = new Snake(this.ctxSnake,
                                    localStorage.getItem('nickname'),
@@ -50,6 +50,7 @@ class Game
         this.snakes[snakeData.name].pos.x = snakeData.x;
         this.snakes[snakeData.name].pos.y = snakeData.y;
         this.snakes[snakeData.name].boost = snakeData.boost;
+        this.snakes[snakeData.name].angle = snakeData.angle;
 
         this.snakes[snakeData.name].arr = [];
         this.snakes[snakeData.name].arr.push(
@@ -192,10 +193,10 @@ class Game
         {
             this.foods[i].pos.x -= this.snakeUser.velocity.x;
             this.foods[i].pos.y -= this.snakeUser.velocity.y;
-            /*if (this.foods[i].pos.x ** 2 + this.foods[i].pos.y ** 2 >= this.ARENA_RADIUS  ** 2)
+            if (this.foods[i].realPos.x ** 2 + this.foods[i].realPos.y ** 2 >= this.ARENA_RADIUS  ** 2)
             {
                 this.foods[i].isEaten = true;
-            }*/
+            }
         }
     }
 }

@@ -16,7 +16,8 @@ class Snake
                                 private int  $headY,
                                 private array  $bodyParts,
                                 private bool   $isAlive=true,
-                                private bool   $boost=false)
+                                private bool   $boost=false,
+                                private float $angle=M_PI / 2)
     {
         $this->radius = self::START_RADIUS;
         $this->score = self::START_SCORE;
@@ -76,9 +77,9 @@ class Snake
         return $this->boost;
     }
 
-    public function setId(int $id): void
+    public function getAngle(): float
     {
-        $this->id = $id;
+        return $this->angle;
     }
 
     public function setName(string $name): void
@@ -119,6 +120,11 @@ class Snake
     public function setBoost(bool $boost): void
     {
         $this->boost = $boost;
+    }
+
+    public function setAngle(float $angle): void
+    {
+        $this->angle = $angle;
     }
 
     public function increaseScore(int $add): void

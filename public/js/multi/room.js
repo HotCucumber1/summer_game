@@ -68,8 +68,6 @@ window.addEventListener("DOMContentLoaded", async function ()
         conn.send(
             JSON.stringify(userData)
         );
-        room.classList.add("fade-out");
-        lobby.classList.add("fade-in");
         lobbyId.value = localStorage.getItem("lobbyId");
     });
 
@@ -87,6 +85,7 @@ window.addEventListener("DOMContentLoaded", async function ()
         conn.send(
             JSON.stringify(userData)
         );
+        lobbyId.value = localStorage.getItem("lobbyId");
     });
 
     conn.addEventListener("message", function (event)
@@ -102,6 +101,7 @@ window.addEventListener("DOMContentLoaded", async function ()
         {
             create.removeAttribute("disabled");
         }
+
 
         if (dataFromServer.users)
         {
