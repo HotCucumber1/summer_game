@@ -2,6 +2,7 @@ window.addEventListener("DOMContentLoaded", function ()
 {
     const enter = document.getElementById("enter");
     const nickname = document.getElementById("nickname");
+    const password = document.getElementById('password');
 
     function hangleOnButton(e)
     {
@@ -15,8 +16,32 @@ window.addEventListener("DOMContentLoaded", function ()
         button.style.boxShadow = "";
     }
 
+    function getData()
+    {
+        return {
+            name: nickname.value.trim(),
+            password: password.value.trim(),
+        }
+    }
+
+    async function sendData()
+    {
+        let response = await fetch('/login', {
+            method: "POST",
+            body: JSON.stringify(getData()),
+            headers: {
+                "Content-Type": "application/json;charset=utf-8"
+            }
+        });
+        if (!response.ok)
+        {
+            //
+        }
+    }
+
     enter.addEventListener('mouseover', hangleOnButton);
     enter.addEventListener('mouseout', pullOfWithButton);
+    enter.addEventListener('click', sendData);
 
 
     document.body.classList.add("fade-in");
