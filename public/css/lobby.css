@@ -355,3 +355,37 @@ body.fade-in {
     padding-top: 5px;
     font-family: "Ubuntu", sans-serif;
 }
+
+.fireworks-canvas
+{
+    position: absolute;
+    transition: .7s ease-out;
+    z-index: 3;
+}
+
+.victory-text
+{
+    position: absolute;
+    font-family: "Balsamiq Sans", sans-serif;
+    font-size: 128px;
+    font-weight: normal;
+    line-height: 50px;
+    color: rgb(255, 255, 255);
+    letter-spacing: 8px;
+    z-index: 4;
+    margin-top: 23%;
+    margin-left: 32%;
+    user-select: none;
+    display: none;
+}
+
+.victory-text span[name="span1"] {
+    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+}
+
+.victory-text span[name="span2"] {
+    animation: neon linear infinite 4s;
+    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+}

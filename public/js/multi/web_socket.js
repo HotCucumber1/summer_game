@@ -31,7 +31,7 @@ conn.onerror = function (error)
 conn.onclose = function ()
 {
     console.log('Closed');
-    // window.location.href = "/menu";
+    window.location.href = "/menu";
 }
 
 conn.onmessage = function (event)

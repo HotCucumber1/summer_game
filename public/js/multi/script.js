@@ -6,6 +6,60 @@ let cursor = new Point(0, 0);
 let game = new Game(ctxSnake, ctxHex);
 let d = - Math.PI / 2;
 let isDie = false;
+let gameEnd = false;
+
+function fireworksEffect (fireworksCanvas, victoryText) {
+    let firework = JS_FIREWORKS.Fireworks({
+        id: 'fireworks-canvas',
+        hue: 120,
+        particleCount: 70,
+        delay: 0,
+        minDelay: 20,
+        maxDelay: 40,
+        boundaries: {
+            top: 50,
+            bottom: 240,
+            left: 50,
+            right: 1550
+        },
+        fireworkSpeed: 2,
+        fireworkAcceleration: 1.05,
+        particleFriction: .95,
+        particleGravity: 1.5
+    });
+    victoryText.style.display = "block";
+    firework.start();
+    setTimeout(() => {
+        firework.stop();
+        fireworksCanvas.style.opacity = '0';
+        setTimeout(()=>{
+            canvas.style.display = "none";
+            victoryText.style.display = "none";
+            fireworksCanvas.remove();
+            conn.close()
+        }, 2000)
+    }, 7000);
+}
+
+function victory()
+{
+    game.globalCompositeOperation = "";
+    game.ctxFillStyle = "black";
+    canvas.style.transition = ".7s ease-out";
+    canvas.style.opacity = "0";
+
+    const gameDiv = document.getElementById("game");
+    const fireworksCanvas = document.createElement("canvas");
+    const victoryText =  document.getElementById("victory-text");
+    gameDiv.appendChild(fireworksCanvas);
+    fireworksCanvas.classList.add("fireworks-canvas");
+    fireworksCanvas.id = 'fireworks-canvas';
+    fireworksCanvas.width = window.innerWidth;
+    fireworksCanvas.height = window.innerHeight;
+    console.log(1);
+
+    fireworksEffect(fireworksCanvas, victoryText);
+}
 
 
 function movement()
@@ -113,11 +167,13 @@ document.addEventListener('startEvent', function()
         game.ARENA_RADIUS = dataFromServer.wall;
 
         //    при победе в multi 
-        if (Object.keys(dataFromServer.users).length === 1 && dataFromServer.users[localStorage.getItem("nickname")] !== null)
+        if (Object.keys(dataFromServer.users).length === 1 &&
+            dataFromServer.users[localStorage.getItem("nickname")] !== null && !gameEnd)
         {
-            setTimeout(() => console.log("You win!"), 3000);
-            setTimeout(() => conn.close(), 5000);
+            gameEnd = true;
+            setTimeout(victory, 3000);
             conn.send(JSON.stringify({type: "victory"}));
+            return;
         }
 
         // обновить информацию по змеям

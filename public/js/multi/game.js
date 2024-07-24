@@ -12,6 +12,8 @@ class Game
         this.backgroundImage = new Image();
         this.backgroundImage.src = "images/bg2.jpg";
         this.foods = [];
+        this.globalCompositeOperation = "destination-out"
+        this.ctxFillStyle = "red";
     }
 
     init()
@@ -110,14 +112,14 @@ class Game
         this.ctxHex.save();
 
         // Заполнение области за пределами круга красным цветом
-        this.ctxHex.fillStyle = 'red';
+        this.ctxHex.fillStyle = this.ctxFillStyle;
         this.ctxHex.fillRect(this.world.x, this.world.y, this.WORLD_SIZE.x, this.WORLD_SIZE.y);
 
         this.ctxHex.beginPath();
         this.ctxHex.arc(this.world.x + this.WORLD_SIZE.x / 2, this.world.y + this.WORLD_SIZE.y / 2, this.ARENA_RADIUS, 0, 2 * Math.PI);
         this.ctxHex.closePath();
 
-        this.ctxHex.globalCompositeOperation = 'destination-out';
+        this.ctxHex.globalCompositeOperation = this.globalCompositeOperation;
         this.ctxHex.fill();
 
         this.ctxHex.restore();

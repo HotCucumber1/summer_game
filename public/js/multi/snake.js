@@ -436,7 +436,6 @@ class Snake
                     this.ctx.arc(adjustedX, adjustedY, this.size, 0, 2 * Math.PI);
                     this.ctx.fill();
                 }
-                console.log(adjustedX, adjustedY);
 
                 // Вызываем следующий кадр
                 setTimeout(()=> requestAnimationFrame(fadeEffect), fadeInterval);
