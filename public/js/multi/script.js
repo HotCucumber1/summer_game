@@ -8,6 +8,13 @@ let d = - Math.PI / 2;
 let isDie = false;
 let gameEnd = false;
 
+let victorySound = new Audio('audio/victory_sound.mp3');
+victorySound.volume = 0.5;
+victorySound.load();
+
+let fireworksSound = new Audio('audio/fireworks.mp3');
+fireworksSound.load();
+
 function fireworksEffect (fireworksCanvas, victoryText) {
     let firework = JS_FIREWORKS.Fireworks({
         id: 'fireworks-canvas',
@@ -46,6 +53,8 @@ function fireworksEffect (fireworksCanvas, victoryText) {
 
 function victory()
 {
+    victorySound.play();
+    fireworksSound.play();
     game.globalCompositeOperation = "";
     game.ctxFillStyle = "black";
     canvas.style.transition = ".7s ease-out";
@@ -187,7 +196,7 @@ document.addEventListener('startEvent', function()
             dataFromServer.users[localStorage.getItem("nickname")] !== null && !gameEnd)
         {
             gameEnd = true;
-            setTimeout(victory, 3000);
+            setTimeout(victory, 1000);
             conn.send(JSON.stringify({type: "victory"}));
             return;
         }

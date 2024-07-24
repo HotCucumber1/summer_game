@@ -166,7 +166,7 @@ window.addEventListener("DOMContentLoaded", async function ()
 
         if (dataFromServer.users)
         {
-            if (Object.keys(dataFromServer.users).length > 1)
+            if (Object.keys(dataFromServer.users).length > 0)
             {
                 moreThenOnePlayers = true;
             }
