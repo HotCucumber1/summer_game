@@ -380,22 +380,12 @@ class Snake
                 }
 
                 // Рисуем эффект
-                let adjustedX;
-                let adjustedY
                 for (let i = arr.length - 1; i >= 0; i--)
                 {
-                    adjustedX = arr[i].x;
-                    adjustedY = arr[i].y;
                     this.ctx.beginPath();
                     this.ctx.fillStyle = rgbaColor;
 
-                    if (this.id !== localStorage.getItem('nickname'))
-                    {
-                        adjustedX -= game.snakeUser.velocity.x;
-                        adjustedY -= game.snakeUser.velocity.y;
-                    }
-
-                    this.ctx.arc(adjustedX, adjustedY, this.size, 0, 2 * Math.PI);
+                    this.ctx.arc(arr[i].x, arr[i].y, this.size, 0, 2 * Math.PI);
                     this.ctx.fill();
                 }
 
@@ -449,7 +439,10 @@ class Snake
             this.death.play();
         }
 
-        this.drawEffect(arrayBody);
+        if (this.id === localStorage.getItem('nickname'))
+        {
+            this.drawEffect(arrayBody);
+        }
         delete game.snakes[this.id];
     }
 

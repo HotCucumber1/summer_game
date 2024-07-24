@@ -32,10 +32,13 @@ function fireworksEffect (fireworksCanvas, victoryText) {
     setTimeout(() => {
         firework.stop();
         fireworksCanvas.style.opacity = '0';
+
         setTimeout(()=>{
             canvas.style.display = "none";
             victoryText.style.display = "none";
             fireworksCanvas.remove();
+            document.body.classList.remove("fade-in");
+            document.body.classList.add("fade-out");
             conn.close()
         }, 2000)
     }, 7000);
@@ -180,14 +183,14 @@ document.addEventListener('startEvent', function()
         game.ARENA_RADIUS = dataFromServer.wall;
 
         // при победе в multi
-        // if (Object.keys(dataFromServer.users).length === 1 &&
-        //     dataFromServer.users[localStorage.getItem("nickname")] !== null && !gameEnd)
-        // {
-        //     gameEnd = true;
-        //     setTimeout(victory, 3000);
-        //     conn.send(JSON.stringify({type: "victory"}));
-        //     return;
-        // }
+        if (Object.keys(dataFromServer.users).length === 1 &&
+            dataFromServer.users[localStorage.getItem("nickname")] !== null && !gameEnd)
+        {
+            gameEnd = true;
+            setTimeout(victory, 3000);
+            conn.send(JSON.stringify({type: "victory"}));
+            return;
+        }
 
         // обновить информацию по змеям
         for (let snake in game.snakes)
