@@ -67,6 +67,9 @@ class WebSocketServer implements MessageComponentInterface
             case 'start';
                 $this->handleStart($from);
                 break;
+            case 'startCheckCollision':
+                $this->handleCheckCollision($from);
+                break;
         }
     }
 
@@ -199,5 +202,11 @@ class WebSocketServer implements MessageComponentInterface
                 $client->send(json_encode(['start' => true]));
             }
         }
+    }
+
+    private function handleCheckCollision(ConnectionInterface $from): void
+    {
+        $room = $this->getUserRoom($from->resourceId);
+        $room->checkSnakeCollision = true;
     }
 }

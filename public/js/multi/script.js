@@ -4,7 +4,6 @@ let ctxHex = document.getElementById("canvasHex").getContext("2d");
 let ut = new Util();
 let cursor = new Point(0, 0);
 let game = new Game(ctxSnake, ctxHex);
-let isStarted = false;
 let d = - Math.PI / 2;
 let isDie = false;
 
@@ -72,11 +71,11 @@ window.addEventListener('keyup', function (event)
 document.addEventListener('startEvent', function()
 {
     game.init();
-    setTimeout(() => isStarted = true, 1000);
+    setTimeout(() => conn.send(JSON.stringify({ type: 'startCheckCollision' })), 10000);
 
     conn.addEventListener("message", function (event)
     {
-        if (!isStarted || isDie)
+        if (isDie)
         {
             return;
         }
@@ -97,7 +96,7 @@ document.addEventListener('startEvent', function()
                         ctxSnake,
                         dataFromServer.points[i].x + game.SCREEN_SIZE.x / 2,
                         dataFromServer.points[i].y + game.SCREEN_SIZE.y / 2,
-                        dataFromServer.points[i].color
+                        dataFromServer.points[i].c
                     )
                 );
             }

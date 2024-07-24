@@ -10,6 +10,7 @@ class GameInfo
 {
     public bool $isStart = false;
     public bool $inGame = false;
+    public bool $checkSnakeCollision = false;
     /**
      * @var Snake[]
      */
@@ -58,7 +59,11 @@ class GameInfo
                                           $data['snake']['boost'],
                                           $data['snake']['angle']);
 
-        $this->checkBumps($snake);
+        if ($this->checkSnakeCollision)
+        {
+            $this->checkSnakeBumps($snake);
+        }
+        $this->checkWallBumps($snake);
         $this->updatePoints($snake);
         $this->checkSnakeDeath($snake);
         $this->compressWall();
@@ -94,7 +99,7 @@ class GameInfo
                 $pointsData[] = [
                     'x' => $point->getX(),
                     'y' => $point->getY(),
-                    'color' => $point->getColor()
+                    'c' => $point->getColor()
                 ];
             }
         }
@@ -111,14 +116,25 @@ class GameInfo
         unset($this->snakes[$id]);
     }
 
-    private function checkBumps(Snake $snake): void
+    private function checkSnakeBumps(Snake $snake): void
     {
         if (!$snake->getAliveStatus())
         {
             return;
         }
-        if ($this->collisionService->isWallBump($snake, $this->wallRadius) ||
-            $this->collisionService->isSnakeBump($snake, $this->snakes))
+        if ($this->collisionService->isSnakeBump($snake, $this->snakes))
+        {
+            $snake->setAliveStatus(false);
+        }
+    }
+
+    private function checkWallBumps(Snake $snake): void
+    {
+        if (!$snake->getAliveStatus())
+        {
+            return;
+        }
+        if ($this->collisionService->isWallBump($snake, $this->wallRadius))
         {
             $snake->setAliveStatus(false);
         }
