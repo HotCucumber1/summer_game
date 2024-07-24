@@ -344,7 +344,6 @@ class Snake
                 let adjustedY
                 for (let i = arr.length - 1; i >= 0; i--)
                 {
-                    let d = this.size / 2;
                     adjustedX = arr[i].x;
                     adjustedY = arr[i].y;
                     this.ctx.beginPath();

@@ -5,10 +5,10 @@ namespace App\Entity;
 class Color
 {
     private const COLORS = [
-        "#1abc9c", "#2ecc71", "#3498db", "#9b59b6",
-        "#16a085", "#27ae60", "#2980b9", "#8e44ad",
-        "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1",
-        "#f39c12", "#d35400", "#c0392b", "#bdc3c7"
+        "#1efcdc", "#35ff86", "#4fb8ff", "#d768ff",
+        "#1affb3", "#35ff85", "#49c8ff", "#bf60ff",
+        "#ffde26", "#ff9e40", "#ff5d52", "#ffffff",
+        "#ffad26", "#ff5e26", "#ff493f",
     ];
 
     public static function getRandomColor(): string

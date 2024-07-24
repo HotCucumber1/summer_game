@@ -29,9 +29,16 @@ class Util
 
     randomColor()
     {
-        let colors = ["#C0392B", "#E74C3C", "#9B59B6", "#8E44AD", "#2980B9",
-            "#3498DB", "#17A589", "#138D75", "#229954", "#28B463", "#D4AC0D",
-            "#D68910", "#CA6F1E", "#BA4A00"];
+        // let colors = ["#C0392B", "#E74C3C", "#9B59B6", "#8E44AD", "#2980B9",
+        //     "#3498DB", "#17A589", "#138D75", "#229954", "#28B463", "#D4AC0D",
+        //     "#D68910", "#CA6F1E", "#BA4A00"];
+
+        let colors= [
+            "#1efcdc", "#35ff86", "#4fb8ff", "#d768ff",
+            "#1affb3", "#35ff85", "#49c8ff", "#bf60ff",
+            "#ffde26", "#ff9e40", "#ff5d52", "#ffffff",
+            "#ffad26", "#ff5e26", "#ff493f", "#ffffff"
+        ]
         return colors[this.random(0, colors.length - 1)]
     }
 
