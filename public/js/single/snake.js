@@ -427,7 +427,11 @@ class Snake
 
         for (let i = last; i >= 1; i--)
         {
-            game.foods.push(new Food(game.ctxSnake, this.arr[i].x, this.arr[i].y));
+            if (i % 3 === 1)
+            {
+                game.foods.push(new Food(this.ctx, this.arr[i].x, this.arr[i].y));
+            }
+
             arrayBody.push({
                 x: this.arr[i].x,
                 y: this.arr[i].y,

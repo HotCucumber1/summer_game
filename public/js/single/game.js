@@ -32,13 +32,10 @@ class Game
         {
             this.foods[i].draw(this.snakes[0]);
         }
-
-
         for (let i = 0; i < this.bonus.length; i++)
         {
             this.bonus[i].move(this.snakes[0]);
         }
-
         if (this.snakes[0].state === 0)
         {
             this.snakes[0].move();

@@ -17,21 +17,19 @@ class Food
         this.pos.x -= player.velocity.x;
         this.pos.y -= player.velocity.y;
 
-        let grd = this.ctx.createRadialGradient(this.pos.x, this.pos.y, this.size * 0.1, this.pos.x, this.pos.y, this.size);
-        grd.addColorStop(0, 'white');
-        grd.addColorStop(1, this.mainColor);
+        this.ctx.fillStyle = this.mainColor;
 
-        this.ctx.fillStyle = grd;
-
-        let flicker = Math.sin(Date.now() / 100) * 10 + 20;
-        this.ctx.shadowBlur = flicker;
-        this.ctx.shadowColor = 'white';
-        this.ctx.shadowOffsetX = 0;
-        this.ctx.shadowOffsetY = 0;
+        this.ctx.shadowBlur = 20;               // радиус размытия тени
+        this.ctx.shadowColor = this.mainColor;  // цвет свечения
+        this.ctx.shadowOffsetX = 0;             // смещение тени по X
+        this.ctx.shadowOffsetY = 0;             // смещение тени по Y
 
         this.ctx.beginPath();
-        this.ctx.arc(parseInt(this.pos.x), parseInt(this.pos.y), this.size, 0, 2 * Math.PI);
+        this.ctx.arc(this.pos.x, this.pos.y, this.size, 0, 2 * Math.PI);
         this.ctx.fill();
+
+        this.ctx.shadowBlur = 0;
+        this.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
     }
 
     die()

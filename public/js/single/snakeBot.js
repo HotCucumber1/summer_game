@@ -249,15 +249,6 @@ class SnakeBot extends Snake
 
         this.drawHead(this.supportColor);
 
-        // this.ctx.beginPath();
-        // this.ctx.globalAlpha = 0.5;
-        // this.ctx.fillStyle = "white";
-        // if (this.inDanger)
-        //      this.ctx.fillStyle = "red";
-        // this.ctx.arc(this.pos.x, this.pos.y, this.shield, 0, 2 * Math.PI);
-        // this.ctx.fill();
-        // this.ctx.globalAlpha = 1;
-
         super.setSize();
         super.checkCollisionFood();
         super.checkCollisionBonus();
@@ -292,7 +283,6 @@ class SnakeBot extends Snake
                 // Рисуем эффект
                 for (let i = arr.length - 1; i >= 0; i--)
                 {
-
                     let d = this.size / 2;
 
                     this.ctx.beginPath();
@@ -353,7 +343,10 @@ class SnakeBot extends Snake
 
         for (let i = last; i >= 1; i--)
         {
-            game.foods.push(new Food(game.ctxSnake, this.arr[i].x, this.arr[i].y));
+            if (i % 3 === 1)
+            {
+                game.foods.push(new Food(this.ctx, this.arr[i].x, this.arr[i].y));
+            }
             arrayBody.push({
                 x: this.arr[i].x,
                 y: this.arr[i].y,

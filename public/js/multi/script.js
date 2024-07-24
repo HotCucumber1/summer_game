@@ -116,9 +116,7 @@ document.addEventListener('startEvent', function()
         if (Object.keys(dataFromServer.users).length === 1 && dataFromServer.users[localStorage.getItem("nickname")] !== null)
         {
             setTimeout(() => console.log("You win!"), 3000);
-
             setTimeout(() => conn.close(), 5000);
-
             conn.send(JSON.stringify({type: "victory"}));
         }
 
