@@ -165,3 +165,9 @@ body.fade-in {
     color: rgb(255, 255, 255);
     background: rgb(255, 161, 110);
 }
+
+.errorLabel {
+    color: rgb(255, 0, 0);
+    padding-top: 5px;
+    font-family: "Ubuntu", sans-serif;
+}

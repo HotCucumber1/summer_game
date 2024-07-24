@@ -3,6 +3,7 @@ window.addEventListener("DOMContentLoaded", function ()
     const enter = document.getElementById("enter");
     const nickname = document.getElementById("nickname");
     const password = document.getElementById('password');
+    const errorLabel = document.getElementById("errorLabel");
 
     function hangleOnButton(e)
     {
@@ -26,16 +27,33 @@ window.addEventListener("DOMContentLoaded", function ()
 
     async function sendData()
     {
+        try 
+        {
         let response = await fetch('/login', {
             method: "POST",
             body: JSON.stringify(getData()),
-            headers: {
+            headers: 
+            {
                 "Content-Type": "application/json;charset=utf-8"
             }
         });
         if (!response.ok)
         {
-            //
+            const result = await response.text(); 
+            throw new Error(result) 
+        } 
+        else
+        {
+            errorLabel.classList.add("hidden");
+            errorLabel.innerText= "";
+        }
+
+        } 
+        catch (error) 
+        {
+            // alert(error.message);    //как вариант 
+            errorLabel.classList.remove("hidden");
+            errorLabel.innerText = error.message;
         }
     }
 
