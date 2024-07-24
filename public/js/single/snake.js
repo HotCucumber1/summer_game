@@ -84,6 +84,12 @@ class Snake
         let p2 = ut.rotate(p1, this.arr[0], 40);
         this.drawEye(p2)
         this.drawRetina(p2);
+
+        //name
+        game.ctxSnake.fillStyle = this.mainColor;
+        game.ctxSnake.font = "bold 24px Arial";
+        let nickname = this.id;
+        game.ctxSnake.fillText(nickname, x + 20, y);
     }
 
     drawBody(x, y, index, supportColor)
