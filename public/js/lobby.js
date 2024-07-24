@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const room = document.getElementById("room");
     const create = document.getElementById("create");
     const lobby = document.getElementById("lobby");
+    const back = document.getElementById("back");
 
     document.body.classList.add("fade-in");
 
@@ -17,20 +18,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (create) {
         create.addEventListener("click", () => {
-            room.classList.add("fade-out2");
+            room.classList.remove("fade-in");
             room.classList.add("fade-out");
-            lobby.classList.add("fade-in2");
+            room.style.display = "none";
+            lobby.style.display = "flex";
+            lobby.classList.remove("fade-out");
             lobby.classList.add("fade-in");
         });
     }
+
+    if (back) {
+        back.addEventListener("click", () => {
+            lobby.classList.remove("fade-in");
+            lobby.classList.add("fade-out");
+            lobby.style.display = "none";
+            room.style.display = "flex";
+            room.classList.remove("fade-out");
+            room.classList.add("fade-in");
+        });
+    }
 });
-
-function handleOnButton(e) {
-    const button = e.target;
-    button.style.boxShadow = "0 0 20px rgb(161, 161, 161)";
-}
-
-function pullOfWithButton(e) {
-    const button = e.target;
-    button.style.boxShadow = "";
-}

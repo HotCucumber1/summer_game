@@ -16,7 +16,7 @@ window.addEventListener("DOMContentLoaded", function () {
     enter.addEventListener("submit", function () {
         const nickname = document.getElementById("nickname");
         const nick = nickname.value;
-        sessionStorage.setItem("Nickname", nick);
+        sessionStorage.setItem("nickname", nick);
         hangleButtonClick("../pages/menu.html");
     });
 
