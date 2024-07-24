@@ -200,18 +200,18 @@ body.fade-in {
 }
 
 .menu__neon span[name="span1"] {
-    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    -webkit-text-stroke: 7px rgb(101, 179, 72) ;
     text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
 }
 
 .menu__neon span[name="span2"] {
     animation: neon linear infinite 4s;
-    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    -webkit-text-stroke: 7px rgb(101, 179, 72);
     text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
 }
 
 .menu__neon span[name="span3"] {
-    -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    -webkit-text-stroke: 7px rgb(187, 75, 92) ;
     text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
 
 }
@@ -219,41 +219,41 @@ body.fade-in {
 @keyframes neon {
     78% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
-        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+        -webkit-text-stroke: 7px rgb(101, 179, 72);
     }
 
     79% {
-        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+        -webkit-text-stroke: 7px rgb(187, 75, 92);
     }
 
     80% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
-        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+        -webkit-text-stroke: 7px rgb(101, 179, 72);
     }
 
     81% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
-        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+        -webkit-text-stroke: 7px rgb(101, 179, 72);
     }
 
     82% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
-        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+        -webkit-text-stroke: 7px rgb(187, 75, 92);
     }
 
     83% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
-        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+        -webkit-text-stroke: 7px rgb(101, 179, 72);
     }
 
     92% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
-        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+        -webkit-text-stroke: 7px rgb(187, 75, 92);
     }
 
     92.5% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
-        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+        -webkit-text-stroke: 7px rgb(101, 179, 72);
     }
 }
 
