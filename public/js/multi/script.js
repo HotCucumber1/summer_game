@@ -146,6 +146,18 @@ document.addEventListener('startEvent', function()
             game.foods = [];
             for (let i = 0; i < dataFromServer.points.length; i++)
             {
+                if (i % 20 === 0)
+                {
+                    game.foods.push(
+                        new DangerFood(
+                            ctxSnake,
+                            dataFromServer.points[i].x + game.SCREEN_SIZE.x / 2,
+                            dataFromServer.points[i].y + game.SCREEN_SIZE.y / 2,
+                            dataFromServer.points[i].c
+                        )
+                    );
+                    continue;
+                }
                 game.foods.push(
                     new Food(
                         ctxSnake,
@@ -168,14 +180,14 @@ document.addEventListener('startEvent', function()
         game.ARENA_RADIUS = dataFromServer.wall;
 
         // при победе в multi
-        if (Object.keys(dataFromServer.users).length === 1 &&
-            dataFromServer.users[localStorage.getItem("nickname")] !== null && !gameEnd)
-        {
-            gameEnd = true;
-            setTimeout(victory, 3000);
-            conn.send(JSON.stringify({type: "victory"}));
-            return;
-        }
+        // if (Object.keys(dataFromServer.users).length === 1 &&
+        //     dataFromServer.users[localStorage.getItem("nickname")] !== null && !gameEnd)
+        // {
+        //     gameEnd = true;
+        //     setTimeout(victory, 3000);
+        //     conn.send(JSON.stringify({type: "victory"}));
+        //     return;
+        // }
 
         // обновить информацию по змеям
         for (let snake in game.snakes)

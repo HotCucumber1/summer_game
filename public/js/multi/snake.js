@@ -226,11 +226,14 @@ class Snake
             this.headPath.shift();
         }
 
-        for (let i = this.length - 1; i > 0; i--)
+        for (let i = this.arr.length - 1; i > 0; i--)
         {
-            this.arr[i].x = this.headPath[this.headPath.length - 1 - i].x - this.camera.x;
-            this.arr[i].y = this.headPath[this.headPath.length - 1 - i].y - this.camera.y;
-            this.drawBody(this.arr[i].x, this.arr[i].y, i);
+            if (this.headPath[this.headPath.length - 1 - i])
+            {
+                this.arr[i].x = this.headPath[this.headPath.length - 1 - i].x - this.camera.x;
+                this.arr[i].y = this.headPath[this.headPath.length - 1 - i].y - this.camera.y;
+                this.drawBody(this.arr[i].x, this.arr[i].y, i);
+            }
         }
 
         this.pos.x += this.velocity.x;
@@ -271,6 +274,30 @@ class Snake
         }
     }
 
+    decreaseFiveLength()
+    {
+        if ((this.arr.length - 5) >= this.MINSIZE)
+        {
+            for (let i = 0; i < 5; i++)
+            {
+                this.arr.pop();
+                this.length--;
+            }
+        }
+    }
+
+    addFiveLength()
+    {
+        if ((this.arr.length + 5) < this.MAXLENGTH)
+        {
+            for (let i = 0; i < 5; i++)
+            {
+                this.arr.push(new Point(-100, -100));
+                this.length++;
+            }
+        }
+    }
+
     checkCollisionFood()
     {
         let x = this.arr[0].x;
@@ -280,8 +307,21 @@ class Snake
             if (!game.foods[i].eaten &&
                 ut.cirCollision(x, y, this.size + 3, game.foods[i].pos.x, game.foods[i].pos.y, game.foods[i].size))
             {
-                this.addLength();
-
+                if (game.foods[i] instanceof DangerFood)
+                {
+                    if (Math.random() >= 0.5)
+                    {
+                        this.decreaseFiveLength();
+                    }
+                    else
+                    {
+                        this.addFiveLength();
+                    }
+                }
+                else
+                {
+                    this.addLength();
+                }
                 game.foods.splice(i, 1);
 
                 if (this.id === localStorage.getItem('nickname'))
