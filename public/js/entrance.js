@@ -43,7 +43,6 @@ window.addEventListener("DOMContentLoaded", function ()
     enter.addEventListener('mouseout', pullOfWithButton);
     enter.addEventListener('click', sendData);
 
-
     document.body.classList.add("fade-in");
 
     function hangleButtonClick(targetURL)

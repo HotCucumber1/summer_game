@@ -28,10 +28,9 @@ class UserController extends AbstractController
 
     public function login(Request $request): Response
     {
-        $data = json_decode($request->getContent());
+        $data = json_decode($request->getContent(), true);
         $name = $data['name'];
         $password = $data['password'];
-
         try
         {
             $user = $this->userService->getUserByName($name);

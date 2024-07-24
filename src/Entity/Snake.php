@@ -10,14 +10,14 @@ class Snake
     private int $score;
     private string $color;
 
-    public function __construct(private ?int    $id,
+    public function __construct(private ?int   $id,
                                 private string $name,
-                                private int  $headX,
-                                private int  $headY,
+                                private int    $headX,
+                                private int    $headY,
                                 private array  $bodyParts,
                                 private bool   $isAlive=true,
                                 private bool   $boost=false,
-                                private float $angle=M_PI / 2)
+                                private float  $angle=M_PI / 2)
     {
         $this->radius = self::START_RADIUS;
         $this->score = self::START_SCORE;
