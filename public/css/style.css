@@ -24,8 +24,8 @@ body.fade-in {
 }
 
 .cnv {
-    position: absolute;
     border-style: solid;
+    position: absolute;
 }
 
 #canvasHex {
@@ -36,4 +36,72 @@ body.fade-in {
 #canvasSnake {
     background-color: transparent;
     z-index: 2;
+}
+
+.fireworks-canvas
+{
+    position: absolute;
+    transition: .7s ease-out;
+    z-index: 3;
+}
+
+.victory-text
+{
+    position: absolute;
+    font-family: "Balsamiq Sans", sans-serif;
+    font-size: 128px;
+    font-weight: normal;
+    line-height: 50px;
+    color: rgb(255, 255, 255);
+    letter-spacing: 8px;
+    z-index: 4;
+    margin-top: 23%;
+    margin-left: 32%;
+    user-select: none;
+    display: none;
+}
+
+.victory-text span[name="span1"] {
+    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+}
+
+.victory-text span[name="span2"] {
+    animation: neon linear infinite 4s;
+    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+}
+
+@keyframes neon {
+    78% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+    79%{
+        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    }
+    80% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+    81% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+    82% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
+        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    }
+    83% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
+    92% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
+        -webkit-text-stroke: rgb(187, 75, 92) 7px;
+    }
+    92.5% {
+        text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
+        -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    }
 }

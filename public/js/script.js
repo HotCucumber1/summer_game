@@ -1,10 +1,11 @@
 let canvas = document.getElementById("canvasSnake");
-let canvas2 = document.getElementById("canvasHex");
+let canvasHex = document.getElementById("canvasHex");
 let ctxSnake = document.getElementById("canvasSnake").getContext("2d");
 let ctxHex = document.getElementById("canvasHex").getContext("2d");
 let ut = new Util();
 let cursor = new Point(0, 0);
 let game = new Game(ctxSnake, ctxHex);
+let gameEnd = false;
 
 let d = -Math.PI / 2;
 
@@ -65,27 +66,64 @@ window.addEventListener('keyup', function (event) {
     }
 });
 
-function canvasSize(snakeSize)
-{
-    let scale = Math.log10(snakeSize);
-    document.body.style.zoom = 1 / scale;
-    canvas.width = window.innerWidth * scale ;
-    canvas.height = window.innerHeight * scale;
-    canvas2.width = window.innerWidth * scale;
-    canvas2.height = window.innerHeight * scale;
-    game.snakes[0].camera.width = window.innerWidth * scale;
-    game.snakes[0].camera.height = window.innerHeight * scale;
+function victoryScreen(canvas) {
 
-    console.log(cursor);
-    console.log(game.snakes[0].arr[0]);
+    let ctx = canvas.getContext("2d");
+
 }
 
-// function endGame() {
-//     if (game.snakes.length === 1)
-//     {
-//         fireworks.firework.start();
-//     }
-// }
+function fireworksEffect (fireworksCanvas, victoryText) {
+    let firework = JS_FIREWORKS.Fireworks({
+        id: 'fireworks-canvas',
+        hue: 120,
+        particleCount: 70,
+        delay: 0,
+        minDelay: 20,
+        maxDelay: 40,
+        boundaries: {
+            top: 50,
+            bottom: 240,
+            left: 50,
+            right: 1550
+        },
+        fireworkSpeed: 2,
+        fireworkAcceleration: 1.05,
+        particleFriction: .95,
+        particleGravity: 1.5
+    });
+    victoryText.style.display = "block";
+    firework.start();
+    setTimeout(() => {
+        firework.stop();
+        fireworksCanvas.style.opacity = '0';
+        setTimeout(()=>{
+            canvas.style.display = "none";
+            victoryText.style.display = "none";
+            fireworksCanvas.remove();
+            window.location.href = "menu.html"
+        }, 7000)
+    }, 7000)
+}
+
+function victory() {
+    gameEnd = true;
+    game.globalCompositeOperation = "";
+    game.ctxFillStyle = "green";
+    canvas.style.transition = ".7s ease-out";
+    canvas.style.opacity = "0";
+    game.snakes[0].boost = false;
+
+    const gameDiv = document.getElementById("game");
+    const fireworksCanvas = document.createElement("canvas");
+    const victoryText =  document.getElementById("victory-text");
+    gameDiv.appendChild(fireworksCanvas);
+    fireworksCanvas.classList.add("fireworks-canvas");
+    fireworksCanvas.id = 'fireworks-canvas';
+    fireworksCanvas.width = window.innerWidth;
+    fireworksCanvas.height = window.innerHeight;
+
+    fireworksEffect(fireworksCanvas, victoryText);
+}
 
 function start() {
     game.init();
@@ -99,10 +137,12 @@ let fpsLimit = 120;
 
 
 function update(currentDelta) {
-    // canvasSize(game.snakes[0].size);
     updateId = requestAnimationFrame(update);
     movement();
-    // endGame();
+    if ((game.snakes.length === 1) && (gameEnd === false))
+    {
+        victory();
+    }
 
     let delta = currentDelta - previousDelta;
     if (fpsLimit && delta < 1000 / fpsLimit) return;

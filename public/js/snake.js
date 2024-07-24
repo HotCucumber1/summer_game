@@ -8,6 +8,7 @@ class Snake {
         this.state = 0;
 
         this.pos = new Point(game.world.x + game.WORLD_SIZE.x / 2 + game.SCREEN_SIZE.x / 2, game.world.y + game.WORLD_SIZE.y / 2 + game.SCREEN_SIZE.y / 2);
+
         this.velocity = new Point(0, 0);
         this.angle = ut.random(0, Math.PI);
 
@@ -222,7 +223,10 @@ class Snake {
             size -= 4;
         }
 
-        this.length += (size - 4);
+        if ((size - 4) > 0)
+        {
+            this.length += (size - 4);
+        }
 
         for (let i = 0; i < (size - 4); i++) {
             this.arr.push(new Point(this.pos.x, this.pos.y));
@@ -279,8 +283,7 @@ class Snake {
 
     drawYourLength() {
         this.ctx.fillStyle = this.mainColor;
-        if (window.innerWidth > 1920)
-        {
+        if (window.innerWidth > 1920) {
             this.ctx.font = "bold 24px Arial";
             this.ctx.fillText("Your length: " + this.length, 20, window.innerHeight - 20);
         } else {
@@ -342,6 +345,7 @@ class Snake {
                 }, fadeInterval);
             } else {
                 this.ctx.globalAlpha = 0; // Устанавливаем окончательно, если alpha стал отрицательным
+
                 let index = game.snakes.indexOf(this);
                 game.snakes.splice(index, 1);
 
@@ -368,8 +372,7 @@ class Snake {
         this.angle = angle;
     }
 
-    changeColor(color)
-    {
+    changeColor(color) {
         this.mainColor = color;
         this.midColor = ut.color(this.mainColor, 0.33);
         this.supportColor = ut.color(this.midColor, 0.33);

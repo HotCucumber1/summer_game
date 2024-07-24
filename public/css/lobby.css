@@ -11,7 +11,6 @@ html {
 body {
     opacity: 0;
     transition: opacity 2s;
-    overflow: hidden;
 }
 
 body.fade-out {
@@ -30,8 +29,7 @@ body.fade-in {
     flex-direction: column;
     align-items: center;
     background-image: radial-gradient(circle, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9), rgb(0, 0, 0)),
-        url("../images/background6.png");
-    user-select: none;
+    url("../images/background.png");
 }
 
 .menu__logo {
@@ -66,33 +64,40 @@ body.fade-in {
 }
 
 @keyframes neon {
-	78% {
+    78% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
         -webkit-text-stroke: rgb(101, 179, 72) 7px;
     }
-    79%{
+
+    79% {
         -webkit-text-stroke: rgb(187, 75, 92) 7px;
     }
+
     80% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
         -webkit-text-stroke: rgb(101, 179, 72) 7px;
     }
+
     81% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
         -webkit-text-stroke: rgb(101, 179, 72) 7px;
     }
+
     82% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
         -webkit-text-stroke: rgb(187, 75, 92) 7px;
     }
+
     83% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
         -webkit-text-stroke: rgb(101, 179, 72) 7px;
     }
+
     92% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(249, 50, 81), 0 0 0.5em rgb(249, 50, 81), 0 0 0.1em rgb(249, 50, 81);
         -webkit-text-stroke: rgb(187, 75, 92) 7px;
     }
+
     92.5% {
         text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
         -webkit-text-stroke: rgb(101, 179, 72) 7px;
@@ -103,7 +108,6 @@ body.fade-in {
     border-radius: 25px;
     width: 300px;
     height: 60px;
-    margin-top: 30px;
     font-size: 32px;
     font-family: "Pixelify Sans", sans-serif;
     font-weight: 400;
@@ -112,43 +116,78 @@ body.fade-in {
     transition: all 0.25s ease;
 }
 
-.menu__button[name="single"] {
-    border-color: rgb(255, 161, 110);
-    color: rgb(255, 161, 110);
+.menu__button[name="start"] {
+    border-color: rgb(249, 50, 81);
+    color: rgb(249, 50, 81);
 }
 
-.menu__button[name="single"]:hover {
-    box-shadow: 0 0 0.5em 0em rgb(255, 161, 110);
+.menu__button[name="start"]:hover {
+    box-shadow: 0 0 0.5em 0 rgb(249, 50, 81);
     color: rgb(255, 255, 255);
-    background: rgb(255, 161, 110);
+    background: rgb(249, 50, 81);
 }
 
-.menu__button[name="multi"] {
-    border-color: rgb(147, 212, 72);
-    color: rgb(147, 212, 72);
-}
-
-.menu__button[name="multi"]:hover {
-    box-shadow: 0 0 0.5em 0em rgb(147, 212, 72);
-    color: rgb(255, 255, 255);
-    background: rgb(147, 212, 72);
-}
-
-.lower-panel
-{
+.lobby {
+    max-width: 80vw;
+    height: 50vh;
     display: flex;
     flex-direction: row;
-    width: 100vw;
-    height: 53vh;
-    margin-left: 1%;
-    justify-content: flex-start;
-    align-items: flex-end;
+    justify-content: space-between;
+    gap: 30px;
 }
 
-.lower-panel__change-skin-img
-{
-    -webkit-user-select: none;
-    user-select: none;
-    cursor: pointer;
-    filter: brightness(0.8)
+.lobbyId {
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.lobby__id {
+    box-shadow: 0 0 0 100px rgb(0, 0, 0) inset;
+    outline: none;
+    border-radius: 25px;
+    padding: 4px;
+    width: 150px;
+    height: 50px;
+    margin-top: 10px;
+    font-size: 32px;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    padding-inline: 50px;
+    text-align: center;
+}
+
+.lobby__id[id="lobbyId"] {
+    border: 1px solid rgb(101, 179, 72);
+    -webkit-text-fill-color: rgb(101, 179, 72);
+}
+
+.lobby__id::placeholder {
+    opacity: 40%;
+    color: rgb(236, 233, 233);
+    padding: 0;
+    text-align: center;
+}
+
+.lobby__header {
+    margin-top: 10px;
+    font-size: 32px;
+    font-family: "Pixelify Sans", sans-serif;
+    font-weight: 400;
+    color: white;
+    text-align: center;
+}
+
+.users {
+    border: 2px solid rgb(187, 75, 92);
+    border-radius: 25px;
+    width: 50vw;
+    background-color: rgb(0, 0, 0);
+    font-size: 32px;
+    font-family: "Pixelify Sans", sans-serif;
+    font-weight: 400;
+    color: white;
+    text-align: center;
 }

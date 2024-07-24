@@ -26,7 +26,7 @@ window.addEventListener("DOMContentLoaded", function () {
 function handleOnImage(e) {
     const image = e.target;
     image.style.filter = "brightness(1)";
-};
+}
 
 function pullOfWithImage(e) {
     const image = e.target;

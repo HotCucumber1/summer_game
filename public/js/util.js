@@ -20,7 +20,7 @@ class Util {
             y = Math.floor(Math.random() * (max - min + 1)) + min;
 
             if (x ** 2 + y ** 2 < radius ** 2) {
-                return { x, y };
+                return new Point(x, y);
             }
         }
     }
