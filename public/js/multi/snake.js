@@ -271,7 +271,7 @@ class Snake
             if (!game.foods[i].eaten &&
                 ut.cirCollision(x, y, this.size + 3, game.foods[i].pos.x, game.foods[i].pos.y, game.foods[i].size))
             {
-                this.addLength(game.foods[i].size);
+                this.addLength();
 
                 game.foods.splice(i, 1);
 

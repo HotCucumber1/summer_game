@@ -242,8 +242,10 @@ class Snake
         {
             size -= 4;
         }
-        this.length += (size - 4);
-
+        if ((size - 4) > 0)
+        {
+            this.length += (size - 4);
+        }
         for (let i = 0; i < (size - 4); i++)
         {
             this.arr.push(new Point(this.pos.x, this.pos.y));
