@@ -12,6 +12,7 @@ window.addEventListener("DOMContentLoaded", async function ()
     const lobby = document.getElementById("lobby");
     const lobbyId = document.getElementById('lobbyId');
     const start = document.getElementById("start");
+    let moreThenOnePlayers = false;
     document.body.classList.add("fade-in");
 
     function handleOnButton(e)
@@ -166,6 +167,10 @@ window.addEventListener("DOMContentLoaded", async function ()
 
         if (dataFromServer.users)
         {
+            if (Object.keys(dataFromServer.users).length > 1)
+            {
+                moreThenOnePlayers = true;
+            }
             room.classList.add("fade-out");
             lobby.classList.add("fade-in");
             userId.innerHTML = "";
@@ -181,13 +186,14 @@ window.addEventListener("DOMContentLoaded", async function ()
 
     start.addEventListener("click", function ()
     {
-        if (Object.keys(dataFromServer.users).length > 1 && localStorage.getItem("role") === "host")
+        if (moreThenOnePlayers && localStorage.getItem("role") === "host")
         {
             conn.send(
                 JSON.stringify({ type: 'start' })
             );
         }
     });
+
 
     start.addEventListener('mouseover', handleOnButton);
     start.addEventListener('mouseout', pullOfWithButton);
