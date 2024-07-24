@@ -113,6 +113,19 @@ document.addEventListener('startEvent', function()
         // обновить информацию по зоне
         game.ARENA_RADIUS = dataFromServer.wall;
 
+        //    при победе в multi 
+        if (dataFromServer.users.length === 1 && users.name === localStorage.getItem("nickname")) 
+        {
+            setTimeout(function () {
+                alert("You win!");
+            }, 2000);
+
+            setTimeout(function () {
+                window.location.href = "/menu";
+            }, 5000);
+            conn.send(JSON.stringify({type: "victory"}));
+        }
+
         // обновить информацию по змеям
         for (let snake in game.snakes)
         {
