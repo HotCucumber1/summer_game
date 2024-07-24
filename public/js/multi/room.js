@@ -11,6 +11,7 @@ window.addEventListener("DOMContentLoaded", async function ()
     const room = document.getElementById("room");
     const lobby = document.getElementById("lobby");
     const lobbyId = document.getElementById('lobbyId');
+    const start = document.getElementById("start");
     document.body.classList.add("fade-in");
 
     function handleOnButton(e)
@@ -128,6 +129,21 @@ window.addEventListener("DOMContentLoaded", async function ()
     conn.addEventListener("message", function (event)
     {
         const dataFromServer = JSON.parse(event.data);
+        if (dataFromServer.type === 'ping')
+        {
+            return;
+        }
+
+        if (dataFromServer.start)
+        {
+            lobby.classList.remove("fade-in");
+            lobby.classList.add("fade-out");
+            gameCont.style.display = "block";
+            gameCont.classList.add("fade-in");
+            const startEvent = new CustomEvent('startEvent');
+            document.dispatchEvent(startEvent);
+        }
+
         if (dataFromServer.roomExist)
         {
             errorLabel.classList.remove("hidden");
@@ -148,7 +164,6 @@ window.addEventListener("DOMContentLoaded", async function ()
             join.removeAttribute("disabled");
         }
 
-
         if (dataFromServer.users)
         {
             room.classList.add("fade-out");
@@ -163,6 +178,19 @@ window.addEventListener("DOMContentLoaded", async function ()
             }
         }
     });
+
+    start.addEventListener("click", function ()
+    {
+        if (Object.keys(dataFromServer.users).length > 1 && localStorage.getItem("role") === "host")
+        {
+            conn.send(
+                JSON.stringify({ type: 'start' })
+            );
+        }
+    });
+
+    start.addEventListener('mouseover', handleOnButton);
+    start.addEventListener('mouseout', pullOfWithButton);
 
     create.addEventListener('mouseover', handleOnButton);
     create.addEventListener('mouseout', pullOfWithButton);
