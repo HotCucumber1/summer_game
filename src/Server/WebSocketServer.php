@@ -70,9 +70,6 @@ class WebSocketServer implements MessageComponentInterface
             case 'startCheckCollision':
                 $this->handleCheckCollision($from);
                 break;
-            case 'victory':
-                $this->handleVictory($from);
-                break;
         }
     }
 
@@ -82,6 +79,7 @@ class WebSocketServer implements MessageComponentInterface
         $room = $this->getUserRoom($conn->resourceId);
         $room->deleteUser($conn->resourceId);
 
+        $this->handleVictory($conn);
         unset($this->clientRoomsId[$conn->resourceId]);
         echo "Connection {$conn->resourceId} has disconnected\n";
     }

@@ -71,7 +71,7 @@ window.addEventListener('keyup', function (event)
 document.addEventListener('startEvent', function()
 {
     game.init();
-    setTimeout(() => conn.send(JSON.stringify({ type: 'startCheckCollision' })), 10000);
+    setTimeout(() => conn.send(JSON.stringify({ type: 'startCheckCollision' })), 5000);
 
     conn.addEventListener("message", function (event)
     {
@@ -113,15 +113,12 @@ document.addEventListener('startEvent', function()
         game.ARENA_RADIUS = dataFromServer.wall;
 
         //    при победе в multi 
-        if (dataFromServer.users.length === 1 && users.name === localStorage.getItem("nickname")) 
+        if (Object.keys(dataFromServer.users).length === 1 && dataFromServer.users[localStorage.getItem("nickname")] !== null)
         {
-            setTimeout(function () {
-                alert("You win!");
-            }, 2000);
+            setTimeout(() => console.log("You win!"), 3000);
 
-            setTimeout(function () {
-                window.location.href = "/menu";
-            }, 5000);
+            setTimeout(() => conn.close(), 5000);
+
             conn.send(JSON.stringify({type: "victory"}));
         }
 
