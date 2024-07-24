@@ -383,12 +383,12 @@ body.fade-in {
 }
 
 .victory-text span[name="span1"] {
-    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    -webkit-text-stroke: 7px rgb(101, 179, 72);
     text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
 }
 
 .victory-text span[name="span2"] {
     animation: neon linear infinite 4s;
-    -webkit-text-stroke: rgb(101, 179, 72) 7px;
+    -webkit-text-stroke: 7px rgb(101, 179, 72);
     text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em rgb(102, 239, 48), 0 0 0.5em rgb(102, 239, 48), 0 0 0.1em rgb(102, 239, 48);
 }
