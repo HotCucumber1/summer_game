@@ -191,7 +191,6 @@ body.fade-in {
     padding: 60px 20px;
     font-family: "Balsamiq Sans", sans-serif;
 }
-
 .menu__neon {
     font-size: 128px;
     font-weight: normal;
@@ -370,7 +369,7 @@ body.fade-in {
 .victory-text {
     position: absolute;
     font-family: "Balsamiq Sans", sans-serif;
-    font-size: 128px;
+    font-size: 256px;
     font-weight: normal;
     line-height: 50px;
     color: rgb(255, 255, 255);
@@ -380,7 +379,7 @@ body.fade-in {
     display: none;
     text-align: center;
     width: 100%;
-    top: 45%;
+    top: 30%;
 }
 
 .victory-text span[name="span1"] {
