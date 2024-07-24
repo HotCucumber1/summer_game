@@ -66,12 +66,6 @@ window.addEventListener('keyup', function (event) {
     }
 });
 
-function victoryScreen(canvas) {
-
-    let ctx = canvas.getContext("2d");
-
-}
-
 function fireworksEffect (fireworksCanvas, victoryText) {
     let firework = JS_FIREWORKS.Fireworks({
         id: 'fireworks-canvas',
