@@ -70,6 +70,9 @@ class WebSocketServer implements MessageComponentInterface
             case 'startCheckCollision':
                 $this->handleCheckCollision($from);
                 break;
+            case 'victory':
+                $this->handleVictory($from);
+                break;
         }
     }
 
@@ -149,10 +152,10 @@ class WebSocketServer implements MessageComponentInterface
 
             $this->clientRoomsId[$from->resourceId] = $data['newRoom']['roomId'];
         }
-        catch (BadRequestException $exception)
+        catch (BadRequestException)
         {
             $errorMessage = [
-                'roomExist' => $exception->getMessage(),
+                'roomExist' => true,
             ];
             $from->send(json_encode($errorMessage));
         }
@@ -193,6 +196,7 @@ class WebSocketServer implements MessageComponentInterface
     {
         $roomId = $this->clientRoomsId[$from->resourceId];
         $room = $this->roomRepository->getRoomById($roomId);
+
         $room->isStart = true;
         $room->inGame = true;
         foreach ($this->clients as $client)
@@ -208,5 +212,14 @@ class WebSocketServer implements MessageComponentInterface
     {
         $room = $this->getUserRoom($from->resourceId);
         $room->checkSnakeCollision = true;
+    }
+
+    private function handleVictory(ConnectionInterface $from): void
+    {
+        $room = $this->getUserRoom($from->resourceId);
+        if (count($room->snakes) === 1 && array_key_exists($from->resourceId, $room->snakes))
+        {
+            $this->roomRepository->removeRoom($this->clientRoomsId[$from->resourceId]);
+        }
     }
 }
