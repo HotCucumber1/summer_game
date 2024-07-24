@@ -10,7 +10,7 @@ class Game
         this.world = new Point(-20000, -10000);
         this.snakes = {};
         this.backgroundImage = new Image();
-        this.backgroundImage.src = "images/bg2.jpg";
+        this.backgroundImage.src = "images/background6.png";
         this.foods = [];
         this.globalCompositeOperation = "destination-out"
         this.ctxFillStyle = "red";
@@ -91,10 +91,7 @@ class Game
             }
         }
 
-        if (this.snakeUser.state === 0)
-        {
-            this.snakeUser.move();
-        }
+        this.snakeUser.move();
 
         for (let snake in this.snakes)
         {
@@ -135,8 +132,11 @@ class Game
         this.ctxHex.fill();
         this.ctxHex.stroke();
 
-        this.world.x -= this.snakeUser.velocity.x;
-        this.world.y -= this.snakeUser.velocity.y;
+        if (!this.snakeUser.isWon)
+        {
+            this.world.x -= this.snakeUser.velocity.x;
+            this.world.y -= this.snakeUser.velocity.y;
+        }
     }
 
     drawScoreTable()

@@ -4,7 +4,7 @@ class Snake
     {
         this.camera = new Camera(
             -game.SCREEN_SIZE.x, -game.SCREEN_SIZE.y,
-             game.SCREEN_SIZE.x,  game.SCREEN_SIZE.y
+            game.SCREEN_SIZE.x, game.SCREEN_SIZE.y
         );
 
         this.ctx = ctx;
@@ -13,6 +13,7 @@ class Snake
         this.speed = speed;
         this.boost = false;
         this.state = 0;
+        this.isWon = false;
 
         this.pos = new Point(x, y);
         this.velocity = new Point(0, 0);
@@ -216,8 +217,8 @@ class Snake
         this.velocity.y = this.speed * Math.sin(this.angle);
 
         this.headPath.push({
-                x: this.pos.x,
-                y: this.pos.y
+            x: this.pos.x,
+            y: this.pos.y
         });
 
         if (this.headPath.length > this.length)
@@ -239,7 +240,10 @@ class Snake
         this.drawHead();
 
         this.setSize();
-        this.checkCollisionFood();
+        if (!this.isWon)
+        {
+            this.checkCollisionFood();
+        }
     }
 
     setSize()
@@ -288,7 +292,10 @@ class Snake
                     {
                         this.pop.play();
                         this.soundPlayed = true;
-                        setTimeout(() => {this.soundPlayed = false}, 100);
+                        setTimeout(() =>
+                        {
+                            this.soundPlayed = false
+                        }, 100);
                     }
                 }
                 break;
@@ -306,89 +313,6 @@ class Snake
         return `rgba(${r},${g},${b},${alpha})`;
     }
 
-    // drawEffect(arr, angle, player) {
-    //     anime({
-    //         targets: { alpha: 1 },
-    //         alpha: 0,
-    //         duration: 2000,
-    //         easing: 'linear',
-    //         update: (anim) => {
-    //             const alphaValue = anim.animations[0].currentValue;
-    //             this.ctx.shadowBlur = 0;
-    //
-    //             // Создаем область отсечения
-    //             this.ctx.save();
-    //             this.ctx.beginPath();
-    //             arr.forEach(point => {
-    //                 this.ctx.arc(point.x, point.y, this.size * 1.7, 0, 2 * Math.PI);
-    //             });
-    //             this.ctx.clip();
-    //
-    //             // Восстанавливаем контекст
-    //             this.ctx.restore();
-    //
-    //             // for (let i = arr.length - 1; i >= 0; i--)
-    //             // {
-    //             //     arr[i].x -= player.velocity.x;
-    //             //     arr[i].y -= player.velocity.y;
-    //             // }
-    //
-    //             let d = this.size / 2;
-    //
-    //
-    //             for (let i = arr.length - 1; i >= 0; i--)
-    //             {
-    //                 this.ctx.beginPath();
-    //                 this.ctx.fillStyle = this.rgbaColor(this.mainColor, alphaValue);
-    //                 this.ctx.arc(arr[i].x, arr[i].y - d, this.size, 0, 2 * Math.PI);
-    //                 this.ctx.fill();
-    //             }
-    //
-    //             let x = arr[arr.length - 1].x;
-    //             let y = arr[arr.length - 1].y;
-    //
-    //             this.ctx.fillStyle = this.rgbaColor(this.mainColor, alphaValue);
-    //             this.ctx.beginPath();
-    //             this.ctx.arc(x, y - d, this.size, 0, 2 * Math.PI);
-    //             this.ctx.fill();
-    //
-    //             //eye 1
-    //             let p1 = new Point(x + d * Math.cos(angle), y + d * Math.sin(angle));
-    //             p1 = ut.rotate(p1, arr[arr.length - 1], -20);
-    //
-    //             this.ctx.fillStyle = this.rgbaColor("whitesmoke", alphaValue);
-    //             this.ctx.beginPath();
-    //             this.ctx.arc(p1.x, p1.y - d, 0.42 * this.size, 0, 2 * Math.PI);
-    //             this.ctx.fill();
-    //
-    //             this.ctx.fillStyle = this.rgbaColor("black", alphaValue);
-    //             this.ctx.beginPath();
-    //             this.ctx.arc(p1.x + Math.cos(angle), p1.y + Math.sin(angle) - d, 0.23 * this.size, 0, 2 * Math.PI);
-    //             this.ctx.fill();
-    //
-    //             //eye2
-    //             let p2 = ut.rotate(p1, arr[arr.length - 1], 40);
-    //
-    //             this.ctx.fillStyle = this.rgbaColor("whitesmoke", alphaValue);
-    //             this.ctx.beginPath();
-    //             this.ctx.arc(p2.x, p2.y - d, 0.42 * this.size, 0, 2 * Math.PI);
-    //             this.ctx.fill();
-    //
-    //             this.ctx.fillStyle = this.rgbaColor("black", alphaValue);
-    //             this.ctx.beginPath();
-    //             this.ctx.arc(p2.x + Math.cos(angle), p2.y + Math.sin(angle) - d, 0.23 * this.size, 0, 2 * Math.PI);
-    //             this.ctx.fill();
-    //
-    //         },
-    //         complete: () => {
-    //             document.body.classList.remove("fade-in");
-    //             document.body.classList.add("fade-out");
-    //         }
-    //     });
-    // }
-
-
-
     drawEffect(arr)
     {
         this.ctx.shadowBlur = 0; // радиус размытия тени
@@ -398,8 +322,8 @@ class Snake
 
         let alpha = 1;
         const fadeStep = 0.01;
-        const fadeDuration= 1000;
-        const fadeInterval= fadeDuration * fadeStep;
+        const fadeDuration = 1000;
+        const fadeInterval = fadeDuration * fadeStep;
 
         const fadeEffect = () =>
         {
@@ -414,7 +338,6 @@ class Snake
                 {
                     game.ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
                 }
-
 
                 // Рисуем эффект
                 let adjustedX;
@@ -438,7 +361,7 @@ class Snake
                 }
 
                 // Вызываем следующий кадр
-                setTimeout(()=> requestAnimationFrame(fadeEffect), fadeInterval);
+                setTimeout(() => requestAnimationFrame(fadeEffect), fadeInterval);
             }
             else
             {
@@ -464,9 +387,9 @@ class Snake
 
     die()
     {
-        let arrayBody= [];
+        let arrayBody = [];
 
-        for (let i= this.length - 1; i >= 1; i--)
+        for (let i = this.length - 1; i >= 1; i--)
         {
             game.foods.push(
                 new Food(

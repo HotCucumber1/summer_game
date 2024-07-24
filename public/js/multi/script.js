@@ -56,7 +56,8 @@ function victory()
     fireworksCanvas.id = 'fireworks-canvas';
     fireworksCanvas.width = window.innerWidth;
     fireworksCanvas.height = window.innerHeight;
-    console.log(1);
+
+    game.snakeUser.isWon = true;
 
     fireworksEffect(fireworksCanvas, victoryText);
 }
@@ -166,7 +167,7 @@ document.addEventListener('startEvent', function()
         // обновить информацию по зоне
         game.ARENA_RADIUS = dataFromServer.wall;
 
-        //    при победе в multi 
+        // при победе в multi
         if (Object.keys(dataFromServer.users).length === 1 &&
             dataFromServer.users[localStorage.getItem("nickname")] !== null && !gameEnd)
         {
@@ -195,7 +196,6 @@ document.addEventListener('startEvent', function()
                 mySnake = currentSnake;
                 continue;
             }
-
             if (!(currentSnake.name in game.snakes))
             {
                 game.addSnakeFromData(currentSnake);
@@ -216,10 +216,10 @@ document.addEventListener('startEvent', function()
 
         // движение
         movement();
+
         ctxSnake.clearRect(0, 0, canvas.width, canvas.height);
         ctxHex.clearRect(0, 0, canvas.width, canvas.height);
         game.draw();
-
 
         // отправить обновленные данные на бэк
         let data = {

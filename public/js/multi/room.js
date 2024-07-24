@@ -39,7 +39,6 @@ window.addEventListener("DOMContentLoaded", async function ()
         }
     }
 
-
     let wins = await checkVictories(localStorage.getItem("nickname"));
     userInfo.innerText = "Hi, " + localStorage.getItem("nickname") + "! You have " + wins + " wins now!";
 
@@ -167,7 +166,7 @@ window.addEventListener("DOMContentLoaded", async function ()
 
         if (dataFromServer.users)
         {
-            if (Object.keys(dataFromServer.users).length > 1)
+            if (Object.keys(dataFromServer.users).length > 0)
             {
                 moreThenOnePlayers = true;
             }

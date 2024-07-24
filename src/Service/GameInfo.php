@@ -10,6 +10,7 @@ class GameInfo
 {
     public bool $isStart = false;
     public bool $inGame = false;
+    public bool $isWon = false;
     public bool $checkSnakeCollision = false;
     /**
      * @var Snake[]
@@ -63,7 +64,10 @@ class GameInfo
         {
             $this->checkSnakeBumps($snake);
         }
-        $this->checkWallBumps($snake);
+        if (!$this->isWon)
+        {
+            $this->checkWallBumps($snake);
+        }
         $this->updatePoints($snake);
         $this->checkSnakeDeath($snake);
         $this->compressWall();

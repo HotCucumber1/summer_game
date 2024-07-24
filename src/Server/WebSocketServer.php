@@ -70,6 +70,9 @@ class WebSocketServer implements MessageComponentInterface
             case 'startCheckCollision':
                 $this->handleCheckCollision($from);
                 break;
+            case 'victory':
+                $this->handleWon($from);
+                break;
         }
     }
 
@@ -219,5 +222,11 @@ class WebSocketServer implements MessageComponentInterface
         {
             $this->roomRepository->removeRoom($this->clientRoomsId[$from->resourceId]);
         }
+    }
+
+    private function handleWon(ConnectionInterface $from): void
+    {
+        $room = $this->getUserRoom($from->resourceId);
+        $room->isWon = true;
     }
 }

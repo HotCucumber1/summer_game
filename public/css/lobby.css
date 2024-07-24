@@ -156,7 +156,12 @@ body.fade-in {
     color: rgb(249, 50, 81);
 }
 
-.menu__button[name="start"]:hover {
+.menu__button[name="start"]:disabled {
+    border-color: rgb(249, 50, 81);
+    color: rgba(249, 50, 81, 0.3);
+}
+
+.menu__button[name="start"]:hover:not(:disabled) {
     box-shadow: 0 0 0.5em 0 rgb(249, 50, 81);
     color: rgb(255, 255, 255);
     background: rgb(249, 50, 81);
@@ -356,15 +361,13 @@ body.fade-in {
     font-family: "Ubuntu", sans-serif;
 }
 
-.fireworks-canvas
-{
+.fireworks-canvas {
     position: absolute;
     transition: .7s ease-out;
     z-index: 3;
 }
 
-.victory-text
-{
+.victory-text {
     position: absolute;
     font-family: "Balsamiq Sans", sans-serif;
     font-size: 128px;
@@ -373,10 +376,11 @@ body.fade-in {
     color: rgb(255, 255, 255);
     letter-spacing: 8px;
     z-index: 4;
-    margin-top: 23%;
-    margin-left: 32%;
     user-select: none;
     display: none;
+    text-align: center;
+    width: 100%;
+    top: 45%;
 }
 
 .victory-text span[name="span1"] {
