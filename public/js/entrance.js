@@ -28,49 +28,32 @@ window.addEventListener("DOMContentLoaded", function ()
     async function sendData(event)
     {
         event.preventDefault();
-        try 
-        {
-            let response = await fetch('/login', {
-                method: "POST",
-                body: JSON.stringify(getData()),
-                headers:
+        let response = await fetch('/login', {
+            method: "POST",
+            body: JSON.stringify(getData()),
+            headers:
                 {
                     "Content-Type": "application/json;charset=utf-8"
                 }
-            });
-            if (!response.ok)
-            {
-                const result = await response.text();
-                throw new Error(result)
-            }
-            else
-            {
-                window.location.href = '/menu';
-                errorLabel.classList.add("hidden");
-                errorLabel.innerText= "";
-            }
-
-            }
-        catch (error) 
+        });
+        if (!response.ok)
         {
-            // alert(error.message);    //как вариант 
+            const result = await response.text();
             errorLabel.classList.remove("hidden");
-            errorLabel.innerText = error.message;
+            errorLabel.innerText = result;
+        }
+        else
+        {
+            errorLabel.classList.add("hidden");
+            errorLabel.innerText = "";
+            window.location.href = '/menu';
         }
     }
 
     enter.addEventListener('mouseover', hangleOnButton);
     enter.addEventListener('mouseout', pullOfWithButton);
     enter.addEventListener('click', sendData);
-
     document.body.classList.add("fade-in");
-
-    function hangleButtonClick(targetURL)
-    {
-        document.body.classList.remove("fade-in");
-        document.body.classList.add("fade-out");
-        setTimeout(() => {window.location.href = targetURL;}, 2000);
-    }
 
     nickname.addEventListener("input", () => localStorage.setItem("nickname", nickname.value));
 });

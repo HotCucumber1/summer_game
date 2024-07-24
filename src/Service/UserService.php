@@ -10,7 +10,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class UserService
 {
     private const MIN_PASSWORD_LEN = 6;
-    private const MIN_NAME_LEN = 3;
     public function __construct(private readonly UserRepositoryInterface $userRepository,
                                 private readonly PasswordHasher $hasher)
     {
