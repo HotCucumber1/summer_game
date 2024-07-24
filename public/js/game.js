@@ -19,7 +19,7 @@ class Game {
         this.generateMoving(100);
         this.generateDanger(50);
         this.snakes[0] = new Snake(this.ctxSnake, localStorage.getItem("nickname"));
-        for (let i = 1; i <= 1; i++)
+        for (let i = 1; i <= 30; i++)
             this.addSnake(i);
     }
 

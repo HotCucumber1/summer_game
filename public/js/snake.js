@@ -12,7 +12,7 @@ class Snake {
         this.velocity = new Point(0, 0);
         this.angle = ut.random(0, Math.PI);
 
-        this.length = 10;
+        this.length = 200;
         this.MAXSIZE = 60;
         this.MINSIZE = 15;
         this.size = 15;
@@ -106,13 +106,13 @@ class Snake {
             radius = 1;
         }
 
-        let flicker = Math.sin(Date.now() / 75 - index / (this.size / 2)) * 10 + this.size;
+        let flicker = Math.sin(Date.now() / 75 - index / (this.size / 2)) * 10 + radius;
 
         if (radius > 30) {
 
-            flicker = Math.sin(Date.now() / 75 - index / (radius / 2)) * 20 + 2 * radius / 4;
+            flicker = Math.sin(Date.now() / 75 - index / (radius / 2)) * 20 + 2 * radius / 2;
 
-            if (index % 3 === 1) {
+            if (index % 2 === 1) {
 
                 this.ctx.shadowBlur = (this.boost && this.length > 10) ? flicker : 20;
                 this.ctx.shadowColor = (this.boost && this.length > 10) ? this.supportColor : `rgb(0, 0, 0, 0.3)`;
@@ -166,6 +166,7 @@ class Snake {
                 this.length--;
                 this.arr.shift();
                 this.headPath.shift();
+                console.log(this.length, this.arr.length)
             }
 
         } else {
@@ -227,23 +228,11 @@ class Snake {
     }
 
     addLength(size) {
-        if (this.size >= 20 && this.size < 30) {
-            size -= 1;
-        }
+        size -= Math.floor(this.size / 15);
 
-        if (this.size >= 30 && this.size < 40) {
-            size -= 2;
+        if ((size - 4) > 0) {
+            this.length += (size - 4);
         }
-
-        if (this.size >= 40 && this.size < 50) {
-            size -= 3;
-        }
-
-        if (this.size >= 50) {
-            size -= 4;
-        }
-
-        this.length += (size - 4);
 
         for (let i = 0; i < (size - 4); i++) {
             this.arr.push(new Point(this.pos.x, this.pos.y));
@@ -371,14 +360,8 @@ class Snake {
         this.angle = angle;
     }
 
-    rgbaColor(color, alpha) {
-        const hex = color.replace('#', '');
-        const bigint = parseInt(hex, 16);
-        const r = (bigint >> 16) & 255;
-        const g = (bigint >> 8) & 255;
-        const b = bigint & 255;
-        return `rgba(${r},${g},${b},${alpha})`;
-    }
+   
+    
 
     drawEffect(arr, angle) {
         anime({
@@ -465,7 +448,9 @@ class Snake {
         let arrayBody = [];
 
         for (let i = last; i > 0; i--) {
-            game.foods.push(new Food(this.ctx, this.arr[i].x, this.arr[i].y));
+            if (i % 2 === 1) {
+                game.foods.push(new Food(this.ctx, this.arr[i].x, this.arr[i].y));
+            }
             arrayBody.push({
                 x: this.arr[i].x,
                 y: this.arr[i].y,
