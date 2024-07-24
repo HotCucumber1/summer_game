@@ -110,6 +110,7 @@ class Snake
         this.drawEye(p2)
         this.drawRetina(p2);
 
+        //name
         game.ctxSnake.fillStyle = this.mainColor;
         game.ctxSnake.font = "bold 24px Arial";
         let nickname = this.id;
