@@ -20,7 +20,7 @@ class UserService
     {
         if (!$this->isValid($name, $password))
         {
-            throw new BadRequestException("User data is not valid");
+            throw new BadRequestException("Password must be at least 6 characters long");
         }
         $hashedPassword = $this->hasher->hash($password);
         $user = new User(
@@ -69,6 +69,6 @@ class UserService
 
     private function isValid(string $name, string $password): bool
     {
-        return !(strlen($name) < self::MIN_NAME_LEN || strlen($password) < self::MIN_PASSWORD_LEN);
+        return (strlen($password) >= self::MIN_PASSWORD_LEN);
     }
 }

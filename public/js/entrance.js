@@ -25,30 +25,32 @@ window.addEventListener("DOMContentLoaded", function ()
         }
     }
 
-    async function sendData()
+    async function sendData(event)
     {
+        event.preventDefault();
         try 
         {
-        let response = await fetch('/login', {
-            method: "POST",
-            body: JSON.stringify(getData()),
-            headers: 
+            let response = await fetch('/login', {
+                method: "POST",
+                body: JSON.stringify(getData()),
+                headers:
+                {
+                    "Content-Type": "application/json;charset=utf-8"
+                }
+            });
+            if (!response.ok)
             {
-                "Content-Type": "application/json;charset=utf-8"
+                const result = await response.text();
+                throw new Error(result)
             }
-        });
-        if (!response.ok)
-        {
-            const result = await response.text(); 
-            throw new Error(result) 
-        } 
-        else
-        {
-            errorLabel.classList.add("hidden");
-            errorLabel.innerText= "";
-        }
+            else
+            {
+                window.location.href = '/menu';
+                errorLabel.classList.add("hidden");
+                errorLabel.innerText= "";
+            }
 
-        } 
+            }
         catch (error) 
         {
             // alert(error.message);    //как вариант 

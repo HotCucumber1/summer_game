@@ -51,7 +51,7 @@ class UserController extends AbstractController
             }
 
         }
-        return $this->redirectToRoute('menu');
+        return new Response('OK', Response::HTTP_OK);
     }
 
     public function getScore(Request $request, $name): JsonResponse
