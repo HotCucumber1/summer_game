@@ -5,22 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="80aa6ccc-b533-49e2-a846-fce35299adb0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pages/lobby.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/css/lobby.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/fireworks.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/lobby.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/menu.html" beforeDir="false" afterPath="$PROJECT_DIR$/pages/menu.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/menu.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/menu.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/camera.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/camera.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/changeSkin.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/changeSkin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/endGame.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/endGame.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/game.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/menu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/snake.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/snake.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/util.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/util.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/snakeBot.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/snakeBot.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +68,9 @@
       <workItem from="1721572029337" duration="604000" />
       <workItem from="1721646134523" duration="5439000" />
       <workItem from="1721720246829" duration="20907000" />
-      <workItem from="1721807849062" duration="17298000" />
+      <workItem from="1721807849062" duration="17501000" />
+      <workItem from="1721830357312" duration="54000" />
+      <workItem from="1721830464406" duration="608000" />
     </task>
     <servers />
   </component>

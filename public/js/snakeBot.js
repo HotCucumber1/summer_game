@@ -2,10 +2,7 @@ class SnakeBot extends Snake {
     constructor(ctx, id) {
         super(ctx, id);
         this.changeDirectionInterval = 1000;
-        this.pos = ut.arcRandom(
-            game.world.x + game.WORLD_SIZE.x / 2 - game.ARENA_RADIUS,
-            game.world.x + game.WORLD_SIZE.x / 2 + game.ARENA_RADIUS,
-            game.ARENA_RADIUS - 100);
+        this.pos = new Point(game.world.x + game.WORLD_SIZE.x / 2 + game.SCREEN_SIZE.x / 2 + 50, game.world.y + game.WORLD_SIZE.y / 2 + game.SCREEN_SIZE.y / 2 + 50);
 
         this.angle = 0;
         this.length = 10;

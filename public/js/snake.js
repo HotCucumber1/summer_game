@@ -41,6 +41,8 @@ class Snake {
         this.death.muted = false;
         this.death.load();
 
+        this.dead = false;
+
     }
 
     drawRetina(p) {
@@ -187,17 +189,24 @@ class Snake {
     }
 
     move() {
-        this.boostMove();
+        if (this.dead)
+        {
+            this.die();
+        }
+        else
+        {
+            this.boostMove();
 
-        this.moveCalc()
-        this.camera.follow(this.pos);
-        this.drawHead(this.supportColor);
+            this.moveCalc()
+            this.camera.follow(this.pos);
+            this.drawHead(this.supportColor);
 
-        this.checkCollissionFood();
-        this.checkCollissionBonus();
-        this.checkCollissionSnake()
-        this.checkCollissionBorder();
-        this.setSize();
+            this.checkCollissionFood();
+            this.checkCollissionBonus();
+            this.checkCollissionSnake()
+            this.checkCollissionBorder();
+            this.setSize();
+        }
     }
 
     setSize() {
@@ -300,7 +309,7 @@ class Snake {
             for (let j = 0; j < game.snakes[i].length; j++)
                 if (ut.cirCollission(x, y, this.size, game.snakes[i].arr[j].x,
                     game.snakes[i].arr[j].y, game.snakes[i].size)) {
-                    this.die();
+                    this.dead = true;
                     break;
                 }
         }
@@ -346,9 +355,6 @@ class Snake {
             } else {
                 this.ctx.globalAlpha = 0; // Устанавливаем окончательно, если alpha стал отрицательным
 
-                let index = game.snakes.indexOf(this);
-                game.snakes.splice(index, 1);
-
                 document.body.classList.remove("fade-in");
                 document.body.classList.add("fade-out");
 
@@ -365,7 +371,7 @@ class Snake {
         let center = new Point(game.world.x + game.WORLD_SIZE.x / 2, game.world.y + game.WORLD_SIZE.y / 2);
 
         if (ut.getDistance(this.arr[0], center) + this.size > game.ARENA_RADIUS)
-            this.die();
+            this.dead = true;
     }
 
     changeAngle(angle) {
@@ -396,9 +402,6 @@ class Snake {
         cancelAnimationFrame(updateId);
 
         this.drawEffect(arrayBody);
-
-        let index = game.snakes.indexOf(this);
-        game.snakes.splice(index, 1);
     }
 
 }
