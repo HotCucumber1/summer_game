@@ -163,8 +163,8 @@ document.addEventListener('startEvent', function()
                     game.foods.push(
                         new DangerFood(
                             ctxSnake,
-                            dataFromServer.points[i].x + game.SCREEN_SIZE.x / 2,
-                            dataFromServer.points[i].y + game.SCREEN_SIZE.y / 2,
+                            dataFromServer.points[i].x,
+                            dataFromServer.points[i].y,
                             dataFromServer.points[i].c
                         )
                     );
@@ -173,8 +173,8 @@ document.addEventListener('startEvent', function()
                 game.foods.push(
                     new Food(
                         ctxSnake,
-                        dataFromServer.points[i].x + game.SCREEN_SIZE.x / 2,
-                        dataFromServer.points[i].y + game.SCREEN_SIZE.y / 2,
+                        dataFromServer.points[i].x,
+                        dataFromServer.points[i].y,
                         dataFromServer.points[i].c
                     )
                 );
@@ -185,6 +185,7 @@ document.addEventListener('startEvent', function()
                 })
             );
         }
+
         // обновить позицию точек
         game.updatePoints();
 
@@ -193,13 +194,18 @@ document.addEventListener('startEvent', function()
 
         // при победе в multi
         if (Object.keys(dataFromServer.users).length === 1 &&
-            dataFromServer.users[localStorage.getItem("nickname")] !== null && !gameEnd)
+            dataFromServer.users[localStorage.getItem("nickname")] !== null &&
+            !gameEnd)
         {
             gameEnd = true;
             setTimeout(victory, 4000);
-            conn.send(JSON.stringify({type: "victory"}));
-            return;
+            conn.send(JSON.stringify({
+                type: "victory",
+                player: localStorage.getItem('nickname')
+            }));
+            // return;
         }
+
 
         // обновить информацию по змеям
         for (let snake in game.snakes)

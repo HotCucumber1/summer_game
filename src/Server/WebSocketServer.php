@@ -71,7 +71,7 @@ class WebSocketServer implements MessageComponentInterface
                 $this->handleCheckCollision($from);
                 break;
             case 'victory':
-                $this->handleWon($from);
+                $this->handleWon($from, $data);
                 break;
         }
     }
@@ -224,9 +224,10 @@ class WebSocketServer implements MessageComponentInterface
         }
     }
 
-    private function handleWon(ConnectionInterface $from): void
+    private function handleWon(ConnectionInterface $from, array $data): void
     {
         $room = $this->getUserRoom($from->resourceId);
+        $room->saveUserVictory($data['player']);
         $room->isWon = true;
     }
 }

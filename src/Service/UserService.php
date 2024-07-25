@@ -50,9 +50,9 @@ class UserService
         return $user;
     }
 
-    public function setUserScore(int $userId, int $score): void
+    public function setUserScore(string $name, int $score): void
     {
-        $user = $this->userRepository->findUserById($userId);
+        $user = $this->userRepository->findUserByName($name);
         if ($score > $user->getScore())
         {
             $user->setScore($score);

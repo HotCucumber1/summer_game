@@ -120,6 +120,13 @@ class GameInfo
         unset($this->snakes[$id]);
     }
 
+    public function saveUserVictory(string $name): void
+    {
+        $user = $this->userService->getUserByName($name);
+        $score = $user->getScore();
+        $this->userService->setUserScore($name, $score + 1);
+    }
+
     private function checkSnakeBumps(Snake $snake): void
     {
         if (!$snake->getAliveStatus())
@@ -176,31 +183,6 @@ class GameInfo
         if ($snake->getAliveStatus())
         {
             return;
-        }
-
-        $score = $snake->getScore();
-        $user = $this->userService->getUserByName($snake->getName());
-
-        if ($score > $user->getScore())
-        {
-            $this->userService->setUserScore($user->getUserId(), $score);
-        }
-
-        $body = $snake->getBodyParts();
-        $pointsPerPart = intdiv($score, count($body) + 1);
-
-        foreach ($body as $bodyPart)
-        {
-            $x1 = $bodyPart->getX() - $bodyPart->getRadius();
-            $y1 = $bodyPart->getY() - $bodyPart->getRadius();
-
-            $x2 = $bodyPart->getX() + $bodyPart->getRadius();
-            $y2 = $bodyPart->getY() + $bodyPart->getRadius();
-
-            for ($j = 0; $j < $pointsPerPart; $j++)
-            {
-                $this->pointService->addPoint($x1, $y1, $x2, $y2);
-            }
         }
         unset($this->snakes[$snake->getId()]);
     }

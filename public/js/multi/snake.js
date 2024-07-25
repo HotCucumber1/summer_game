@@ -176,10 +176,6 @@ class Snake
     {
         if (this.boost && this.length > 10)
         {
-            this.ctx.shadowBlur = 20; // радиус размытия тени
-            this.ctx.shadowColor = this.supportColor; // цвет свечения
-            this.ctx.shadowOffsetX = 0; // смещение тени по X
-            this.ctx.shadowOffsetY = 0;
             this.speed = 15;
             if (this.intervalId === null)
             {
@@ -194,8 +190,6 @@ class Snake
         }
         else
         {
-            this.ctx.shadowBlur = 0;
-            this.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
             this.speed = 6;
         }
     }
@@ -303,9 +297,9 @@ class Snake
     {
         let x = this.arr[0].x;
         let y = this.arr[0].y;
-        for (let i = 0; i < game.foods.length; i++)
+        for (let i = game.foods.length - 1; i >= 0; i--)
         {
-            if (!game.foods[i].eaten &&
+            if (!game.foods[i].isEaten &&
                 ut.cirCollision(x, y, this.size + 3, game.foods[i].pos.x, game.foods[i].pos.y, game.foods[i].size))
             {
                 if (game.foods[i] instanceof DangerFood)
@@ -324,6 +318,7 @@ class Snake
                     this.addLength();
                 }
                 game.foods.splice(i, 1);
+                // game.foods[i].isEaten = true;
 
                 if (this.id === localStorage.getItem('nickname'))
                 {
@@ -403,7 +398,7 @@ class Snake
                     setTimeout(() =>
                     {
                         conn.close();
-                    }, 1000);
+                    }, 500);
                 }
             }
         }
@@ -418,8 +413,7 @@ class Snake
     die()
     {
         let arrayBody = [];
-
-        for (let i = this.length - 1; i >= 1; i--)
+        for (let i = this.arr.length - 1; i >= 1; i--)
         {
             game.foods.push(
                 new Food(
@@ -429,6 +423,7 @@ class Snake
                     this.mainColor,
                 )
             );
+
             arrayBody.push({
                 x: this.arr[i].x,
                 y: this.arr[i].y,
