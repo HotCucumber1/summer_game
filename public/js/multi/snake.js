@@ -183,6 +183,12 @@ class Snake
             }
             if (this.counter >= 1)
             {
+                game.foods.push(new Food(
+                    this.ctx,
+                    this.arr[this.length - 1].x,
+                    this.arr[this.length - 1].y,
+                    this.mainColor,
+                    false));
                 this.arr.pop();
                 this.length--;
                 this.counter = 0;
@@ -265,7 +271,7 @@ class Snake
         if (this.arr.length < this.MAXLENGTH)
         {
             this.length++;
-            this.arr.push(new Point(-100, -100));
+            this.arr.push(new Point(this.pos.x, this.pos.y));
         }
     }
 
