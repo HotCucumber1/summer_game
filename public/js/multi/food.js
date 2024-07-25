@@ -1,6 +1,6 @@
 class Food
 {
-    constructor(ctx, x, y, color)
+    constructor(ctx, x, y, color, isReal=true)
     {
         this.ctx = ctx;
         this.pos = new Point(x, y);
@@ -9,6 +9,7 @@ class Food
         this.mainColor = color;
         this.isEaten = false;
         this.realPos = new Point(x, y);
+        this.isReal = isReal;
     }
 
     draw()

@@ -188,9 +188,13 @@ class Game
         {
             this.foods[i].pos.x -= this.snakeUser.velocity.x;
             this.foods[i].pos.y -= this.snakeUser.velocity.y;
-            if (this.foods[i].realPos.x ** 2 + this.foods[i].realPos.y ** 2 >= this.ARENA_RADIUS  ** 2)
+
+            if (this.foods[i].isReal)
             {
-                this.foods[i].isEaten = true;
+                if (this.foods[i].realPos.x ** 2 + this.foods[i].realPos.y ** 2 >= this.ARENA_RADIUS  ** 2)
+                {
+                    this.foods[i].isEaten = true;
+                }
             }
         }
     }

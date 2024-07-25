@@ -287,7 +287,7 @@ class Snake
         {
             for (let i = 0; i < 5; i++)
             {
-                this.arr.push(new Point(-100, -100));
+                this.arr.push(new Point(this.pos.x, this.pos.y));
                 this.length++;
             }
         }
@@ -421,6 +421,7 @@ class Snake
                     this.arr[i].x,
                     this.arr[i].y,
                     this.mainColor,
+                    false
                 )
             );
 
