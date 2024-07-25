@@ -13,9 +13,11 @@ class Food
 
     draw()
     {
+        let flicker = Math.sin(Date.now() / 100) * 10 + 20;
+
         this.ctx.fillStyle = this.mainColor;
 
-        this.ctx.shadowBlur = 20;               // радиус размытия тени
+        this.ctx.shadowBlur = flicker;          // радиус размытия тени
         this.ctx.shadowColor = this.mainColor;  // цвет свечения
         this.ctx.shadowOffsetX = 0;             // смещение тени по X
         this.ctx.shadowOffsetY = 0;             // смещение тени по Y

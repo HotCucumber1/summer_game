@@ -32,6 +32,13 @@ body.fade-in {
     opacity: 1;
 }
 
+.no-select {
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
 .entrance {
     width: 100vw;
     height: 100vh;
@@ -43,7 +50,7 @@ body.fade-in {
 }
 
 .entrance__logo {
-    margin-top: 60px;
+    margin-top: 100px;
     padding: 60px 20px;
     font-family: "Balsamiq Sans", sans-serif;
 }

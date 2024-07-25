@@ -187,7 +187,7 @@ body.fade-in {
 
 
 .menu__logo {
-    margin-top: 60px;
+    margin-top: 100px;
     padding: 60px 20px;
     font-family: "Balsamiq Sans", sans-serif;
 }
@@ -334,6 +334,13 @@ body.fade-in {
     font-weight: 400;
     text-align: center;
     caret-color: rgb(101, 179, 72);
+}
+
+.no-select {
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .room__id[id="roomId"] {

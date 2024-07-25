@@ -196,7 +196,7 @@ document.addEventListener('startEvent', function()
             dataFromServer.users[localStorage.getItem("nickname")] !== null && !gameEnd)
         {
             gameEnd = true;
-            setTimeout(victory, 1000);
+            setTimeout(victory, 4000);
             conn.send(JSON.stringify({type: "victory"}));
             return;
         }

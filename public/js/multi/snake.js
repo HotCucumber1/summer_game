@@ -426,6 +426,7 @@ class Snake
                     game.ctxSnake,
                     this.arr[i].x,
                     this.arr[i].y,
+                    this.mainColor,
                 )
             );
             arrayBody.push({

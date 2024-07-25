@@ -24,22 +24,5 @@ window.addEventListener("DOMContentLoaded", function ()
     });
 });
 
-function handleOnButton(e)
-{
-    const button = e.target;
-    button.style.boxShadow = "0 0 20px rgb(161, 161, 161)"; 
-}
-
-function pullOfWithButton(e)
-{
-    const button = e.target;
-    button.style.boxShadow = "";
-}
-
-single.addEventListener('mouseover', handleOnButton);
-single.addEventListener('mouseout', pullOfWithButton);
-
-multi.addEventListener('mouseover', handleOnButton);
-multi.addEventListener('mouseout', pullOfWithButton);
 
 
