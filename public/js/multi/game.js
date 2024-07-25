@@ -157,13 +157,13 @@ class Game
             if (window.innerWidth > 1920)
             {
                 this.ctxSnake.font = "bold 24px Arial";
-                this.ctxSnake.fillText("#" + (i + 1) + " " + leaderBoard[i].id + " length: " + leaderBoard[i].length,
+                this.ctxSnake.fillText("#" + (i + 1) + " " + leaderBoard[i].id + ' ' + leaderBoard[i].length,
                     start.x - 5, start.y + i * 30);
             }
             else
             {
                 this.ctxSnake.font = "bold 12px Arial";
-                this.ctxSnake.fillText("#" + (i + 1) + " " + leaderBoard[i].id + " length: " + leaderBoard[i].length,
+                this.ctxSnake.fillText("#" + (i + 1) + " " + leaderBoard[i].id + ' ' + leaderBoard[i].length,
                     start.x - 5, start.y + i * 15);
             }
         }
